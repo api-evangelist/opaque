@@ -1,0 +1,23 @@
+---
+title: JobInputVariable
+type: object
+properties:
+  uuid:
+    type: string
+  name:
+    type: string
+  type:
+    $ref: ./JobInputVariableType.yaml
+  # The top level of constraints is an OR block of multiple constraints.
+  # See the description of the ConstraintOrBlock model for more information.
+  constraints:
+    $ref: ./JobInputVariableConstraintScaffolding/ConstraintOrBlock.yaml
+  description:
+    type: string
+  default:
+    type: string
+required:
+  - uuid
+  - name
+  - type
+  - constraints

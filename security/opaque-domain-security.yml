@@ -1,0 +1,27 @@
+generated: '2026-08-04'
+method: probed
+source: live DNS/TLS/HTTP probes of apis.yml + OpenAPI hosts
+notes:
+- The apis.yml baseURL is a documented per-deployment template (https://api.{your-subdomain}/v2.5),
+  not a resolvable host, so it is excluded here. OPAQUE serves the web UI and REST API from inside
+  each customer's own environment, so only the OPAQUE-operated marketing and documentation hosts
+  are probeable from the public internet.
+hosts:
+- host: www.opaque.co
+  https: true
+  tls_version: TLSv1.3
+  cert_expires: Oct 27 19:30:09 2026 GMT
+  hsts: true
+  hsts_max_age: 31536000
+- host: docs.opaque.co
+  https: true
+  tls_version: TLSv1.3
+  cert_expires: Oct 30 19:48:56 2026 GMT
+  hsts: false
+domains:
+- domain: opaque.co
+  dnssec: true
+  caa: []
+  spf: true
+  dmarc: true
+  dmarc_policy: quarantine

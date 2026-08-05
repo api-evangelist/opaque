@@ -1,0 +1,61 @@
+---
+title: Workspace
+type: object
+properties:
+  uuid:
+    type: string
+    x-faker: datatype.uuid
+    x-go-type: uuid.UUID
+    x-go-type-import:
+      path: github.com/google/uuid
+  name:
+    type: string
+    x-faker: commerce.department
+  createdBy:
+    type: string
+  type:
+    type: string
+    enum:
+      - analytics
+      - agentic
+  status:
+    type: string
+    enum:
+      - failed
+      - pending
+      - rejected
+      - verified
+  version:
+    type: string
+    description: Version of the consortium, derived from the lowest version of all members.
+  members:
+    type: array
+    items:
+      $ref: ./ConsortiumMember.yaml
+  archived:
+    type: boolean
+    description: Whether or not the consortium is archived
+    x-stoplight:
+      id: a0qbr5hx8owdr
+  description:
+    type: string
+    description: Description of the consortium
+  suggestedComputeVersion:
+    type: string
+    description: Most recent stable version of the compute which is compatible with a given consortium.
+  createdAt:
+    type: string
+    format: date-time
+    example: '2019-01-25T02:00:00.000Z'
+  workspacePolicy:
+    $ref: ./WorkspacePolicy.yaml
+required:
+  - uuid
+  - name
+  - createdBy
+  - type
+  - status
+  - version
+  - members
+  - archived
+  - description

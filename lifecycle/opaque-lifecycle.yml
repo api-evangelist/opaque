@@ -1,0 +1,50 @@
+generated: '2026-08-04'
+method: searched
+source: https://docs.opaque.co/en/latest/public_guide/users/admins/versioning/
+versioning:
+  scheme: uri-path
+  current: v2.5
+  platform_version: 2.7.0
+  semver: true
+  rules:
+  - Major updates introduce breaking changes.
+  - Minor updates add new features in a backward-compatible way.
+  - Patch updates provide backward-compatible bug fixes.
+  docs: https://docs.opaque.co/en/latest/public_guide/users/admins/versioning/
+  note: >-
+    The platform comprises independently versioned components. A workspace exposes a
+    "compatible OPAQUE version" — the lowest common version among all member organizations —
+    and only features supported across all members are available in a multiparty workspace.
+    All workspace members must run the same major version to collaborate. The OpenAPI info.version
+    is 2.5 and the API version is carried as a {version} path parameter.
+  sdk_pinning: >-
+    The Python SDK must match the deployment version; OPAQUE distributes a version-matched ZIP
+    (pip install opaque-<OPAQUE_VERSION>.tar.gz).
+release_notes: https://docs.opaque.co/en/latest/release_notes/
+deprecation:
+  policy_url: null
+  sunset_header: false
+  evidence: >-
+    No deprecation or sunset policy is published, no RFC 8594 Sunset/Deprecation header support is
+    documented, and no operation in the OpenAPI carries `deprecated: true`. Release notes do record
+    removals in prose — 2.7.0 removed the workspace invite flow — but without a deprecation window
+    or a policy page.
+sla:
+  url: null
+  uptime_target: null
+  support_response_target: 1 business day (all support inquiries)
+  docs: https://docs.opaque.co/en/latest/support/
+status_page: null
+status_page_evidence:
+  - url: https://status.opaque.co/
+    status: 0
+    note: hostname does not resolve
+support:
+  portal: OPAQUE support portal (linked from the docs support page; requires a customer account)
+  email_general: hello@opaque.co
+  email_access: support@opaque.co
+  docs: https://docs.opaque.co/en/latest/support/
+deprecated_operations: []
+known_issues_tracked: >-
+  Each release-notes page carries a "Known issues" table with the issue and a suggested
+  workaround — an unusually transparent practice for a commercial platform.

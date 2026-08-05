@@ -1,0 +1,99 @@
+generated: '2026-08-04'
+method: searched
+source: https://docs.opaque.co/en/latest/public_guide/developers/rest_api/
+derived_from: openapi/opaque-platform-api-openapi.yml
+authentication:
+  style: bearer JWT session token, plus cookie-carried refresh token and user identity secret
+  header: 'Authorization: Bearer <session_token>'
+  cookies:
+  - refreshTokenCookie
+  - sessionTokenCookie
+  - userIdentitySecret
+  session_token_lifetime: 10 minutes
+  api_key_lifetime: 6 months
+  detail: authentication/opaque-authentication.yml
+transport:
+  https_required: true
+  note: >-
+    "All requests must be made over HTTPS; requests over plain HTTP or without valid
+    authentication will result in errors." Communication between the Python SDK and a deployed
+    workflow additionally runs over attested TLS (aTLS), and the SDK only submits the request
+    if the workflow passes attestation.
+base_url:
+  pattern: https://api.<your-subdomain>/<version>
+  documented_form: https://<subdomain>-api.<domain>
+  note: >-
+    Per-deployment. OPAQUE serves the web UI and REST API from inside the customer's own
+    environment, so there is no shared production host.
+versioning:
+  scheme: uri-path
+  form: /{version}/... — the version is a path parameter (e.g. v1.0, v1.1, v2.5)
+  spec_version: '2.5'
+  platform_versioning: semantic (major = breaking, minor = backward-compatible features, patch = fixes)
+  docs: https://docs.opaque.co/en/latest/public_guide/users/admins/versioning/
+  detail: lifecycle/opaque-lifecycle.yml
+content_types:
+  request:
+  - application/json
+  - multipart/form-data
+  accept:
+  - application/json
+  - text/plain
+  note: multipart/form-data is required for file uploads; text/plain is used for log retrieval.
+methods:
+  GET: Retrieve resources
+  POST: Create new resources
+  PUT: Replace existing resources
+  PATCH: Update existing resources
+  DELETE: Remove resources
+identifiers:
+  style: UUID
+  note: >-
+    Every resource is addressed by a UUID path parameter (workspace-uuid, workflow-uuid,
+    job-uuid, datum-uuid, asset_config_uuid, job_run_uuid, input-variable-uuid). A malformed
+    UUID returns 500 "badly formed hexadecimal UUID string" rather than 400.
+idempotency:
+  supported: false
+  evidence: >-
+    No Idempotency-Key header, parameter, or documented retry-safety contract appears in the
+    OpenAPI or in the REST API documentation. Write operations are not documented as safely
+    retryable.
+pagination:
+  supported: false
+  evidence: >-
+    No page/limit/offset/cursor parameters appear in any of the 82 operations. Collection
+    endpoints (get_workspaces, get_jobs_by_workspace, get_organization_members, list_data,
+    get_pinned_queries) return unbounded arrays.
+rate_limits:
+  documented: false
+  evidence: >-
+    No 429 response, no RateLimit/Retry-After headers, and no rate-limit section in the docs.
+request_tracing:
+  documented: false
+  evidence: No request-id, traceparent, or correlation header is documented or declared.
+  related: >-
+    Workflow-level observability is provided instead through execution traces in Test mode and
+    through attestation reports, which since 2.7.0 record external endpoints accessed by a
+    workflow.
+error_envelope:
+  media_type: application/json
+  fields: [type, title, status, detail]
+  shape: RFC 7807 / RFC 9457 field names over application/json
+  detail: errors/opaque-problem-types.yml
+field_expansion:
+  supported: false
+metadata:
+  supported: false
+webhooks:
+  documented: false
+  note: >-
+    OPAQUE delivers user-facing alerts (e.g. job completion) through in-platform notifications
+    from the control plane, not through outbound webhooks. No webhook catalog and no AsyncAPI
+    document is published, so no asyncapi/ artifact is emitted.
+tooling:
+  documented_clients:
+  - curl
+  - Postman
+  note: >-
+    The docs name curl and Postman as ways to interact with the API but do not publish a
+    Postman collection or workspace URL.

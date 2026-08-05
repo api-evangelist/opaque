@@ -1,0 +1,90 @@
+generated: '2026-08-04'
+method: searched
+source: openapi/opaque-platform-api-openapi.yml
+docs:
+- https://docs.opaque.co/en/latest/public_guide/developers/rest_api/
+- https://docs.opaque.co/en/latest/public_guide/developers/rest_api/response_codes_errors/
+- https://www.opaque.co/resources/articles/the-opaque-platform-is-now-soc-2-certified
+standards:
+- id: openapi-3.0
+  conforms: true
+  evidence: 'OpenAPI 3.0.3 document published at
+    docs.opaque.co/en/latest/api_reference/endpoints/V1/reference/Opaque-UI.yaml — 65 paths,
+    82 operations, all with unique operationIds and tags.'
+- id: rest
+  conforms: true
+  evidence: 'Documented as "standard RESTful conventions" — resource-oriented paths, standard
+    HTTP methods, JSON request/response bodies.'
+- id: rfc9457-problem-details
+  conforms: partial
+  evidence: >-
+    The error envelope uses the RFC 7807/9457 field names (type, title, status, detail) but is
+    served as application/json rather than application/problem+json, and `type` is "about:blank"
+    or "exception" rather than a dereferenceable problem-type URI.
+- id: jwt-rfc7519
+  conforms: true
+  evidence: Session tokens are documented as JSON Web Tokens with a 10-minute lifetime.
+- id: rfc6750-bearer
+  conforms: true
+  evidence: 'Session tokens are sent as Authorization: Bearer <token>; OpenAPI declares an
+    http/bearer security scheme.'
+- id: oauth2
+  conforms: false
+  evidence: No oauth2 securityScheme in the OpenAPI and no OAuth authorization/token endpoints
+    are documented for the REST API.
+- id: openid-connect
+  conforms: false
+  evidence: >-
+    SSO is enforced at the web-application layer via Microsoft Entra ID and Okta, but no
+    /.well-known/openid-configuration is served on any OPAQUE-operated host (all probed 404)
+    and no openIdConnect securityScheme is declared.
+- id: rfc9116-security-txt
+  conforms: false
+  evidence: /.well-known/security.txt returns 404 on www.opaque.co, opaque.co and docs.opaque.co.
+- id: rfc8594-sunset-header
+  conforms: false
+  evidence: No Sunset/Deprecation header support and no deprecation policy is documented.
+- id: rfc9334-rats
+  conforms: true
+  evidence: >-
+    The Python SDK's Appraiser class is documented as appraising attestation documents
+    "in the sense of RFC 9334" (Remote ATtestation procedureS architecture). Attestation
+    reports are issued as JWTs and appraised per confidential-computing runtime.
+- id: model-context-protocol
+  conforms: consumer
+  evidence: >-
+    OPAQUE consumes MCP rather than publishing an MCP server — the MCP Tool node lets an Agent
+    node in tool mode invoke external MCP tools, with runtime context mapping onto parameters
+    read from the target OpenAPI spec (2.6.0, 2.6.1). "Confidential MCP" runs MCP tool calls
+    inside the confidential runtime. No public MCP endpoint is published by OPAQUE.
+- id: asyncapi
+  conforms: false
+  evidence: No event, streaming or webhook surface is published; notifications are in-platform.
+compliance:
+  published: true
+  certifications:
+  - name: SOC 2 Type 2
+    scope: Confidential AI and Analytics platform
+    trust_criteria: [Security, Confidentiality, Privacy]
+    auditor: BARR Advisory, P.A.
+    announced: '2023-01-30'
+    source: https://www.opaque.co/resources/articles/the-opaque-platform-is-now-soc-2-certified
+  trust_center: null
+  trust_center_evidence:
+  - {url: 'https://www.opaque.co/security', status: 404}
+  - {url: 'https://www.opaque.co/trust', status: 404}
+  - {url: 'https://trust.opaque.co/', status: 0, note: hostname does not resolve}
+  note: >-
+    OPAQUE publishes an architecture and security white paper and a MITRE ATLAS mitigation
+    mapping as gated downloadables (www.opaque.co/resources/downloadables/), and writes
+    frequently about DORA, the EU AI Act and ISO 42001 as market context. The only
+    first-party certification claim found on their own site is SOC 2 Type 2. There is no
+    trust center, no public compliance page, and no security.txt.
+regulatory_context_discussed:
+- EU AI Act
+- DORA
+- ISO/IEC 42001
+- GDPR
+note: >-
+  The items above are topics OPAQUE writes about in its marketing content, not certifications
+  it claims. They are recorded separately from `compliance.certifications` on purpose.

@@ -1,0 +1,39 @@
+---
+title: Condition Dropdown
+x-stoplight:
+  id: fc6gjkfylayby
+type: object
+description: A datum condition as described by the dropdown selection process
+properties:
+  column:
+    type: object
+    required:
+      - name
+    properties:
+      name:
+        type: string
+      type:
+        type: string
+        enum:
+          - number
+          - string
+  operator:
+    type: string
+    description: Possible comparisons to the cell
+    enum:
+      - is empty
+      - is not empty
+      - is
+      - is not
+      - <
+      - '>'
+      - <=
+      - '>='
+  value:
+    oneOf:
+      - type: string
+      - type: number
+required:
+  - column
+  - operator
+  - value

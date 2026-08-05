@@ -1,0 +1,91 @@
+generated: '2026-08-04'
+method: searched
+source: openapi/opaque-platform-api-openapi.yml
+docs: https://docs.opaque.co/en/latest/public_guide/developers/rest_api/authentication/
+summary:
+  types:
+  - apiKey
+  - http
+  api_key_in:
+  - cookie
+  - header
+  oauth2_flows: []
+  model: >-
+    Three credential types, all issued per user. A base64-encoded API key is copied from the
+    "API Keys" page of the OPAQUE web application after SSO login; decoding it yields a JSON
+    object containing a refresh_token and a user_identity_secret. The refresh token is exchanged
+    at POST /{version}/auth/refresh-token for a short-lived session token (JWT), which is then
+    sent as an Authorization: Bearer header. The user identity secret is sent as a cookie and is
+    required for cryptographic / sensitive-data operations such as data upload and result
+    retrieval.
+  sso_required: true
+  api_key_lifetime: 6 months
+  session_token_lifetime: 10 minutes
+schemes:
+- name: sessionToken
+  type: http
+  scheme: bearer
+  bearerFormat: JWT
+  description: >-
+    Short-lived (10 minute) JSON Web Token that authenticates general API requests. Sent in the
+    Authorization header using the Bearer scheme. Obtained by exchanging a refresh token at
+    POST /{version}/auth/refresh-token (operationId refresh_user_tokens); the response field is
+    accessToken. The spec description says the token is obtained from the /login and /register
+    endpoints.
+  sources:
+  - openapi/opaque-platform-api-openapi.yml
+  - https://docs.opaque.co/en/latest/public_guide/developers/rest_api/authentication/
+- name: sessionTokenCookie
+  type: apiKey
+  in: cookie
+  parameter: sessionTokenCookie
+  description: >-
+    The same session token supplied as a cookie instead of a header, for browser-originated calls
+    such as downloading job results or logs.
+  sources:
+  - openapi/opaque-platform-api-openapi.yml
+  - https://docs.opaque.co/en/latest/public_guide/developers/rest_api/authentication/
+- name: refreshTokenCookie
+  type: apiKey
+  in: cookie
+  parameter: refreshTokenCookie
+  description: >-
+    Long-lived refresh token, stored as an HttpOnly cookie, exchanged for new session tokens.
+    Extracted from the base64-encoded API key issued in the web application. A missing cookie
+    returns 400; an expired refresh token returns 401 and requires the user to log in again.
+  sources:
+  - openapi/opaque-platform-api-openapi.yml
+  - https://docs.opaque.co/en/latest/public_guide/developers/rest_api/authentication/
+- name: userIdentitySecret
+  type: apiKey
+  in: cookie
+  parameter: userIdentitySecret
+  description: >-
+    A binary blob derived from the user's passkey, sent as a cookie. Required for operations that
+    involve cryptographic key exchange or sensitive data — uploading data and retrieving job
+    results. The spec description says it can be obtained from the /login and /register endpoints;
+    the docs describe extracting it from the decoded API key.
+  sources:
+  - openapi/opaque-platform-api-openapi.yml
+  - https://docs.opaque.co/en/latest/public_guide/developers/rest_api/authentication/
+default_security:
+- sessionToken
+- refreshTokenCookie
+identity:
+  sso: required
+  providers_documented:
+  - Microsoft Entra ID
+  - Okta
+  docs:
+  - https://docs.opaque.co/en/latest/public_guide/deployment/common_configurations/enable_entra_sso_for_opaque/
+  - https://docs.opaque.co/en/latest/public_guide/deployment/common_configurations/enable_okta_sso_for_opaque/
+  passkeys: >-
+    The API exposes create_passkey_from_password (POST /{version}/auth/create-passkey-from-password)
+    and get_user_keys (GET /{version}/user/keys); the user identity secret is derived from the
+    user's passkey.
+notes:
+- No OAuth 2.0 or OpenID Connect security scheme is declared in the OpenAPI, and no scope surface
+  is published, so no scopes/ artifact is emitted. SSO is enforced at the web application layer
+  (Entra ID / Okta) rather than exposed as an API-level OAuth flow.
+- Transport between the Python SDK and a deployed workflow is attested TLS (aTLS); the SDK only
+  submits a request if the workflow passes attestation.

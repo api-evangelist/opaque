@@ -1,0 +1,53 @@
+overlay: 1.0.0
+info:
+  title: API Evangelist enhancements for the OPAQUE Platform REST API
+  version: 1.0.0
+extends: openapi/opaque-platform-api-openapi.yml
+x-generated: '2026-08-04'
+x-method: generated
+x-source: openapi/_original/opaque-ui-openapi-original.yml
+x-note: >-
+  Non-destructive record of what API Evangelist observed about the harvested specification. The
+  harvested document at openapi/_original/ is never mutated. Every action below either records a
+  provenance marker or restates something OPAQUE publishes in its own documentation but omits from
+  the specification.
+actions:
+- target: $.info
+  update:
+    x-apievangelist-source: https://docs.opaque.co/en/latest/api_reference/endpoints/V1/reference/Opaque-UI.yaml
+    x-apievangelist-harvested: '2026-08-04'
+    x-apievangelist-note: >-
+      Harvested from the Swagger UI iframe embedded in the OPAQUE REST API reference page. The
+      spec is not linked from the docs navigation and is not served from any /openapi.json,
+      /swagger.json or /api-docs path.
+- target: $.servers
+  update:
+    x-apievangelist-note: >-
+      The only declared server is http://localhost:5001/ (Local Server). OPAQUE's own REST API
+      documentation gives the production base URL as https://<subdomain>-api.<domain>, and the
+      workflow guide as https://api.{your-subdomain}/v2.5. Because OPAQUE serves the API from
+      inside each customer's environment there is no shared production host to declare, but a
+      templated server with a `subdomain` variable would describe the real deployment model.
+- target: $.info
+  update:
+    x-apievangelist-gaps:
+      security_not_applied: >-
+        Four securitySchemes are defined and a root-level security requirement is present, but
+        no operation declares its own security, so per-operation auth requirements (notably the
+        userIdentitySecret cookie required for upload_data and get_job_run_results) are not
+        machine-readable.
+      unresolvable_refs: >-
+        components.schemas holds seven external $refs to ../models/*.yaml. The targets are
+        published and fetchable but the document does not resolve standalone.
+      error_responses_undeclared: >-
+        The docs publish 401, 403, 404, 405 and two distinct 500 classes, but 401 is declared on
+        one operation only and 46 of 82 operations declare no 4xx/5xx response at all.
+      no_examples: No request or response examples are present in the specification.
+      no_pagination: >-
+        Collection operations declare no pagination parameters and return unbounded arrays.
+- target: $.tags
+  update:
+    x-apievangelist-note: >-
+      Seven tags are declared (auth, users, Azure, workspaces, datasets, jobs, asset-configs) but
+      operations also use workflows, organizations, predefined-query-templates, pinned-queries and
+      versioning, which are undeclared. The "Azure" tag is declared but unused.

@@ -1,0 +1,17 @@
+---
+title: Consortium Member
+x-stoplight:
+  id: 0213b6d71b0e7
+type: object
+properties:
+  member:
+    $ref: ./User.yaml
+  inviteStatus:
+    type: string
+    enum:
+      - accepted
+      - rejected
+      - invited
+required:
+  - member
+  - inviteStatus

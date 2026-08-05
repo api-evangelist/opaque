@@ -1,0 +1,136 @@
+generated: '2026-08-04'
+method: derived
+source: openapi/opaque-platform-api-openapi.yml
+schemas_source: json-schema/ (20 model documents harvested verbatim from
+  https://docs.opaque.co/en/latest/api_reference/endpoints/V1/models/)
+identifiers:
+  style: UUID
+  prefixes: none — OPAQUE uses bare UUIDs with no type prefix
+entities:
+- name: Organization
+  file: json-schema/opaque-organization-schema.yaml
+  key: uuid
+  fields: [uuid, name, logoURL]
+  description: The tenant. Owns users, datasets, asset configs and predefined query templates.
+- name: User
+  file: json-schema/opaque-user-schema.yaml
+  key: email
+  fields: [email, name, organization, nickname]
+- name: Workspace
+  file: json-schema/opaque-workspace-schema.yaml
+  key: uuid
+  fields: [uuid, name, createdBy, type, status, version, members, archived, description,
+    suggestedComputeVersion, createdAt, workspacePolicy]
+  enums:
+    type: [analytics, agentic]
+    status: [failed, pending, rejected, verified]
+  description: >-
+    The collaboration boundary, referred to as a "consortium" in the underlying model. May span
+    organizations; its version is the lowest version among all members.
+- name: ConsortiumMember
+  file: json-schema/opaque-consortium-member-schema.yaml
+  fields: [member, inviteStatus]
+  enums:
+    inviteStatus: [accepted, rejected, invited]
+- name: Datum
+  file: json-schema/opaque-datum-schema.yaml
+  key: uuid
+  fields: [uuid, name, remoteUri, createdAt, createdBy, columns, testDataType,
+    dataStoreConfigUUID, description, dataSource, size, policy]
+  enums:
+    dataSource: [local, aws_s3, azure_blob, azure_file, gcp, job_run_result]
+    testDataType: [synthetic, mock, none]
+  description: A dataset as scoped into a workspace.
+- name: OrganizationData
+  file: json-schema/opaque-organization-data-schema.yaml
+  key: uuid
+  fields: [uuid, name, datasetPath, remoteUri, createdAt, createdBy, columns, dataSource,
+    description, size, testDataType, dataStoreConfigUUID, policy, workspaces]
+  description: A dataset at the organization level, shareable into one or more workspaces.
+- name: Job
+  file: json-schema/opaque-job-schema.yaml
+  key: uuid
+  fields: [uuid, name, createdAt, createdBy, status, repeatable, jobRuns, queryType,
+    inputVariables]
+  enums:
+    status: [draft, under review, accepted, rejected]
+    queryType: [python, predefined]
+- name: JobRun
+  file: json-schema/opaque-job-run-schema.yaml
+  key: uuid
+  fields: [uuid, createdAt, runBy, status, runNumber, inputValues, isTestRun, startedAt,
+    finishedAt, script, resultsURI]
+  enums:
+    status: [queued, running, failed, succeeded]
+- name: JobInputVariable
+  file: json-schema/opaque-job-input-variable-schema.yaml
+- name: JobInputValue
+  file: json-schema/opaque-job-input-value-schema.yaml
+- name: SimpleWorkflow
+  file: json-schema/opaque-simple-workflow-schema.yaml
+  key: uuid
+  fields: [uuid, name, description, status, createdBy, createdAt, updatedAt, consortiumUUID,
+    needsAttention]
+  enums:
+    status: [draft, under review, accepted, rejected, launching, live, shutting down, failed]
+  description: >-
+    The agentic workflow. The full Workflow object is not published as a model document; only the
+    list-shaped subset is.
+- name: AssetConfig
+  file: json-schema/opaque-asset-config-schema.yaml
+  key: uuid
+  fields: [uuid, name, description, assetType, definition, creator, updatedAt,
+    associatedWorkspaces, associatedWorkflows]
+  enums:
+    assetType: [data_connector, llm_connector]
+  description: >-
+    A reusable integration (data connector or LLM connector). `definition` is a base64-encoded
+    serialized protobuf.
+- name: SimpleAssetConfig
+  file: json-schema/opaque-simple-asset-config-schema.yaml
+- name: SimpleWorkspace
+  file: json-schema/opaque-simple-workspace-schema.yaml
+- name: WorkspacePolicy
+  file: json-schema/opaque-workspace-policy-schema.yaml
+- name: DatumPolicy
+  file: json-schema/opaque-datum-policy-schema.yaml
+- name: ApprovalPolicy
+  file: json-schema/opaque-approval-policy-schema.yaml
+- name: RunPolicy
+  file: json-schema/opaque-run-policy-schema.yaml
+- name: ConditionDropdown
+  file: json-schema/opaque-condition-dropdown-schema.yaml
+- name: JobInputVariableType
+  file: json-schema/opaque-job-input-variable-type-schema.yaml
+relationships:
+- {from: User, to: Organization, kind: belongs_to, via: organization}
+- {from: Workspace, to: ConsortiumMember, kind: has_many, via: members}
+- {from: ConsortiumMember, to: User, kind: has_one, via: member}
+- {from: Workspace, to: WorkspacePolicy, kind: has_one, via: workspacePolicy}
+- {from: Datum, to: User, kind: belongs_to, via: createdBy}
+- {from: Datum, to: DatumPolicy, kind: has_one, via: policy}
+- {from: OrganizationData, to: User, kind: belongs_to, via: createdBy}
+- {from: OrganizationData, to: DatumPolicy, kind: has_one, via: policy}
+- {from: OrganizationData, to: SimpleWorkspace, kind: has_many, via: workspaces}
+- {from: Job, to: JobRun, kind: has_many, via: jobRuns}
+- {from: Job, to: JobInputVariable, kind: has_many, via: inputVariables}
+- {from: JobRun, to: JobInputValue, kind: has_many, via: inputValues}
+- {from: SimpleWorkflow, to: Workspace, kind: belongs_to, via: consortiumUUID}
+- {from: SimpleWorkflow, to: User, kind: belongs_to, via: createdBy}
+- {from: AssetConfig, to: User, kind: belongs_to, via: creator}
+- {from: AssetConfig, to: SimpleWorkspace, kind: has_many, via: associatedWorkspaces}
+- {from: AssetConfig, to: SimpleWorkflow, kind: has_many, via: associatedWorkflows}
+- {from: Datum, to: Workspace, kind: belongs_to, via: 'path (/{version}/workspace/{workspace-uuid}/data)'}
+- {from: Job, to: Workspace, kind: belongs_to, via: 'path (/{version}/workspace/{workspace-uuid}/job)'}
+lifecycles:
+  job: draft -> under review -> accepted|rejected ; runs are queued -> running -> succeeded|failed
+  workflow: draft -> under review -> accepted|rejected -> launching -> live -> shutting down|failed
+  workspace: pending -> verified|rejected|failed ; may be archived
+notes:
+- The `components.schemas` block of the OpenAPI is a set of external $refs to
+  ../models/*.yaml. Those documents are published and fetchable (all 200) and have been harvested
+  verbatim into json-schema/, but the spec as published does not resolve standalone — a consumer
+  fetching only Opaque-UI.yaml gets seven unresolvable $refs. Bundling the models into the spec
+  is a one-line publishing fix worth more than anything else on the contract.
+- The Stoplight x-stoplight ids and x-faker/x-go-type extensions in the models show the spec is
+  authored in Stoplight and used to generate mocks and Go types.

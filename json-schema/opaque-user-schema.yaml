@@ -1,0 +1,19 @@
+---
+title: User
+type: object
+properties:
+  email:
+    type: string
+    format: email
+    x-faker: internet.email
+  name:
+    type: string
+    x-faker: name.findName
+  organization:
+    $ref: ./Organization.yaml
+  nickname:
+    type: string
+required:
+  - email
+  - name
+  - organization

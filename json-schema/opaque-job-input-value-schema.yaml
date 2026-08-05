@@ -1,0 +1,12 @@
+---
+title: JobInputValue
+type: object
+properties:
+  variableUUID:
+    type: string
+  value:
+    type: string
+    # To Be added - constraints
+required:
+  - variableUUID
+  - value

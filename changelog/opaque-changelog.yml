@@ -1,0 +1,72 @@
+generated: '2026-08-04'
+method: searched
+source: https://docs.opaque.co/en/latest/release_notes/
+scheme: semver
+current_version: 2.7.0
+current_date: '2026-04-07'
+api_version: '2.5'
+format: dated release-notes page per version, each with "New features and enhancements",
+  "Fixed issues", and "Known issues" sections
+entries:
+- version: 2.7.0
+  date: '2026-04-07'
+  url: https://docs.opaque.co/en/latest/release_notes/2.7.0/
+  breaking: true
+  highlights:
+  - aTLS v2 and upgradeability — production-ready attested networking with backward-compatible
+    upgrades.
+  - Attestation reports now include visibility into external endpoints accessed by workflows.
+  - Workspace management is now fully mutable; the previous invite flow was removed.
+  - Workflow cloning within a workspace.
+  - 'New workflow nodes: Neo4j data source, HyDE Retriever, Multi-Query Retriever, Smart Retriever.'
+  breaking_note: >-
+    The workspace invite flow was removed. The OpenAPI still declares respond_workspace_invite
+    (POST /{version}/workspace/{workspace-uuid}/invite) against API version 2.5.
+- version: 2.6.1
+  date: '2026-02-10'
+  url: https://docs.opaque.co/en/latest/release_notes/2.6.1/
+  breaking: false
+  highlights:
+  - Azure LLM Service node for OpenAI model deployments hosted in Azure.
+  - Runtime context mapping in the MCP Tool — map runtime values (user roles, IDs) to API
+    parameters selected from the target OpenAPI spec.
+  - Expanded trace visibility — live status, run duration, active nodes, per-node trace detail
+    and full trace JSON.
+  - Workflow input context propagation to tools through mapped fields.
+  fixes:
+  - RAG agent chained to the OPAQUE Redact Service no longer fails on mismatched input field names.
+  - Attested workflow counts in the Trust tab display accurately across same-named workspaces.
+- version: 2.6.0
+  date: '2026-01-06'
+  url: https://docs.opaque.co/en/latest/release_notes/2.6.0/
+  breaking: false
+  highlights:
+  - Attestation reporting surfaced in the UI.
+  - Workflow trace logs for test runs (steps, timings, inputs/outputs, errors).
+  - Tool mode vs standard mode for agent responses.
+  - New tool integrations via the Model Context Protocol (MCP).
+- version: 2.5.1
+  date: '2025-12-02'
+  url: https://docs.opaque.co/en/latest/release_notes/2.5.1/
+  breaking: false
+  highlights:
+  - Azure managed-app deployments now include the managed identity in the managed resource group
+    by default, reducing required permissions from subscription level to resource-group level.
+- version: 2.5.0
+  date: '2025-10-30'
+  url: https://docs.opaque.co/en/latest/release_notes/2.5.0/
+  breaking: false
+  highlights:
+  - Workload-attested data plane on a locked-down K3s-based image.
+  - Deploy workflows via Azure Marketplace into the customer's own environment.
+  - Automated log streaming to Azure Blob Storage.
+  - Redact and Unredact agents for sensitive-data handling in workflows.
+older_versions:
+- {version: 2.4.0, url: 'https://docs.opaque.co/en/latest/release_notes/2.4.0/'}
+- {version: 2.3.0, url: 'https://docs.opaque.co/en/latest/release_notes/2.3.0/'}
+- {version: 2.2.0, url: 'https://docs.opaque.co/en/latest/release_notes/2.2.0/'}
+- {version: 2.1.0, url: 'https://docs.opaque.co/en/latest/release_notes/2.1.0/'}
+- {version: 2.0.0, url: 'https://docs.opaque.co/en/latest/release_notes/2.0.0/'}
+notes:
+- The release notes cover the platform, not the REST API specifically. No API-level changelog,
+  no per-endpoint change history, and no migration guides are published.

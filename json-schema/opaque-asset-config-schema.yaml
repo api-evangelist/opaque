@@ -1,0 +1,47 @@
+---
+title: AssetConfig
+type: object
+properties:
+  uuid:
+    type: string
+    format: uuid
+    description: UUID that uniquely identifies this asset configuration
+  name:
+    type: string
+    description: Name of the asset config
+  description:
+    type: string
+    description: Description of the asset config
+  assetType:
+    type: string
+    enum:
+      - data_connector
+      - llm_connector
+    description: Type of asset config
+  definition:
+    type: string
+    description: Base64 encoded serialized Asset Config Protobuf
+  creator:
+    $ref: ./User.yaml
+    description: The user who created the asset config
+  updatedAt:
+    type: string
+    format: date-time
+    description: ISO-formatted timestamp when the asset configuration was last updated
+  associatedWorkspaces:
+    type: array
+    description: Workspaces that currently have access to this asset config
+    items:
+      $ref: ./SimpleWorkspace.yaml
+  associatedWorkflows:
+    type: array
+    description: Workflows that currently have access to this asset config
+    items:
+      $ref: ./SimpleWorkflow.yaml
+required:
+  - uuid
+  - name
+  - assetType
+  - definition
+  - creator
+  - updatedAt

@@ -1,0 +1,27 @@
+---
+title: Datum Policy
+x-stoplight:
+  id: d7p3ntcujewhl
+type: object
+nullable: true
+properties:
+  allowedColumns:
+    type: array
+    description: A list of all column names allowed to be used from the data
+    items:
+      type: string
+  conditions:
+    type: array
+    description: Array of string blobs describing SQL conditions
+    items:
+      type: string
+  conditionDropdowns:
+    type: array
+    description: Array of dropdown metadata describing SQL conditions
+    items:
+      $ref: ./ConditionDropdown.yaml
+required:
+  - allowedColumns
+  - conditions
+  - conditionDropdowns
+description: The policy to use for this datum. This should be provided in a JSON format.

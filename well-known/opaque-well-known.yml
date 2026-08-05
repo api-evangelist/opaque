@@ -1,0 +1,26 @@
+generated: '2026-08-04'
+method: probed
+source: live GET of the /.well-known/ discovery surface on every OPAQUE-operated host
+result: none — every probed path returned 404
+note: >-
+  No pointer is wired into apis.yml for this file. Nothing was found, so recording a WellKnown
+  discovery surface would assert a capability OPAQUE does not have. The file exists as evidence
+  of the probe.
+hosts_probed:
+- www.opaque.co
+- opaque.co
+- docs.opaque.co
+documents:
+- {path: /.well-known/security.txt, status: 404}
+- {path: /.well-known/openid-configuration, status: 404}
+- {path: /.well-known/oauth-authorization-server, status: 404}
+- {path: /.well-known/api-catalog, status: 404}
+- {path: /.well-known/ai-plugin.json, status: 404}
+- {path: /.well-known/agent-card.json, status: 404}
+- {path: /.well-known/agent.json, status: 404}
+- {path: /.well-known/mcp.json, status: 404}
+not_probed:
+- host_pattern: https://api.<your-subdomain>
+  reason: >-
+    The API host is per-customer-deployment and served from inside the customer's own
+    environment. There is no shared OPAQUE-operated API host to probe.

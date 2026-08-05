@@ -1,0 +1,49 @@
+generated: '2026-08-04'
+method: derived
+status: candidate
+source: openapi/opaque-platform-api-openapi.yml
+published_server: none
+published_server_evidence:
+- {url: 'https://www.opaque.co/.well-known/mcp.json', status: 404}
+- {url: 'https://docs.opaque.co/.well-known/mcp.json', status: 404}
+- source: https://www.opaque.co/resources/articles/opaque-extends-the-agent-governance-toolkit-with-verifiable-identity-and-first-ever-verifiably-governed-and-secure-mcp
+  finding: >-
+    OPAQUE announces "Confidential MCP" — an MCP implementation that runs inside its confidential
+    runtime, enforces governance policy in hardware, and emits verifiable evidence of every agent
+    tool call. It is delivered as part of the OPAQUE 3.0 platform and as open source under
+    github.com/agentrust-io (repo `cmcp`, "Confidential MCP Gateway"), not as a hosted MCP
+    endpoint OPAQUE operates on a public URL.
+- source: https://docs.opaque.co/en/latest/public_guide/users/workflows/using_integrations/
+  finding: >-
+    In the product, MCP appears as the "MCP Tool" node — a generic interface for an Agent node in
+    tool mode to invoke EXTERNAL MCP tools, with runtime context mapping onto parameters read from
+    the target tool's OpenAPI spec. OPAQUE is an MCP consumer and governor, not an MCP provider.
+posture: consumer
+note: >-
+  No `MCPServer` pointer is wired into apis.yml, because OPAQUE publishes no MCP server for
+  agents to call. The tools below are a CANDIDATE projection of the published REST operations,
+  offered as a starting point if OPAQUE ever exposes its own platform API over MCP. They are not
+  a claim that these tools exist. No tool-crosswalk artifact is emitted either, since there is no
+  published MCP tool list or GraphQL surface to cross against.
+server:
+  name: opaque
+  transport: http
+  url: null
+tools:
+- {name: list_workspaces, description: List all workspaces, source_operation: 'openapi/opaque-platform-api-openapi.yml#get_workspaces'}
+- {name: get_workspace, description: Get a workspace by UUID, source_operation: 'openapi/opaque-platform-api-openapi.yml#get_workspace'}
+- {name: create_workspace, description: Create a workspace, source_operation: 'openapi/opaque-platform-api-openapi.yml#create_workspace'}
+- {name: list_workspace_workflows, description: List the workflows in a workspace, source_operation: 'openapi/opaque-platform-api-openapi.yml#get_workspace_workflows'}
+- {name: get_workflow, description: Get a workflow by UUID, source_operation: 'openapi/opaque-platform-api-openapi.yml#get_workflow'}
+- {name: launch_workflow, description: Launch an approved workflow, source_operation: 'openapi/opaque-platform-api-openapi.yml#launch_workflow'}
+- {name: stop_workflow, description: Stop or shut down a running workflow, source_operation: 'openapi/opaque-platform-api-openapi.yml#shutdown_workflow'}
+- {name: list_jobs, description: List the jobs in a workspace, source_operation: 'openapi/opaque-platform-api-openapi.yml#get_jobs_by_workspace'}
+- {name: get_job, description: Get job metadata, source_operation: 'openapi/opaque-platform-api-openapi.yml#get_job'}
+- {name: create_job_run, description: Submit a job run, source_operation: 'openapi/opaque-platform-api-openapi.yml#create_job_run'}
+- {name: get_job_run_results, description: Retrieve the results of a job run, source_operation: 'openapi/opaque-platform-api-openapi.yml#get_job_run_results'}
+- {name: get_job_run_logs, description: Retrieve the logs of a job run, source_operation: 'openapi/opaque-platform-api-openapi.yml#get_job_run_logs'}
+- {name: cancel_job_run, description: Cancel a queued or running job, source_operation: 'openapi/opaque-platform-api-openapi.yml#cancel_job_run'}
+- {name: list_organization_datasets, description: List the datasets in an organization, source_operation: 'openapi/opaque-platform-api-openapi.yml#list_data'}
+- {name: get_dataset_metadata, description: Get dataset metadata, source_operation: 'openapi/opaque-platform-api-openapi.yml#get_data_metadata'}
+- {name: share_data_with_workspace, description: Share organization data into a workspace, source_operation: 'openapi/opaque-platform-api-openapi.yml#share_org_data_with_workspace'}
+- {name: list_asset_configs, description: List an organization's asset configurations (data and LLM connectors), source_operation: 'openapi/opaque-platform-api-openapi.yml#get_asset_configs_by_organization'}

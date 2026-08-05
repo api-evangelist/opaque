@@ -1,0 +1,2960 @@
+---
+openapi: 3.0.3
+info:
+  title: Opaque UI
+  version: '2.5'  # Be sure to also update OPAQUE_API_VERSION in ".env" so frontend uses the correct API version.
+  description: This documentation details the REST API endpoints that the client exposes.
+  contact:
+    name: Opaque Systems
+    email: hello@opaque.co
+servers:
+  - url: http://localhost:5001/
+    description: Local Server
+tags:
+  - name: auth
+    description: Authentication
+  - name: users
+    description: Users
+  - name: Azure
+    description: Azure Authentication
+  - name: workspaces
+    description: Workspaces
+  - name: datasets
+    description: Data & Datum
+  - name: jobs
+    description: Jobs
+  - name: asset-configs
+    description: Asset Configurations
+paths:
+  /{version}/workspaces:
+    get:
+      summary: Get all workspaces
+      tags:
+        - workspaces
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: ../models/Workspace.yaml
+      operationId: get_workspaces
+      parameters:
+        - schema:
+            type: string
+            enum:
+              - accepted
+              - invited
+          in: query
+          name: inviteStatus
+          description: filter workspaces returned based on user's inviteStatus
+        - schema:
+            type: boolean
+          in: query
+          name: archived
+          description: filter workspaces returned based on whether workspace is archived.
+            If not provided there will be no filtering.
+      description: |-
+        Get a list of all workspaces the user has access to.
+        This list includes workspaces the user has been invited to,
+        accepted invites for, or has created themselves.
+    parameters:
+      - $ref: '#/components/parameters/version'
+  /{version}/workspace:
+    parameters:
+      - $ref: '#/components/parameters/version'
+    post:
+      summary: Create workspace
+      operationId: create_workspace
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: ../models/Workspace.yaml
+        '400':
+          description: |-
+            Bad Request
+            - One or more members do not exist
+            - Workspace name does not match required format
+          content:
+            application/json:
+              schema:
+                $ref: ../models/Error.yaml
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  description: Workspace name
+                  minLength: 1
+                  maxLength: 50
+                type:
+                  type: string
+                  description: Workspace type
+                  enum:
+                    - analytics
+                    - agentic
+                members:
+                  type: array
+                  description: Defaults to a one-item array with creator's email if
+                    not provided
+                  items:
+                    type: string
+                    format: email
+                predefinedQueryTemplates:
+                  type: array
+                  items:
+                    type: string
+                  description: Templates that are available to users inside the workspace
+                policy:
+                  $ref: ../models/WorkspacePolicy.yaml
+                description:
+                  type: string
+                  description: Description of the workspace
+                  maxLength: 150
+              required:
+                - name
+                - type
+      description: Create a new workspace.
+      tags:
+        - workspaces
+      security:
+        - userIdentitySecret: []
+          sessionToken: []
+          refreshTokenCookie: []
+  /{version}/workspace/{workspace-uuid}:
+    get:
+      summary: Get workspace
+      tags:
+        - workspaces
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: ../models/Workspace.yaml
+      operationId: get_workspace
+      parameters: []
+      description: Get a single workspace matching the UUID.
+    parameters:
+      - schema:
+          type: string
+        name: workspace-uuid
+        in: path
+        required: true
+      - $ref: '#/components/parameters/version'
+    patch:
+      summary: Update Workspace
+      operationId: update_workspace
+      tags:
+        - workspaces
+      responses:
+        '200':
+          description: OK
+      description: Update the workspace. Can only be called by the workspace's creator.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                archived:
+                  type: boolean
+                  x-stoplight:
+                    id: mnnksbwlaqrwa
+                  description: If set to true, archives the workspace
+                predefinedQueryTemplates:
+                  type: array
+                  items:
+                    type: string
+                  description: Sets the templates that are available to users inside
+                    the workspace
+                description:
+                  type: string
+                  description: The new description of the workspace
+  /{version}/workspace/{workspace-uuid}/invite:
+    parameters:
+      - $ref: '#/components/parameters/version'
+      - schema:
+          type: string
+        name: workspace-uuid
+        in: path
+        required: true
+    post:
+      summary: Decide workspace invite
+      operationId: respond_workspace_invite
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: ../models/Workspace.yaml
+        '400':
+          description: |-
+            Bad Request
+            - Already responded to invite
+            - inviteStatus must be accepted or rejected
+          content:
+            application/json:
+              schema:
+                $ref: ../models/Error.yaml
+      description: Accept or decline an invite to a workspace.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                inviteStatus:
+                  type: string
+                  enum:
+                    - accepted
+                    - rejected
+              required:
+                - inviteStatus
+      tags:
+        - workspaces
+      security:
+        - userIdentitySecret: []
+          sessionToken: []
+          refreshTokenCookie: []
+  /{version}/workspace/{workspace-uuid}/data:
+    parameters:
+      - $ref: '#/components/parameters/version'
+      - schema:
+          type: string
+        name: workspace-uuid
+        in: path
+        required: true
+    get:
+      summary: Get data for workspace
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: ../models/Datum.yaml
+      operationId: get_data_by_workspace
+      description: |-
+        Get a list of all datum matching the workspace UUID.
+        `conditions` and `conditionDropdowns` will be **null** in objects where the user is not the creator.
+      tags:
+        - datasets
+    delete:
+      summary: Remove data from workspace
+      tags:
+        - datasets
+      parameters:
+        - schema:
+            type: string
+          name: dataset-path
+          in: query
+          required: true
+        - schema:
+            type: string
+          name: data-store-config-uuid
+          in: query
+          required: true
+      responses:
+        '204':
+          description: No Content
+      operationId: remove_workspace_data
+  /{version}/datum/{datum-uuid}:
+    get:
+      summary: Get datum
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: ../models/Datum.yaml
+      operationId: get_datum
+      description: |-
+        Get a datum.
+        `conditions` and `conditionDropdowns` will be **null** if the user is not the creator.
+      tags:
+        - datasets
+    parameters:
+      - schema:
+          type: string
+        name: datum-uuid
+        in: path
+        required: true
+      - $ref: '#/components/parameters/version'
+    delete:
+      summary: Delete datum
+      operationId: delete_datum
+      responses:
+        '204':
+          description: No Content
+        '500':
+          description: |-
+            Internal Server Error
+            - Provider deletion failed
+          content:
+            application/json:
+              schema:
+                $ref: ../models/Error.yaml
+      tags:
+        - datasets
+      description: Delete the datum with the provided id
+    patch:
+      summary: Update data in workspace
+      tags:
+        - datasets
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: ../models/Datum.yaml
+      operationId: update_workspace_data
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                description:
+                  type: string
+                  x-stoplight:
+                    id: lj7wjfrbrvoe4
+  /{version}/workspace/{workspace-uuid}/jobs:
+    get:
+      summary: Get jobs
+      tags:
+        - jobs
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: ../models/Job.yaml
+      operationId: get_jobs_by_workspace
+      description: Get a list of all jobs in the workspace.
+      parameters:
+        - schema:
+            type: string
+            enum:
+              - python
+              - predefined
+          in: query
+          name: queryType
+          allowEmptyValue: true
+          description: Type of job to fetch
+        - schema:
+            type: boolean
+          in: query
+          name: archived
+          description: filter jobs returned based on whether job is archived. If not
+            provided there will be no filtering.
+    parameters:
+      - schema:
+          type: string
+        name: workspace-uuid
+        in: path
+        required: true
+      - $ref: '#/components/parameters/version'
+  /{version}/workspace/{workspace-uuid}/job:
+    parameters:
+      - schema:
+          type: string
+        name: workspace-uuid
+        in: path
+        required: true
+      - $ref: '#/components/parameters/version'
+    post:
+      summary: Create job
+      operationId: create_job
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: ../models/Job.yaml
+        '400':
+          description: |-
+            Bad Request
+            - Invalid workspace status
+            - Invalid body parameter
+          content:
+            application/json:
+              schema:
+                $ref: ../models/Error.yaml
+      tags:
+        - jobs
+      description: |-
+        Create a new job in draft status.
+        A new job is filled with defaults.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  default: New Job
+                  maxLength: 50
+                queryType:
+                  x-stoplight:
+                    id: mx3g80igdq964
+                  type: string
+                  enum:
+                    - python
+                    - predefined
+                  default: python
+                repeatable:
+                  type: boolean
+                  default: false
+                description:
+                  type: string
+                  maxLength: 150
+              required:
+                - name
+  /{version}/workspace/{workspace-uuid}/workflow:
+    parameters:
+      - schema:
+          type: string
+        name: workspace-uuid
+        in: path
+        required: true
+        description: Workspace UUID
+      - $ref: '#/components/parameters/version'
+    post:
+      summary: Create workflow
+      tags:
+        - workflows
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                description:
+                  type: string
+                endpointPrefix:
+                  type: string
+                  description: Prefix for the workflow endpoint
+                workflowGraph:
+                  type: object
+                  description: JSON object that stores the structure and configuration of the workflow
+                  x-python-type: Dict[str, object]
+                  additionalProperties: true
+                uiDefinition:
+                  type: object
+                  description: JSON object that can be used to store UI-specific information about the workflow
+                  x-python-type: Dict[str, object]
+                  additionalProperties: true
+              required:
+                - name
+                - workflowGraph
+                - uiDefinition
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: ../models/Workflow.yaml
+      operationId: create_workflow
+      description: Create a new workflow
+  /{version}/workflow/{workflow-uuid}:
+    parameters:
+      - schema:
+          type: string
+        name: workflow-uuid
+        in: path
+        required: true
+        description: Workflow UUID
+      - $ref: '#/components/parameters/version'
+    get:
+      summary: Get workflow
+      tags:
+        - workflows
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: ../models/Workflow.yaml
+      operationId: get_workflow
+      description: Get a workflow by UUID
+    patch:
+      summary: Update workflow
+      operationId: update_workflow
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: ../models/Workflow.yaml
+        '400':
+          description: |-
+            Bad Request
+            - Invalid workflow status
+            - Invalid body parameter
+          content:
+            application/json:
+              schema:
+                $ref: ../models/Error.yaml
+      tags:
+        - workflows
+      description: |-
+        Update the workflow with one or more of the provided values.
+        Can only be called by the workflow's creator or an admin.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  description: New name for the workflow
+                description:
+                  type: string
+                  description: New description for the workflow
+                endpointPrefix:
+                  type: string
+                  description: New prefix for the workflow endpoint
+                workflowGraph:
+                  type: object
+                  description: New JSON object that stores the structure and configuration of the workflow. Required if status is "under review".
+                  x-python-type: Dict[str, object]
+                  additionalProperties: true
+                uiDefinition:
+                  type: object
+                  description: New JSON object that can be used to store UI-specific information about the workflow
+                  x-python-type: Dict[str, object]
+                  additionalProperties: true
+    delete:
+      summary: Delete workflow
+      operationId: delete_workflow
+      responses:
+        '204':
+          description: No Content
+        '400':
+          description: |-
+            Bad Request
+            - Workflow cannot be deleted (not in DRAFT status)
+          content:
+            application/json:
+              schema:
+                $ref: ../models/Error.yaml
+      tags:
+        - workflows
+      description: Delete a workflow by UUID. Only works if the workflow is in the DRAFT state.
+  /{version}/workflow/{workflow-uuid}/request-review:
+    parameters:
+      - schema:
+          type: string
+        name: workflow-uuid
+        in: path
+        required: true
+        description: Workflow UUID
+      - $ref: '#/components/parameters/version'
+    post:
+      summary: Request workflow review
+      operationId: request_workflow_review
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: ../models/Workflow.yaml
+        '400':
+          description: |-
+            Bad Request
+            - Invalid workflow graph
+          content:
+            application/json:
+              schema:
+                $ref: ../models/Error.yaml
+      description: |-
+        Request a review for a workflow. A workflow graph must also be provided to be compared against the existing workflow graph for security purposes.
+      tags:
+        - workflows
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                workflowGraph:
+                  type: object
+                  description: JSON object that stores the structure and configuration of the workflow to be reviewed. Will be compared against the existing workflow graph and an error will be thrown if they do not match.
+                  x-python-type: Dict[str, object]
+                  additionalProperties: true
+              required:
+                - workflowGraph
+      security:
+        - sessionToken: []
+          refreshTokenCookie: []
+          userIdentitySecret: []
+  /{version}/workflow/{workflow-uuid}/cancel-review:
+    parameters:
+      - schema:
+          type: string
+        name: workflow-uuid
+        in: path
+        required: true
+        description: Workflow UUID
+      - $ref: '#/components/parameters/version'
+    post:
+      summary: Canel workflow review
+      operationId: cancel_workflow_review
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: ../models/Workflow.yaml
+      description: |-
+        Cancel workflow reivew and set back the status to draft.
+      tags:
+        - workflows
+  /{version}/workflow/{workflow-uuid}/review:
+    parameters:
+      - schema:
+          type: string
+        name: workflow-uuid
+        in: path
+        required: true
+        description: Workflow UUID
+      - $ref: '#/components/parameters/version'
+    post:
+      summary: Review workflow
+      operationId: review_workflow
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: ../models/WorkflowReview.yaml
+        '400':
+          description: |-
+            Bad Request
+            - Workflow status must be **under review**
+          content:
+            application/json:
+              schema:
+                $ref: ../models/Error.yaml
+      description: |-
+          Review a workflow.
+      tags:
+        - workflows
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                decision:
+                  type: string
+                  enum:
+                    - accepted
+                    - rejected
+                comment:
+                  type: string
+                workflowGraph:
+                  type: object
+                  description: New JSON object that stores the structure and configuration of the workflow. Required if status is "under review".
+                  x-python-type: Dict[str, object]
+                  additionalProperties: true
+              required:
+                - decision
+                - workflowGraph
+      security:
+        - userIdentitySecret: []
+          sessionToken: []
+          refreshTokenCookie: []
+  /{version}/workflow/{workflow-uuid}/reviews:
+    parameters:
+      - schema:
+          type: string
+        name: workflow-uuid
+        in: path
+        required: true
+        description: Workflow UUID
+      - $ref: '#/components/parameters/version'
+    get:
+      summary: Get workflow reviews
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: ../models/WorkflowReview.yaml
+      operationId: get_workflow_reviews
+      description: Returns all the reviews for a workflow, ordered by creation descending.
+      tags:
+        - workflows
+  /{version}/workflow/{workflow-uuid}/launch-workflow:
+    parameters:
+      - schema:
+          type: string
+        name: workflow-uuid
+        in: path
+        required: true
+        description: Workflow UUID
+      - $ref: '#/components/parameters/version'
+    post:
+      summary: Launch workflow
+      tags:
+        - workflows
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: ../models/Workflow.yaml
+      operationId: launch_workflow
+      description: launch a workflow by UUID
+  /{version}/workflow/{workflow-uuid}/stop-workflow:
+    parameters:
+      - schema:
+          type: string
+        name: workflow-uuid
+        in: path
+        required: true
+        description: Workflow UUID
+      - $ref: '#/components/parameters/version'
+    post:
+      summary: Stop or shutdown workflow
+      tags:
+        - workflows
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: ../models/Workflow.yaml
+      operationId: shutdown_workflow
+      description: stop or shutdown a workflow by UUID
+  /{version}/workspace/{workspace-uuid}/workflows:
+    parameters:
+      - schema:
+          type: string
+        name: workspace-uuid
+        in: path
+        required: true
+        description: Workspace UUID
+      - $ref: '#/components/parameters/version'
+    get:
+      summary: Get workspace workflows
+      tags:
+        - workflows
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: ../models/SimpleWorkflow.yaml
+      operationId: get_workspace_workflows
+      description: Get all metadata about all workflows associated with a workspace
+  /{version}/job/{job-uuid}:
+    get:
+      summary: Get job metadata
+      tags:
+        - jobs
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: ../models/Job.yaml
+      operationId: get_job
+      description: Get the job with the provided UUID.
+    parameters:
+      - schema:
+          type: string
+        name: job-uuid
+        in: path
+        required: true
+      - $ref: '#/components/parameters/version'
+    patch:
+      summary: Update job
+      operationId: update_job
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: ../models/Job.yaml
+        '201':
+          description: Created
+        '400':
+          description: |-
+            Bad Request
+            - Job cannot be modified after it is queued
+          content:
+            application/json:
+              schema:
+                $ref: ../models/Error.yaml
+      tags:
+        - jobs
+      description: |-
+        Update the job with one or more of the provided values.
+        Updating repeatability or inputVariables only works in draft state
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                status:
+                  type: string
+                  enum:
+                    - under review
+                    - draft
+                repeatable:
+                  type: boolean
+                archived:
+                  type: boolean
+                description:
+                  type: string
+            examples:
+              Update job and submit for review:
+                value:
+                  name: Job 1
+                  description: Example description
+                  status: under review
+        description: ''
+      security:
+        - userIdentitySecret: []
+          sessionToken: []
+          refreshTokenCookie: []
+    delete:
+      summary: Delete job
+      operationId: delete_job
+      responses:
+        '204':
+          description: No Content
+        '400':
+          description: |-
+            Bad Request
+            - Job cannot be deleted after a run has been submitted
+          content:
+            application/json:
+              schema:
+                $ref: ../models/Error.yaml
+      tags:
+        - jobs
+      description: Delete the job, only if there are no submitted JobRuns associated
+        with the Job
+      security:
+        - userIdentitySecret: []
+          sessionToken: []
+          refreshTokenCookie: []
+  /{version}/job/{job-uuid}/input-variable:
+    parameters:
+      - schema:
+          type: string
+        name: job-uuid
+        in: path
+        required: true
+      - $ref: '#/components/parameters/version'
+    post:
+      summary: Create job input_variable
+      operationId: create_job_input_variable
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: ../models/JobInputVariable.yaml
+        '400':
+          description: |-
+            Bad Request
+            - Job status must be **draft**
+          content:
+            application/json:
+              schema:
+                $ref: ../models/Error.yaml
+      description: |-
+        Create a new input variable for a job
+      tags:
+        - jobs
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                type:
+                  $ref: ../models/JobInputVariableType.yaml
+                constraints:
+                  $ref: ../models/JobInputVariableConstraintScaffolding/ConstraintOrBlock.yaml
+                description:
+                  type: string
+                  default: ''
+                default:
+                  type: string
+              required:
+                - name
+                - type
+  /{version}/input-variable/{input-variable-uuid}:
+    parameters:
+      - schema:
+          type: string
+        name: input-variable-uuid
+        in: path
+        required: true
+      - $ref: '#/components/parameters/version'
+    patch:
+      summary: Update job input_variable
+      operationId: update_job_input_variable
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: ../models/JobInputVariable.yaml
+        '400':
+          description: |-
+            Bad Request
+            - Job status must be **draft**
+          content:
+            application/json:
+              schema:
+                $ref: ../models/Error.yaml
+      description: |-
+        Update an existing input variable for a job
+      tags:
+        - jobs
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                type:
+                  $ref: ../models/JobInputVariableType.yaml
+                description:
+                  type: string
+                default:
+                  type: string
+                clearDefault:
+                  type: boolean
+                  description: Clears the default value, marking the variable as required
+                constraints:
+                  $ref: ../models/JobInputVariableConstraintScaffolding/ConstraintOrBlock.yaml
+    delete:
+      summary: Remove job input_variable
+      operationId: delete_job_input_variable
+      responses:
+        '204':
+          description: No Content
+        '400':
+          description: |-
+            Bad Request
+            - Job status must be **draft**
+          content:
+            application/json:
+              schema:
+                $ref: ../models/Error.yaml
+      description: |-
+        Deletes an existing input variable for a job
+      tags:
+        - jobs
+  /{version}/job/{job-uuid}/review:
+    parameters:
+      - schema:
+          type: string
+        name: job-uuid
+        in: path
+        required: true
+      - $ref: '#/components/parameters/version'
+    patch:
+      summary: Update job review
+      operationId: review_job
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: ../models/JobReview.yaml
+        '400':
+          description: |-
+            Bad Request
+            - Decision is **rejected** but no comment was provided
+            - Job status must be **under review**
+          content:
+            application/json:
+              schema:
+                $ref: ../models/Error.yaml
+      description: |-
+        Update a review on the job.
+        Must provide a comment if `decision` is `rejected`.
+      tags:
+        - jobs
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                decision:
+                  type: string
+                  enum:
+                    - accepted
+                    - rejected
+                comment:
+                  type: string
+        description: ''
+      security:
+        - userIdentitySecret: []
+          sessionToken: []
+          refreshTokenCookie: []
+  /{version}/job/{job-uuid}/job-run:
+    parameters:
+      - schema:
+          type: string
+        name: job-uuid
+        in: path
+        required: true
+      - $ref: '#/components/parameters/version'
+    post:
+      summary: Create Job Run
+      operationId: create_job_run
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: ../models/JobRun.yaml
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                inputValues:
+                  type: array
+                  items:
+                    $ref: ../models/JobInputValue.yaml
+                testRun:
+                  type: boolean
+                  default: false
+      description: Submit the Job creating a new Job Run. Requires the Job to be in
+        the Accepted state if testRun is false. Can only be done once unless the job
+        is repeatable.
+      tags:
+        - jobs
+      security:
+        - userIdentitySecret: []
+          sessionToken: []
+          refreshTokenCookie: []
+  /{version}/job/{job-uuid}/query:
+    get:
+      summary: Get job query
+      tags:
+        - jobs
+      responses:
+        '200':
+          description: OK
+          content:
+            text/plain:
+              schema:
+                type: string
+                format: binary
+                description: The query associated with the job as a text file
+      operationId: get_job_query
+      description: Get the query for the provided job UIUD.
+    parameters:
+      - schema:
+          type: string
+        name: job-uuid
+        in: path
+        required: true
+      - $ref: '#/components/parameters/version'
+    put:
+      summary: Update job query
+      operationId: update_job_query
+      responses:
+        '204':
+          description: No Content
+        '400':
+          description: |-
+            Bad Request
+            - Job status must be **draft**
+          content:
+            application/json:
+              schema:
+                $ref: ../models/Error.yaml
+      description: Update the query of a job, replacing the entire existing query
+        with the new value.
+      tags:
+        - jobs
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              format: blob
+              properties:
+                query:
+                  type: string
+                  format: binary
+                  x-python-type: FileStorage
+              required:
+                - query
+  /{version}/job/{job-uuid}/predefined-query:
+    parameters:
+      - schema:
+          type: string
+        name: job-uuid
+        in: path
+        required: true
+      - $ref: '#/components/parameters/version'
+    put:
+      summary: Update predefined query
+      tags:
+        - jobs
+      operationId: update_job_predefined_query
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  predefinedQuery:
+                    $ref: ../models/PredefinedQuery.yaml
+                  template:
+                    $ref: ../models/PredefinedQueryTemplate.yaml
+        '400':
+          description: |-
+            Bad Request
+            - Definition is not valid base64
+            - Definition cannot be parsed as a protobuf
+          content:
+            application/json:
+              schema:
+                $ref: ../models/Error.yaml
+      x-stoplight:
+        id: q1z429idi5021
+      description: Update the predefined query associated with a job, replacing the
+        entire existing predefined query with the new value.
+      parameters: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: ../models/PredefinedQuery.yaml
+    get:
+      summary: Get predefined query
+      operationId: get_job_predefined_query
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  predefinedQuery:
+                    $ref: ../models/PredefinedQuery.yaml
+                  template:
+                    $ref: ../models/PredefinedQueryTemplate.yaml
+      x-stoplight:
+        id: v38jvpphvlk43
+      description: Gets the predefined query associated with the job
+      tags:
+        - jobs
+  /{version}/job/{job-uuid}/reviews:
+    parameters:
+      - $ref: '#/components/parameters/version'
+      - schema:
+          type: string
+        name: job-uuid
+        in: path
+        required: true
+    get:
+      summary: Get job reviews
+      responses:
+        '200':
+          description: OK
+          headers: {}
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: ../models/JobReview.yaml
+      operationId: get_job_reviews
+      description: Returns all the reviews for a job
+      tags:
+        - jobs
+  /{version}/job-run/{job_run_uuid}/results:
+    get:
+      summary: Get job results
+      tags:
+        - jobs
+      responses:
+        '200':
+          description: OK
+          content:
+            text/plain:
+              schema:
+                format: binary
+                type: string
+                description: Results of the job as a CSV file
+          headers:
+            Set-Cookie:
+              schema:
+                type: string
+        '400':
+          description: |-
+            Bad Request
+            - Job status must be **reencryption complete**
+          content:
+            application/json:
+              schema:
+                $ref: ../models/Error.yaml
+      operationId: get_job_run_results
+      description: Get the results using the provided jobRun UUID.
+      security:
+        - userIdentitySecret: []
+          sessionTokenCookie: []
+    parameters:
+      - $ref: '#/components/parameters/version'
+      - schema:
+          type: string
+        name: job_run_uuid
+        in: path
+        required: true
+  /{version}/job-run/{job_run_uuid}/logs:
+    get:
+      summary: Get job logs
+      tags:
+        - jobs
+      responses:
+        '200':
+          description: OK
+          content:
+            text/plain:
+              schema:
+                type: string
+                format: binary
+                description: Logs of the job as a text file
+        '400':
+          description: |-
+            Bad Request
+            - Job Run status must be **succeeded** or **failed**
+          content:
+            application/json:
+              schema:
+                $ref: ../models/Error.yaml
+      operationId: get_job_run_logs
+      description: Get the log using the provided jobRun UUID.
+      security:
+        - userIdentitySecret: []
+          sessionTokenCookie: []
+          refreshTokenCookie: []
+    parameters:
+      - $ref: '#/components/parameters/version'
+      - schema:
+          type: string
+        name: job_run_uuid
+        in: path
+        required: true
+  /{version}/job-run/{job_run_uuid}/cancel:
+    parameters:
+      - $ref: '#/components/parameters/version'
+      - schema:
+          type: string
+        name: job_run_uuid
+        in: path
+        required: true
+    post:
+      summary: Cancel job
+      operationId: cancel_job_run
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: ../models/JobRun.yaml
+        '400':
+          description: |-
+            Bad Request
+            - Job run status must be one of **queued** or **running**
+          content:
+            application/json:
+              schema:
+                $ref: ../models/Error.yaml
+      description: Cancels a queued or running jobRun, moving the jobRun to a **failed**
+        status.
+      tags:
+        - jobs
+  /{version}/auth/logout:
+    post:
+      summary: Invalidate session token
+      operationId: user_logout
+      responses:
+        '200':
+          description: OK
+      description: Invalidate the session token provided in the header.
+      tags:
+        - auth
+    parameters:
+      - $ref: '#/components/parameters/version'
+  /{version}/auth/register-with-sso:
+    parameters:
+      - $ref: '#/components/parameters/version'
+    post:
+      summary: Register With SSO
+      operationId: user_register_with_sso
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  userIdentitySecret:
+                    type: string
+                    x-stoplight:
+                      id: 8667rjfgm3j9y
+                    format: byte
+                required:
+                  - userIdentitySecret
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                id_token:
+                  type: string
+                  description: ID token returned from auth0, must contain an email
+                    claim.
+                passkey:
+                  type: string
+                  description: Result of passing the password through the PBKDF2-SHA256
+                    algorithm with the email as the salt. This can be done locally
+                    (recommended) or via the create_passkey_from_password endpoint.
+                refreshToken:
+                  type: string
+                  description: refresh token returned from auth0
+              required:
+                - id_token
+                - passkey
+      description: |-
+        Create a new user using an id_token and access_token gotten from auth0. Access token should be sent as a bearer token like other endpoints. Returns the users user_identity_secret.
+        Note: This method will only work if the flask server is run with the OPAQUE_FF_USE_SSO_INTEGRATION feature flag set to true.
+      tags:
+        - auth
+      parameters:
+        - schema:
+            type: string
+          in: header
+          name: Set-Cookie
+      security:
+        - sessionToken: []
+  /{version}/auth/refresh-token:
+    parameters:
+      - $ref: '#/components/parameters/version'
+    post:
+      summary: Get a new session token, id token pair
+      operationId: refresh_user_tokens
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  accessToken:
+                    type: string
+                  idToken:
+                    type: string
+                required:
+                  - accessToken
+        '400':
+          description: |-
+            Bad Request
+            - httpOnly cookie is not set
+          content:
+            application/json:
+              schema:
+                $ref: ../models/Error.yaml
+        '401':
+          description: |-
+            Unauthorized
+            - refresh token is expired.
+      description: |-
+        Returns a session token from the refresh token. The refresh token will be
+        taken from the refresh token cookie.
+      tags:
+        - auth
+      parameters: []
+      security:
+        - sessionToken: []
+          refreshTokenCookie: []
+  /{version}/auth/api-key:
+    parameters:
+      - $ref: '#/components/parameters/version'
+    get:
+      summary: Get API key
+      operationId: get_api_key
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  apiKey:
+                    type: string
+                required:
+                  - apiKey
+      description: Get the API key for the user.
+      tags:
+        - auth
+      security:
+        - userIdentitySecret: []
+          refreshTokenCookie: []
+  /{version}/auth/create-passkey-from-password:
+    parameters:
+      - $ref: '#/components/parameters/version'
+    post:
+      summary: Create passkey from password
+      tags:
+        - auth
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  passkey:
+                    type: string
+                required:
+                  - passkey
+      operationId: create_passkey_from_password
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                  format: email
+                password:
+                  type: string
+              required:
+                - email
+                - password
+      description: |-
+        Create a passkey from a password passed through the PBKDF2-SHA256 algorithm configured to use 600,011 iterations and the email as a salt. The supplied password must conform to the following guidelines:
+        * The password has a minimum length of eight characters.
+        * The password contains at least three of the following:
+          * A lowercase letter (a–z)
+          * An uppercase letter (A–Z)
+          * A number (0–9)
+          * A special character (@ $ ! % *  # ? &)
+        Note that it is recommended to perform this encryption yourself locally; use of this endpoint is just an optional backup method.
+      security: []
+  /{version}/user:
+    parameters:
+      - $ref: '#/components/parameters/version'
+    get:
+      summary: Get user
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: ../models/User.yaml
+      operationId: get_user
+      description: Get user details.
+      tags:
+        - users
+      parameters: []
+    patch:
+      summary: Update user
+      operationId: update_user
+      responses:
+        '200':
+          description: OK
+      description: |-
+        Update user details.
+        **THIS ENDPOINT WILL NOT BE IMPLEMENTED YET**
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                  format: email
+                name:
+                  type: string
+                org:
+                  type: string
+                publicKey:
+                  type: string
+                  format: blob
+                privateKey:
+                  type: string
+                  format: blob
+                symmetricKey:
+                  type: string
+                  format: blob
+        description: ''
+      tags:
+        - users
+      parameters: []
+      security:
+        - userIdentitySecret: []
+          sessionToken: []
+          refreshTokenCookie: []
+      x-internal: true
+    delete:
+      summary: Delete user
+      operationId: delete_user
+      responses:
+        '200':
+          description: User deleted
+      tags:
+        - users
+      description: |-
+        Delete the user account.
+        **THIS ENDPOINT WILL NOT BE IMPLEMENTED YET**
+      security:
+        - userIdentitySecret: []
+          sessionToken: []
+          refreshTokenCookie: []
+      x-internal: true
+  /{version}/user/exists:
+    parameters:
+      - $ref: '#/components/parameters/version'
+    get:
+      summary: Check user existence
+      operationId: check_user_exists
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: boolean
+      description: Check if the user associated with the bearer token exists on the database.
+      tags:
+        - users
+      parameters: []
+      security:
+        - sessionToken: []
+  /{version}/user/keys:
+    parameters:
+      - $ref: '#/components/parameters/version'
+    get:
+      summary: Get user keys
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  public:
+                    type: string
+                    format: blob
+                  private:
+                    type: string
+                    format: blob
+                  symmetric:
+                    type: string
+                    format: blob
+      operationId: get_user_keys
+      description: |-
+        Get the logged in user public, private, and symmetric keys.
+        **THIS ENDPOINT WILL NOT BE IMPLEMENTED YET**
+      tags:
+        - users
+      parameters: []
+      security:
+        - userIdentitySecret: []
+          sessionToken: []
+          refreshTokenCookie: []
+      x-internal: true
+  /{version}/user/organization-roles:
+    parameters:
+      - $ref: '#/components/parameters/version'
+    patch:
+      summary: Update another user's organization roles
+      operationId: update_user_organization_roles
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: ../models/User.yaml
+        '400':
+          description: |-
+            Bad Request
+            - Organization admin role cannot be added or removed
+          content:
+            application/json:
+              schema:
+                $ref: ../models/Error.yaml
+      description: |-
+        Update another user's organization roles.
+        Only organization admins can update a user's organization roles.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                  description: Email of the target user
+                  format: email
+                organizationRoles:
+                  type: array
+                  description: '`organization_admin` is not changeable, it should
+                    be consistent for org member'
+                  items:
+                    type: string
+                    enum:
+                      - consortium_admin
+                      - organization_admin
+              required:
+                - email
+                - organizationRoles
+      tags:
+        - users
+  /{version}/organization/datasets:
+    parameters:
+      - $ref: '#/components/parameters/version'
+    get:
+      summary: List Data
+      tags:
+        - datasets
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: ../models/OrganizationData.yaml
+      operationId: list_data
+  /{version}/organization/data:
+    parameters:
+      - $ref: '#/components/parameters/version'
+      - schema:
+          type: string
+        name: dataset-path
+        in: query
+        required: true
+      - schema:
+          type: string
+        name: data-store-config-uuid
+        in: query
+        required: true
+    get:
+      summary: Get dataset metadata
+      tags:
+        - datasets
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: ../models/OrganizationData.yaml
+        '400':
+          description: Bad Request
+      operationId: get_data_metadata
+    patch:
+      summary: Update dataset
+      tags:
+        - datasets
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: ../models/OrganizationData.yaml
+      operationId: update_data
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  x-stoplight:
+                    id: 1236qktwgl5h8
+                description:
+                  type: string
+                  x-stoplight:
+                    id: 7xpiox3s2axqp
+                testDataType:
+                  type: string
+                  enum:
+                    - synthetic
+                    - mock
+                  description: Type of test data to generate. Synthetic test data simulates the
+                    original data file. Mock test data is faked data that only uses the data schema.
+    delete:
+      summary: Delete dataset
+      tags:
+        - datasets
+      responses:
+        '204':
+          description: No Content
+      operationId: delete_data
+  /{version}/organization/data/schema:
+    parameters:
+      - $ref: '#/components/parameters/version'
+    post:
+      summary: Upload dataset schema
+      operationId: upload_dataset_schema
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  schemaId:
+                    type: string
+                    description: The upload id corresponding to this schema upload.
+                required:
+                  - schemaId
+        '500':
+          description: |-
+            Internal Server Error
+            - Could not write schema to disk
+          content:
+            application/json:
+              schema:
+                $ref: ../models/Error.yaml
+      description: Upload a datum's schema.
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                file:
+                  type: string
+                  format: Binary
+                  description: Schema file getting uploaded.
+              required:
+                - file
+          application/json:
+            schema:
+              type: object
+      tags:
+        - datasets
+  /{version}/organization/data/share:
+    parameters:
+      - $ref: '#/components/parameters/version'
+    post:
+      summary: Batch share organization data with workspace
+      tags:
+        - datasets
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: ../models/Datum.yaml
+      operationId: share_org_data_with_workspace
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                type: object
+                properties:
+                  workspace-uuid:
+                    type: string
+                  dataset-path:
+                    type: string
+                  data-store-config-uuid:
+                    type: string
+                  description:
+                    type: string
+                required:
+                  - workspace-uuid
+                  - dataset-path
+                  - data-store-config-uuid
+  /{version}/organization/data/upload:
+    parameters:
+      - $ref: '#/components/parameters/version'
+    post:
+      summary: Upload data
+      operationId: upload_data
+      responses:
+        '200':
+          description: |-
+            OK
+            - Data upload successful
+          content:
+            application/json:
+              schema:
+                $ref: ../models/OrganizationData.yaml
+        '204':
+          description: |-
+            No Content
+            - Chunk upload successful
+        '400':
+          description: |-
+            Bad Request
+            - File already exists
+          content:
+            application/json:
+              schema:
+                $ref: ../models/Error.yaml
+        '500':
+          description: |-
+            Internal Server Error
+            - Could not write file to disk
+            - Size mismatch
+            - Encryption failed
+            - Upload to provider failed
+          content:
+            application/json:
+              schema:
+                $ref: ../models/Error.yaml
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                file:
+                  type: string
+                  format: Binary
+                schemaId:
+                  type: string
+                name:
+                  type: string
+                policy:
+                  $ref: ../models/DatumPolicy.yaml
+                testDataType:
+                  type: string
+                  enum:
+                    - synthetic
+                    - mock
+                  description: Type of test data to generate. Synthetic test data simulates the
+                    original data file. Mock test data is faked data that only uses the data schema.
+                description:
+                  type: string
+                dzchunkindex:
+                  type: string
+                  description: The current chunk index. Required if chunked = true.
+                dzchunkbyteoffset:
+                  type: string
+                  description: The byte offset to place chunk at in file. Required
+                    if chunked = true.
+                dztotalchunkcount:
+                  type: string
+                  description: Total number of chunks. Required if chunked = true.
+                dztotalfilesize:
+                  type: string
+                  description: Total file size. Required if chunked = true.
+              required:
+                - file
+                - schemaId
+                - name
+                - policy
+                - testDataType
+            encoding:
+              policy:
+                contentType: application/json
+      description: |-
+        Upload dataset to the Opaque platform for encryption and upload to cloud storage. If the `chunked=true` query parameter is specified, then this endpoint expects additional form parameters for chunking as specified by Dropzone.js.
+        The data file should be a CSV file with an optional header row detailing the names of the columns. If the header row is absent, it will be deduced from the associated schema file instead prior to uploading the encrypted data to the cloud.
+        If the policy parameter is included in the request body, it may need to be converted to a string before being provided. For example if you are using python
+        to send the requests you could use `json.loads(policy)` to convert the policy dictionary to a string.
+      parameters:
+        - schema:
+            type: boolean
+          in: query
+          name: chunked
+          description: Boolean indicating if a chunked upload is occurring
+      security:
+        - userIdentitySecret: []
+          sessionToken: []
+      tags:
+        - datasets
+  /{version}/organization/data/upload_aws_s3:
+    parameters:
+      - $ref: '#/components/parameters/version'
+    post:
+      summary: Upload data from AWS S3
+      operationId: upload_data_aws_s3
+      responses:
+        '200':
+          description: |-
+            OK
+            - Data upload from AWS S3 successful
+          content:
+            application/json:
+              schema:
+                $ref: ../models/OrganizationData.yaml
+        '400':
+          description: |-
+            Bad Request
+            - File already exists
+          content:
+            application/json:
+              schema:
+                $ref: ../models/Error.yaml
+        '500':
+          description: |-
+            Internal Server Error
+            - Streaming from AWS S3 failed
+            - Upload to provider failed
+          content:
+            application/json:
+              schema:
+                $ref: ../models/Error.yaml
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  description: Name of the dataset after uploading
+                policy:
+                  $ref: ../models/DatumPolicy.yaml
+                testDataType:
+                  type: string
+                  enum:
+                    - synthetic
+                    - mock
+                  description: Type of test data to generate. Synthetic test data simulates the
+                    original data file. Mock test data is faked data that only uses the data schema.
+                schemaId:
+                  type: string
+                bucketName:
+                  type: string
+                  description: Name of the data source AWS S3 bucket
+                fileName:
+                  type: string
+                  description: Name of the data file in the AWS S3 bucket (that is,
+                    the key)
+                accessKey:
+                  type: string
+                  description: AWS access key ID
+                secretKey:
+                  type: string
+                  description: AWS secret access key
+                description:
+                  type: string
+                  description: A description of the dataset
+              required:
+                - name
+                - policy
+                - testDataType
+                - schemaId
+                - bucketName
+                - fileName
+                - accessKey
+                - secretKey
+      tags:
+        - datasets
+      description: Upload dataset to the Opaque platform by streaming existing data
+        from AWS S3.
+      security:
+        - userIdentitySecret: []
+          sessionToken: []
+  /{version}/organization/data/upload_azure_blob_storage:
+    parameters:
+      - $ref: '#/components/parameters/version'
+    post:
+      summary: Upload data from Azure Blob Storage
+      operationId: upload_data_azure_blob_storage
+      responses:
+        '200':
+          description: |-
+            OK
+            - Data upload from Azure Blob Storage successful
+          content:
+            application/json:
+              schema:
+                $ref: ../models/OrganizationData.yaml
+        '400':
+          description: |-
+            Bad Request
+            - File already exists
+          content:
+            application/json:
+              schema:
+                $ref: ../models/Error.yaml
+        '500':
+          description: |-
+            Internal Server Error
+            - Streaming from Azure Blob Storage failed
+            - Upload to provider failed
+          content:
+            application/json:
+              schema:
+                $ref: ../models/Error.yaml
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  description: Name of the dataset after uploading
+                policy:
+                  $ref: ../models/DatumPolicy.yaml
+                testDataType:
+                  type: string
+                  enum:
+                    - synthetic
+                    - mock
+                  description: Type of test data to generate. Synthetic test data simulates the
+                    original data file. Mock test data is faked data that only uses the data schema.
+                schemaId:
+                  type: string
+                containerName:
+                  type: string
+                  description: Name of the data source Azure Blob Storage container
+                blobName:
+                  type: string
+                  description: Name of the data file (that is, the blob) in the Azure
+                    Blob Storage container
+                connectionString:
+                  type: string
+                  description: |-
+                    Azure Storage connection string
+                    https://learn.microsoft.com/en-us/azure/storage/common/storage-configure-connection-string
+                description:
+                  type: string
+                  description: A description of the dataset
+              required:
+                - name
+                - policy
+                - testDataType
+                - schemaId
+                - containerName
+                - blobName
+                - connectionString
+      tags:
+        - datasets
+      description: Upload dataset to the Opaque platform by streaming existing data
+        from Azure Blob Storage.
+      security:
+        - userIdentitySecret: []
+          sessionToken: []
+  /{version}/organization/data/upload_azure_files:
+    parameters:
+      - $ref: '#/components/parameters/version'
+    post:
+      summary: Upload data from Azure Files
+      operationId: upload_data_azure_files
+      responses:
+        '200':
+          description: |-
+            OK
+            - Data upload from Azure Files successful
+          content:
+            application/json:
+              schema:
+                $ref: ../models/OrganizationData.yaml
+        '400':
+          description: |-
+            Bad Request
+            - File already exists
+          content:
+            application/json:
+              schema:
+                $ref: ../models/Error.yaml
+        '500':
+          description: |-
+            Internal Server Error
+            - Streaming from Azure Files failed
+            - Upload to provider failed
+          content:
+            application/json:
+              schema:
+                $ref: ../models/Error.yaml
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  description: Name of the dataset after uploading
+                policy:
+                  $ref: ../models/DatumPolicy.yaml
+                testDataType:
+                  type: string
+                  enum:
+                    - synthetic
+                    - mock
+                  description: Type of test data to generate. Synthetic test data simulates the
+                    original data file. Mock test data is faked data that only uses the data schema.
+                schemaId:
+                  type: string
+                shareName:
+                  type: string
+                  description: Name of the Azure Files file share
+                filePath:
+                  type: string
+                  description: Path of the file on Azure Files
+                connectionString:
+                  type: string
+                  description: |-
+                    Azure Storage connection string
+                    https://learn.microsoft.com/en-us/azure/storage/common/storage-configure-connection-string
+                description:
+                  type: string
+                  description: A description of the dataset
+              required:
+                - name
+                - policy
+                - testDataType
+                - schemaId
+                - shareName
+                - filePath
+                - connectionString
+      tags:
+        - datasets
+      description: Upload dataset to the Opaque platform by streaming existing data
+        from Azure Files.
+      security:
+        - userIdentitySecret: []
+          sessionToken: []
+  /{version}/organization/data/upload_google_cloud_storage:
+    parameters:
+      - $ref: '#/components/parameters/version'
+    post:
+      summary: Upload data from Google Cloud Storage
+      operationId: upload_data_google_cloud_storage
+      responses:
+        '200':
+          description: |-
+            OK
+            - Data upload from Google Cloud Storage successful
+          content:
+            application/json:
+              schema:
+                $ref: ../models/OrganizationData.yaml
+        '400':
+          description: |-
+            Bad Request
+            - File already exists
+          content:
+            application/json:
+              schema:
+                $ref: ../models/Error.yaml
+        '500':
+          description: |-
+            Internal Server Error
+            - Streaming from Google Cloud Storage failed
+            - Upload to provider failed
+          content:
+            application/json:
+              schema:
+                $ref: ../models/Error.yaml
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  description: Name of the dataset after uploading
+                policy:
+                  $ref: ../models/DatumPolicy.yaml
+                testDataType:
+                  type: string
+                  enum:
+                    - synthetic
+                    - mock
+                  description: Type of test data to generate. Synthetic test data simulates the
+                    original data file. Mock test data is faked data that only uses the data schema.
+                schemaId:
+                  type: string
+                bucketName:
+                  type: string
+                  description: Name of the bucket containing data file
+                objectName:
+                  type: string
+                  description: Name of the data object
+                credentialsJson:
+                  type: string
+                  description: |-
+                    Google application credential JSON
+                    https://cloud.google.com/docs/authentication/application-default-credentials
+                description:
+                  type: string
+                  description: A description of the dataset
+              required:
+                - name
+                - policy
+                - testDataType
+                - schemaId
+                - bucketName
+                - objectName
+                - credentialsJson
+      tags:
+        - datasets
+      description: Upload dataset to the Opaque platform by streaming existing data
+        from Google Cloud Storage.
+      security:
+        - userIdentitySecret: []
+          sessionToken: []
+  /{version}/organization/data/download:
+    parameters:
+      - $ref: '#/components/parameters/version'
+      - schema:
+          type: string
+        name: dataset-path
+        in: query
+        required: true
+      - schema:
+          type: string
+        name: data-store-config-uuid
+        in: query
+        required: true
+    get:
+      summary: Download data
+      tags:
+        - datasets
+      responses:
+        '200':
+          description: OK
+          content:
+            text/plain:
+              schema:
+                format: binary
+                type: string
+                description: Data as a CSV file
+          headers:
+            Set-Cookie:
+              schema:
+                type: string
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: ../models/Error.yaml
+      operationId: download_data
+      security:
+        - sessionTokenCookie: []
+          userIdentitySecret: []
+          refreshTokenCookie: []
+  /{version}/organization/invite:
+    parameters:
+      - $ref: '#/components/parameters/version'
+    post:
+      summary: Invite a new organization member via email
+      operationId: invite_organization_member
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: ../models/OrganizationInvitation.yaml
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                  description: Invitee email
+                  format: email
+                organizationRoles:
+                  type: array
+                  items:
+                    type: string
+                    description: new users are not allowed to take on the organization_admin
+                      role
+                    enum:
+                      - consortium_admin
+              required:
+                - email
+                - organizationRoles
+      description: Send email invite to a new user to join the current user's organization.
+        Only the organization admin can call this endpoint.
+      tags:
+        - organizations
+  /{version}/organization/invitation/{invitation-id}:
+    parameters:
+      - $ref: '#/components/parameters/version'
+      - schema:
+          type: string
+        name: invitation-id
+        in: path
+        required: true
+    get:
+      summary: Get an invitation to organization
+      description: Get a specific invitation to an organization. Only the organization
+        admin can call this endpoint.
+      operationId: get_organization_invitation
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: ../models/OrganizationInvitation.yaml
+      tags:
+        - organizations
+  /{version}/organization/invitations:
+    parameters:
+      - $ref: '#/components/parameters/version'
+    get:
+      summary: Get invitations to organization
+      description: Get all the invitations to an organization. Only the organization
+        admin can call this endpoint.
+      operationId: get_organization_invitations
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: ../models/OrganizationInvitation.yaml
+      tags:
+        - organizations
+  /{version}/organization/members:
+    parameters:
+      - $ref: '#/components/parameters/version'
+    get:
+      summary: Get organization members
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: ../models/UserWithRoles.yaml
+      operationId: get_organization_members
+      description: Get the members of the organization.
+      tags:
+        - organizations
+      parameters: []
+      security:
+        - sessionToken: []
+          refreshTokenCookie: []
+      x-internal: true
+  /{version}/organization/{organization-uuid}/predefined-query-templates:
+    parameters:
+      - $ref: '#/components/parameters/version'
+      - schema:
+          type: string
+        name: organization-uuid
+        in: path
+        required: true
+    get:
+      summary: Get predefined query templates by organization
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: ../models/PredefinedQueryTemplate.yaml
+      operationId: get_organization_predefined_query_templates
+      description: Get all the predefined query templates for an organization
+      tags:
+        - predefined-query-templates
+      parameters: []
+      x-internal: true
+      x-stoplight:
+        id: 8d5qorpzqdohr
+  /{version}/workspace/{workspace-uuid}/predefined-query-templates:
+    parameters:
+      - $ref: '#/components/parameters/version'
+      - schema:
+          type: string
+        name: workspace-uuid
+        in: path
+        required: true
+    get:
+      summary: Get predefined query templates by workspace
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: ../models/PredefinedQueryTemplate.yaml
+      operationId: get_workspace_predefined_query_templates
+      description: Get all the predefined query templates that have been added to
+        a workspace
+      tags:
+        - predefined-query-templates
+      parameters: []
+      x-internal: true
+      x-stoplight:
+        id: 8d5qorpzqdohr
+  /{version}/predefined-query-templates:
+    parameters:
+      - $ref: '#/components/parameters/version'
+    get:
+      summary: Get all available predefined query templates
+      tags:
+        - predefined-query-templates
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: ../models/PredefinedQueryTemplate.yaml
+      operationId: get_available_predefined_query_templates
+      description: Get all available predefined query templates. This includes all
+        public templates and private templates associated with the user's organization.
+        Only a workspace admin can call this endpoint.
+  /{version}/pinned-queries:
+    parameters:
+      - $ref: '#/components/parameters/version'
+    get:
+      summary: Get all pinned queries
+      tags:
+        - pinned-queries
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: ../models/PinnedQuery.yaml
+      operationId: get_pinned_queries
+      description: Get all the pinned queries made by the requesting user and part
+        of workspace `workspaceUUID`.
+      parameters:
+        - schema:
+            type: string
+          in: query
+          name: workspaceUUID
+          required: true
+          description: UUID of the workspace the queries are associated with
+  /{version}/workspace/{workspace-uuid}/pinned-query:
+    parameters:
+      - $ref: '#/components/parameters/version'
+      - schema:
+          type: string
+        name: workspace-uuid
+        in: path
+        required: true
+    post:
+      summary: Create new pinned query
+      operationId: create_pinned_query
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: ../models/PinnedQuery.yaml
+      description: Create a new pinned query in workspace `workspace-uuid`.
+      parameters: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                queryString:
+                  type: string
+              required:
+                - name
+                - queryString
+      tags:
+        - pinned-queries
+  /{version}/workspaces/members:
+    parameters:
+      - $ref: '#/components/parameters/version'
+    get:
+      summary: Get shared workspace members
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: ../models/User.yaml
+      operationId: get_shared_workspace_members
+      description: Get the members which share a workspace with the requesting user
+      tags:
+        - users
+      parameters: []
+      security:
+        - sessionToken: []
+          refreshTokenCookie: []
+      x-internal: true
+  /{version}/pinned-query/{pinned-query-uuid}:
+    parameters:
+      - $ref: '#/components/parameters/version'
+      - schema:
+          type: string
+        name: pinned-query-uuid
+        in: path
+        required: true
+    delete:
+      summary: Delete pinned query
+      operationId: delete_pinned_query
+      responses:
+        '204':
+          description: No Content
+      tags:
+        - pinned-queries
+      description: Delete a pinned query.
+  /{version}/client/upgrade:
+    parameters:
+      - $ref: '#/components/parameters/version'
+    get:
+      summary: Get latest client version
+      tags:
+        - versioning
+      responses:
+        '200':
+          description: OK
+          headers: {}
+          content:
+            text/plain:
+              schema:
+                type: string
+                description: 'The latest available version of the client in semver
+                  format '
+      operationId: get_latest_client_version
+      description: Gets the latest client version available
+  /{version}/asset-config:
+    parameters:
+      - $ref: '#/components/parameters/version'
+    post:
+      summary: Create asset config
+      tags:
+        - asset-configs
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - name
+                - assetType
+                - definition
+              properties:
+                name:
+                  type: string
+                  description: Name of the asset config
+                assetType:
+                  type: string
+                  enum:
+                    - data_connector
+                    - llm_connector
+                  description: Type of asset config
+                definition:
+                  type: string
+                  description: Base64 encoded serialized Asset Config Protobuf
+                description:
+                  type: string
+                  description: Description of the asset config
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: ../models/SimpleAssetConfig.yaml
+        '400':
+          description: |-
+            Bad Request
+            - Definition is not valid base64
+            - Definition cannot be parsed as a protobuf
+          content:
+            application/json:
+              schema:
+                $ref: ../models/Error.yaml
+      operationId: create_asset_config
+      description: Create a new asset config
+  /{version}/organization/asset-configs:
+    parameters:
+      - $ref: '#/components/parameters/version'
+    get:
+      summary: Get asset configs by organization
+      tags:
+        - asset-configs
+      parameters:
+        - $ref: '#/components/parameters/AssetConfigTypeParam'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: ../models/SimpleAssetConfig.yaml
+      operationId: get_asset_configs_by_organization
+      description: Get asset configs associated with the user's organization, optionally filtered by asset type
+  /{version}/organization/asset-configs/share:
+    parameters:
+      - $ref: '#/components/parameters/version'
+    post:
+      summary: Batch share organization asset configs with workspaces.
+      description: |
+        Batch share an organization's asset configs with one or more workspaces.
+        The body is a list of asset config UUIDs and workspace UUIDs pairs.
+        Returns the UUIDs of the workspaces that the asset configs were shared with.
+      tags:
+        - asset-configs
+      operationId: share_asset_configs_with_workspaces
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                type: object
+                properties:
+                  asset-config-uuid:
+                    type: string
+                  workspace-uuid:
+                    type: string
+                required:
+                  - asset-config-uuid
+                  - workspace-uuid
+      responses:
+        '200':
+          description: A list of UUIDs of the workspaces the asset config was shared with.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: string
+                  format: uuid
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: ../models/Error.yaml
+  /{version}/asset-configs/workspace/{workspace_uuid}:
+    parameters:
+      - $ref: '#/components/parameters/version'
+      - schema:
+          type: string
+          format: uuid
+        name: workspace_uuid
+        in: path
+        required: true
+        description: UUID of the workspace to query asset configs for
+    get:
+      summary: Get asset configs by workspace
+      tags:
+        - asset-configs
+      parameters:
+        - $ref: '#/components/parameters/AssetConfigTypeParam'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: ../models/SimpleAssetConfig.yaml
+      operationId: get_asset_configs_by_workspace
+      description: Get asset configs associated with a specific workspace, optionally filtered by asset type
+  /{version}/asset-config/{asset_config_uuid}:
+    parameters:
+      - $ref: '#/components/parameters/version'
+      - schema:
+          type: string
+          format: uuid
+        name: asset_config_uuid
+        in: path
+        required: true
+        description: UUID of the asset config to retrieve
+    get:
+      summary: Get asset config by UUID
+      tags:
+        - asset-configs
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: ../models/AssetConfig.yaml
+        '404':
+          description: Asset config not found
+          content:
+            application/json:
+              schema:
+                $ref: ../models/Error.yaml
+      operationId: get_asset_config
+      description: Get a specific asset config by UUID
+    patch:
+      summary: Edit asset config
+      operationId: edit_asset_config
+      tags:
+        - asset-configs
+      description: |
+        Update asset config with change classification and impact handling.
+        - Metadata-only changes (name, description) apply immediately with no workflow impact
+        - Non-metadata/secret changes require impact computation and stop affected workflows
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  description: New name for the asset config
+                description:
+                  type: string
+                  description: New description for the asset config
+                definition:
+                  type: string
+                  description: Base64 encoded serialized Asset Config Protobuf
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: ../models/SimpleAssetConfig.yaml
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: ../models/Error.yaml
+    delete:
+      summary: Delete asset config
+      tags:
+        - asset-configs
+      responses:
+        '204':
+          description: No Content
+        '404':
+          description: Asset config not found
+          content:
+            application/json:
+              schema:
+                $ref: ../models/Error.yaml
+        '403':
+          description: Forbidden - insufficient permissions
+          content:
+            application/json:
+              schema:
+                $ref: ../models/Error.yaml
+      operationId: delete_asset_config
+      description: Delete a specific asset config by UUID
+  /{version}/workspace/{workspace-uuid}/asset-config/{asset-config-uuid}:
+    parameters:
+      - $ref: '#/components/parameters/version'
+      - schema:
+          type: string
+          format: uuid
+        name: workspace-uuid
+        in: path
+        required: true
+        description: Workspace UUID
+      - schema:
+          type: string
+          format: uuid
+        name: asset-config-uuid
+        in: path
+        required: true
+        description: Asset Config UUID
+    delete:
+      summary: Revoke asset config from workspace
+      tags:
+        - asset-configs
+      operationId: revoke_asset_config_from_workspace
+      responses:
+        '204':
+          description: No Content
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: ../models/Error.yaml
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: ../models/Error.yaml
+      description: Remove the specified asset config from the specified workspace.
+components:
+  parameters:
+    version:
+      in: path
+      name: version
+      schema:
+        type: string
+        default: v1.2
+        example: v1.2
+      description: Version of the API to call
+      required: true
+    Set-sessionTokenCookie:
+      name: Set-Cookie
+      in: header
+      required: false
+      schema:
+        type: string
+      description: Set the sessionTokenCookie cookie to the value of sessionToken.
+    Set-userIdentitySecret-Cookie:
+      name: Set-userIdentitySecret Cookie
+      in: header
+      required: false
+      schema:
+        type: string
+      description: Set the userIdentitySecret cookie to the value of userIdentitySecret.
+    AssetConfigTypeParam:
+      name: assetType
+      in: query
+      required: false
+      schema:
+        $ref: ../models/AssetConfigType.yaml
+      description: Filter asset configs by asset type
+  schemas:
+    User:
+      $ref: ../models/User.yaml
+    Workspace:
+      $ref: ../models/Workspace.yaml
+    Datum:
+      $ref: ../models/Datum.yaml
+    Job:
+      $ref: ../models/Job.yaml
+    OrganizationData:
+      $ref: ../models/OrganizationData.yaml
+    AssetConfig:
+      $ref: ../models/AssetConfig.yaml
+    SimpleAssetConfig:
+      $ref: ../models/SimpleAssetConfig.yaml
+  securitySchemes:
+    sessionToken:
+      type: http
+      scheme: bearer
+      description: The bearer token is obtained from the `/login` and `/register`
+        endpoints.
+    userIdentitySecret:
+      name: userIdentitySecret
+      type: apiKey
+      in: cookie
+      description: A binary blob derived from a user's passkey. It can be obtained
+        from the `/login` and `/register` endpoints.
+    sessionTokenCookie:
+      name: sessionTokenCookie
+      type: apiKey
+      in: cookie
+    refreshTokenCookie:
+      name: refreshTokenCookie
+      type: apiKey
+      in: cookie
+  requestBodies: {}
+  responses: {}
+x-origin: origin
+x-extension-with: x-extension-with
+security:
+  - sessionToken: []
+    refreshTokenCookie: []

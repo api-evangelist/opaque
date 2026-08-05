@@ -1,0 +1,46 @@
+---
+title: SimpleWorkflow
+type: object
+description: A subset of the Workflow Object with only the metadata fields needed for a list operation
+properties:
+  uuid:
+    type: string
+  name:
+    type: string
+  description:
+    type: string
+  status:
+    type: string
+    enum:
+      - draft
+      - under review
+      - accepted
+      - rejected
+      - launching
+      - live
+      - shutting down
+      - failed
+  createdBy:
+    $ref: ./User.yaml
+  createdAt:
+    format: date-time
+    example: '2019-01-25T02:00:00.000Z'
+    type: string
+  updatedAt:
+    format: date-time
+    example: '2019-01-25T02:00:00.000Z'
+    type: string
+  consortiumUUID:
+    type: string
+    format: uuid
+    description: The UUID of the consortium this workflow belongs to
+  needsAttention:
+    type: boolean
+    description: Indicates if the workflow needs attention
+
+required:
+  - uuid
+  - name
+  - status
+  - createdAt
+  - createdBy

@@ -1,0 +1,204 @@
+generated: '2026-08-04'
+method: searched
+source: openapi/opaque-platform-api-openapi.yml
+docs: https://docs.opaque.co/en/latest/public_guide/developers/rest_api/response_codes_errors/
+format: rfc7807-shaped
+envelope:
+  media_type: application/json
+  note: >-
+    OPAQUE returns an error object whose field names match RFC 7807 / RFC 9457 Problem Details
+    (type, title, status, detail), but it is served as application/json rather than
+    application/problem+json, and `type` carries either the literal "about:blank" or the token
+    "exception" rather than a dereferenceable problem-type URI. Documented as "Error responses"
+    in the response codes and errors reference.
+  fields:
+  - name: detail
+    type: string
+    description: A detailed explanation of the error.
+  - name: status
+    type: integer
+    description: The corresponding HTTP status code.
+  - name: title
+    type: string
+    description: A short, human-readable summary of the error.
+  - name: type
+    type: string
+    description: The type or category of error (observed values - "about:blank", "exception").
+status_codes:
+- status: 200
+  title: OK
+  description: The request was successful.
+- status: 204
+  title: No Content
+  description: The request was successful, but no content is returned.
+- status: 400
+  title: Bad Request
+  description: A generic client error. The response body provides error details.
+- status: 400
+  title: Opaque Error
+  description: The request does not meet OPAQUE's requirements. See response details.
+- status: 400
+  title: Management plane error
+  description: The requested resource (e.g. UUID) does not exist.
+- status: 401
+  title: Unauthorized
+  description: Authentication credentials are missing or invalid.
+- status: 403
+  title: Forbidden
+  description: The user does not have permission to access this resource or operation.
+- status: 404
+  title: Not found
+  description: The requested resource path is incorrect.
+- status: 405
+  title: Method Not Allowed
+  description: The HTTP method is not supported for this endpoint.
+- status: 500
+  title: Internal server error
+  description: An unexpected error occurred while connecting to the management plane.
+- status: 500
+  title: Unknown Error
+  description: A generic server-side error. The response body provides additional details.
+documented_examples:
+- status: 401
+  title: Unauthorized
+  type: about:blank
+  detail: No authorization token provided
+  cause: Missing or invalid authentication credentials.
+- status: 400
+  title: Management plane error
+  type: exception
+  detail: 'failed to get cluster: ent: cluster not found'
+  cause: The referenced resource does not exist.
+- status: 400
+  title: Bad Request
+  type: about:blank
+  detail: Request body is not valid JSON
+  cause: Malformed request body.
+- status: 500
+  title: Unknown Error
+  type: exception
+  detail: badly formed hexadecimal UUID string
+  cause: A path UUID is incorrectly formatted.
+problems:
+- status: 400
+  title: Bad Request
+  detail: One or more members do not exist / Workspace name does not match required format
+  source_operation: openapi/opaque-platform-api-openapi.yml#create_workspace
+- status: 400
+  title: Bad Request
+  detail: Already responded to invite / inviteStatus must be accepted or rejected
+  source_operation: openapi/opaque-platform-api-openapi.yml#respond_workspace_invite
+- status: 400
+  title: Bad Request
+  detail: Invalid workspace status / Invalid body parameter
+  source_operation: openapi/opaque-platform-api-openapi.yml#update_workspace
+- status: 400
+  title: Bad Request
+  detail: Invalid workflow status / Invalid body parameter
+  source_operation: openapi/opaque-platform-api-openapi.yml#update_workflow
+- status: 400
+  title: Bad Request
+  detail: Workflow cannot be deleted (not in DRAFT status)
+  source_operation: openapi/opaque-platform-api-openapi.yml#delete_workflow
+- status: 400
+  title: Bad Request
+  detail: Invalid workflow graph
+  source_operation: openapi/opaque-platform-api-openapi.yml#request_workflow_review
+- status: 400
+  title: Bad Request
+  detail: Workflow status must be **under review**
+  source_operation: openapi/opaque-platform-api-openapi.yml#review_workflow
+- status: 400
+  title: Bad Request
+  detail: Job cannot be modified after it is queued
+  source_operation: openapi/opaque-platform-api-openapi.yml#update_job
+- status: 400
+  title: Bad Request
+  detail: Job cannot be deleted after a run has been submitted
+  source_operation: openapi/opaque-platform-api-openapi.yml#delete_job
+- status: 400
+  title: Bad Request
+  detail: Job status must be **draft**
+  source_operation: openapi/opaque-platform-api-openapi.yml#create_job_input_variable
+- status: 400
+  title: Bad Request
+  detail: Decision is **rejected** but no comment was provided / Job status must be **under review**
+  source_operation: openapi/opaque-platform-api-openapi.yml#review_job
+- status: 400
+  title: Bad Request
+  detail: Definition is not valid base64 / Definition cannot be parsed as a protobuf
+  source_operation: openapi/opaque-platform-api-openapi.yml#update_job_query
+- status: 400
+  title: Bad Request
+  detail: Job status must be **reencryption complete**
+  source_operation: openapi/opaque-platform-api-openapi.yml#get_job_run_results
+- status: 400
+  title: Bad Request
+  detail: Job Run status must be **succeeded** or **failed**
+  source_operation: openapi/opaque-platform-api-openapi.yml#get_job_run_logs
+- status: 400
+  title: Bad Request
+  detail: Job run status must be one of **queued** or **running**
+  source_operation: openapi/opaque-platform-api-openapi.yml#cancel_job_run
+- status: 400
+  title: Bad Request
+  detail: httpOnly cookie is not set
+  source_operation: openapi/opaque-platform-api-openapi.yml#refresh_user_tokens
+- status: 400
+  title: Bad Request
+  detail: Organization admin role cannot be added or removed
+  source_operation: openapi/opaque-platform-api-openapi.yml#update_user_organization_roles
+- status: 400
+  title: Bad Request
+  detail: File already exists
+  source_operation: openapi/opaque-platform-api-openapi.yml#upload_data
+- status: 401
+  title: Unauthorized
+  detail: refresh token is expired
+  remediation: The user must log in again through the UI to obtain a new API key and refresh token.
+  source_operation: openapi/opaque-platform-api-openapi.yml#refresh_user_tokens
+- status: 403
+  title: Forbidden
+  detail: insufficient permissions
+  source_operation: openapi/opaque-platform-api-openapi.yml#delete_asset_config
+- status: 404
+  title: Not Found
+  detail: Asset config not found
+  source_operation: openapi/opaque-platform-api-openapi.yml#get_asset_config
+- status: 500
+  title: Internal Server Error
+  detail: Provider deletion failed
+  source_operation: openapi/opaque-platform-api-openapi.yml#delete_datum
+- status: 500
+  title: Internal Server Error
+  detail: Could not write schema to disk
+  source_operation: openapi/opaque-platform-api-openapi.yml#upload_dataset_schema
+- status: 500
+  title: Internal Server Error
+  detail: Could not write file to disk / Size mismatch / Encryption failed / Upload to provider failed
+  source_operation: openapi/opaque-platform-api-openapi.yml#upload_data
+- status: 500
+  title: Internal Server Error
+  detail: Streaming from AWS S3 failed / Upload to provider failed
+  source_operation: openapi/opaque-platform-api-openapi.yml#upload_data_aws_s3
+- status: 500
+  title: Internal Server Error
+  detail: Streaming from Azure Blob Storage failed / Upload to provider failed
+  source_operation: openapi/opaque-platform-api-openapi.yml#upload_data_azure_blob_storage
+- status: 500
+  title: Internal Server Error
+  detail: Streaming from Azure Files failed / Upload to provider failed
+  source_operation: openapi/opaque-platform-api-openapi.yml#upload_data_azure_files
+- status: 500
+  title: Internal Server Error
+  detail: Streaming from Google Cloud Storage failed / Upload to provider failed
+  source_operation: openapi/opaque-platform-api-openapi.yml#upload_data_google_cloud_storage
+coverage:
+  operations_total: 82
+  operations_with_4xx_or_5xx: 36
+  gap: >-
+    46 of 82 operations declare only a 2xx response in the OpenAPI. 401 is documented in the
+    response-codes reference but is declared on exactly one operation (refresh_user_tokens),
+    and 403/404/405 are documented but almost never declared. Declaring the documented error
+    set on every operation would be the single largest contract-quality improvement available
+    to OPAQUE.

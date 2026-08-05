@@ -1,23 +1,141 @@
 aid: opaque
 name: OPAQUE
-description: 'OPAQUE is a company surfaced via the API Evangelist harvest backlog (source: secondary-market)
-  and added to the network as a stub for full-pipeline profiling.'
+description: 'OPAQUE Systems, Inc. is a confidential-AI platform company that lets enterprises
+  run AI and analytics on their most sensitive data without exposing it. The OPAQUE Confidential
+  AI Platform executes agentic workflows, retrieval-augmented generation, and analytics jobs
+  inside hardware trusted execution environments (TEEs), with attested TLS between components,
+  signed attestation reports, and tamper-evident audit logs so every run can be independently
+  verified. It is deployed in a hybrid architecture: an OPAQUE-hosted control plane manages users,
+  workspaces, job metadata, notifications, audit logging, and key management, while the data plane,
+  client/API pod, and encrypted storage all run inside the customer''s own cloud environment. The
+  platform exposes a documented REST API (workspaces, datasets, jobs, workflows, asset configs,
+  users, organizations) described by an OpenAPI 3.0.3 specification, plus a Python SDK for invoking
+  deployed workflows. It is used in insurance, financial services, and high-tech for confidential
+  RAG, secure multi-party analytics, and governed agent execution.'
+image: https://cdn.prod.website-files.com/66d977be14c1ef2f8e88c93c/68cb38f2400045b985a92458_Opaque%20Logo.svg
 url: https://raw.githubusercontent.com/api-evangelist/opaque/refs/heads/main/apis.yml
 x-type: company
 x-source: harvest:secondary-market
-x-tier: stub
-x-tier-reason: harvest
-specificationVersion: '0.20'
+specificationVersion: '0.21'
 created: '2026-08-04'
 modified: '2026-08-04'
 tags:
-- Company
-apis: []
+- confidential-computing
+- confidential-ai
+- ai-governance
+- data-privacy
+- trusted-execution-environment
+- attestation
+- agentic-workflows
+- retrieval-augmented-generation
+- enterprise-ai
+- secure-analytics
+- data-clean-room
+- model-context-protocol
+apis:
+- name: OPAQUE Platform REST API
+  description: 'REST API exposed by the OPAQUE client / API pod for the Confidential AI Platform.
+    Covers workspaces, datasets and data upload from AWS S3 / Azure Blob / Azure Files / Google
+    Cloud Storage, analytics and notebook jobs, job runs, results and logs, agentic workflows
+    (create, review, launch, stop), asset configurations, predefined and pinned queries, users,
+    and organization membership. Requests and responses are JSON; authentication is by session
+    token (JWT bearer, 10-minute lifetime), a refresh-token cookie, and a user identity secret
+    cookie for cryptographic/sensitive operations. Because OPAQUE runs the API pod inside the
+    customer environment, the base URL is per-deployment and follows the documented pattern
+    https://api.<your-subdomain>/<version>.'
+  humanURL: https://docs.opaque.co/en/latest/api_reference/rest_api/
+  baseURL: https://api.<your-subdomain>/v2.5
+  tags:
+  - confidential-computing
+  - confidential-ai
+  - agentic-workflows
+  - secure-analytics
+  - attestation
+  - workflows
+  - jobs
+  - datasets
+  properties:
+  - type: OpenAPI
+    url: openapi/opaque-platform-api-openapi.yml
+  - type: Documentation
+    url: https://docs.opaque.co/en/latest/public_guide/developers/rest_api/
+  - type: APIReference
+    url: https://docs.opaque.co/en/latest/api_reference/rest_api/
+  - type: Authentication
+    url: authentication/opaque-authentication.yml
+  - type: Conventions
+    url: conventions/opaque-conventions.yml
+  - type: ErrorCatalog
+    url: errors/opaque-problem-types.yml
+  - type: DataModel
+    url: data-model/opaque-data-model.yml
+  - type: Overlay
+    url: overlays/opaque-platform-api-overlay.yaml
+x-notes:
+- 'baseURL is the per-deployment pattern OPAQUE publishes, not a shared production host. OPAQUE
+  ships a hybrid architecture in which the web UI and REST API are served from inside the
+  customer''s own environment (docs.opaque.co/en/latest/public_guide/deployment/hybrid_deployment/),
+  and the docs give the production form as https://api.{your-subdomain}/v2.5. The harvested
+  OpenAPI declares only http://localhost:5001/ as its server, which is the local development
+  server. No shared public API host exists to substitute; nothing was invented here.'
 maintainers:
 - FN: Kin Lane
   email: kin@apievangelist.com
 - FN: APIs.json
   email: info@apis.io
 common:
+- type: DomainSecurity
+  url: security/opaque-domain-security.yml
 - type: Website
-  url: https://forgeglobal.com/opaque_stock/
+  url: https://www.opaque.co/
+- type: DeveloperPortal
+  url: https://docs.opaque.co/en/latest/
+- type: Documentation
+  url: https://docs.opaque.co/en/latest/public_guide/developers/
+- type: APIReference
+  url: https://docs.opaque.co/en/latest/api_reference/rest_api/
+- type: GettingStarted
+  url: https://docs.opaque.co/en/latest/public_guide/users/get_started/
+- type: Support
+  url: https://docs.opaque.co/en/latest/support/
+- type: Blog
+  url: https://www.opaque.co/resources
+- type: GitHubOrganization
+  url: https://github.com/opaque-systems
+- type: TermsOfService
+  url: https://www.opaque.co/terms-of-service
+- type: PrivacyPolicy
+  url: https://www.opaque.co/privacy-policy
+- type: ChangeLog
+  url: https://docs.opaque.co/en/latest/release_notes/
+- type: ChangeLog
+  url: changelog/opaque-changelog.yml
+- type: Authentication
+  url: authentication/opaque-authentication.yml
+- type: Conventions
+  url: conventions/opaque-conventions.yml
+- type: ErrorCatalog
+  url: errors/opaque-problem-types.yml
+- type: Lifecycle
+  url: lifecycle/opaque-lifecycle.yml
+- type: Conformance
+  url: conformance/opaque-conformance.yml
+- type: Compliance
+  url: https://www.opaque.co/resources/articles/the-opaque-platform-is-now-soc-2-certified
+- type: DataModel
+  url: data-model/opaque-data-model.yml
+- type: Overlay
+  url: overlays/opaque-platform-api-overlay.yaml
+- type: LLMsTxt
+  url: llms/opaque-llms.txt
+- type: Packages
+  url: packages/opaque-packages.yml
+- type: AgentSkill
+  url: skills/_index.yml
+- type: Sandbox
+  url: sandbox/opaque-sandbox.yml
+x-enrichment:
+  date: '2026-08-04'
+  status: enriched
+  artifacts_added: 33
+  pass: local-v1

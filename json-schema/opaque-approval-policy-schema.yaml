@@ -1,0 +1,32 @@
+---
+title: Approval Policy
+type: object
+description: Approval policy for the workspace
+nullable: true
+properties:
+  approvalPolicyType:
+    type: string
+    enum:
+      - all_members
+      - custom_approval_groups
+  approvalGroups:
+    type: array
+    description: A list of approval groups
+    items:
+      type: object
+      properties:
+        groupName:
+          type: string
+        approvalThreshold:
+          type: integer
+        userEmails:
+          type: array
+          items:
+            type: string
+            format: email
+      required:
+        - groupName
+        - approvalThreshold
+        - userEmails
+required:
+  - approvalPolicyType

@@ -1,0 +1,56 @@
+---
+title: JobRun
+type: object
+description: A single job object
+x-stoplight:
+  id: p96o3xmw4b40i
+properties:
+  uuid:
+    type: string
+  createdAt:
+    type: string
+    format: date-time
+    example: '2019-01-25T02:00:00.000Z'
+  runBy:
+    type: string
+  status:
+    type: string
+    enum:
+      - queued
+      - running
+      - failed
+      - succeeded
+  runNumber:
+    type: integer
+  inputValues:
+    type: array
+    items:
+      $ref: ./JobInputValue.yaml
+  isTestRun:
+    type: boolean
+  startedAt:
+    type: string
+    format: date-time
+    example: '2019-01-25T02:00:00.000Z'
+    nullable: true
+    default:
+  finishedAt:
+    type: string
+    format: date-time
+    example: '2019-01-25T02:00:00.000Z'
+    nullable: true
+    default:
+  script:
+    type: string
+    example: 'print("Hello World!")'
+  resultsURI:
+    type: string
+    example: 'https://opaquedev.dfs.core.windows.net/opaquedev/1234/job_result'
+required:
+  - uuid
+  - createdAt
+  - status
+  - runNumber
+  - runBy
+  - inputValues
+  - isTestRun

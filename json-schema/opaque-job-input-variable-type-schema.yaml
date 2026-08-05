@@ -1,0 +1,10 @@
+---
+title: JobInputVariableType
+type: string
+enum:
+  - string
+  - integer
+  - float
+  - boolean  # Represented as a 1 or a 0
+  - datetime
+  - dataset

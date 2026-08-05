@@ -1,0 +1,15 @@
+---
+title: Organization
+x-stoplight:
+  id: h0i7he5ggthda
+type: object
+properties:
+  uuid:
+    type: string
+  name:
+    type: string
+  logoURL:
+    type: string
+required:
+  - uuid
+  - name

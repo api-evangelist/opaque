@@ -1,0 +1,17 @@
+---
+title: SimpleWorkspace
+type: object
+description: A subset of the Workspace Object which only contains the uuid and name.
+properties:
+  uuid:
+    type: string
+    x-faker: datatype.uuid
+    x-go-type: uuid.UUID
+    x-go-type-import:
+      path: github.com/google/uuid
+  name:
+    type: string
+    x-faker: commerce.department
+required:
+  - uuid
+  - name

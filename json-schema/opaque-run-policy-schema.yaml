@@ -1,0 +1,21 @@
+---
+title: Run Policy
+type: object
+description: Policy configuration for who can run workloads in the workspace
+nullable: true
+properties:
+  runPolicyType:
+    type: string
+    enum:
+      - all_members
+      - creator_only
+      - specific_users
+    description: Type of run policy to apply
+  allowlistUserEmails:
+    type: array
+    description: List of user emails allowed to run workloads. Only populated if runPolicyType is specific_users
+    items:
+      type: string
+      format: email
+required:
+  - runPolicyType

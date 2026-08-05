@@ -1,0 +1,61 @@
+---
+title: Job
+x-stoplight:
+  id: 6u0rfcnlr63j3
+type: object
+description: A single job object
+properties:
+  uuid:
+    type: string
+  name:
+    type: string
+  createdAt:
+    format: date-time
+    example: '2019-01-25T02:00:00.000Z'
+    type: string
+  createdBy:
+    type: string
+  status:
+    type: string
+    enum:
+      - draft
+      - under review
+      - accepted
+      - rejected
+  repeatable:
+    type: boolean
+  jobRuns:
+    type: array
+    items:
+      $ref: ./JobRun.yaml
+  queryType:
+    x-stoplight:
+      id: ulsjgsrq1wmt9
+    type: string
+    enum:
+      - python
+      - predefined
+  inputVariables:
+    type: array
+    items:
+      $ref: ./JobInputVariable.yaml
+  archived:
+    type: boolean
+  description:
+    type: string
+  requestedReviewAt:
+    type: string
+    format: date-time
+    description: Timestamp of the most recent time the job entered the "under review"
+      status
+required:
+  - uuid
+  - name
+  - createdAt
+  - createdBy
+  - status
+  - repeatable
+  - jobRuns
+  - queryType
+  - inputVariables
+  - archived

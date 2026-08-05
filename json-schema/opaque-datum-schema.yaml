@@ -1,0 +1,71 @@
+---
+title: Datum
+type: object
+properties:
+  uuid:
+    type: string
+    x-faker: datatype.uuid
+  name:
+    type: string
+    x-faker: commerce.product
+  remoteUri:
+    type: string
+    format: uri
+    description: Exact path a user will need to type into a query to access this datum
+    x-faker: system.filePath
+  createdAt:
+    type: string
+    format: date-time
+    description: ISO 8601 string
+    example: '2019-01-25T02:00:00.000Z'
+    x-faker: date.recent
+  createdBy:
+    $ref: ./User.yaml
+  columns:
+    type: array
+    items:
+      type: object
+      properties:
+        name:
+          type: string
+        type:
+          type: string
+      required:
+        - name
+        - type
+  testDataType:
+    type: string
+    enum:
+      - synthetic
+      - mock
+      - none
+  dataStoreConfigUUID:
+    type: string
+    x-faker: datatype.uuid
+  description:
+    type: string
+    description: A description of the data
+  dataSource:
+    type: string
+    nullable: true
+    enum:
+      - local
+      - aws_s3
+      - azure_blob
+      - azure_file
+      - gcp
+      - job_run_result
+  size:
+    type: number
+    description: The size in bytes of the data
+  policy:
+    $ref: ./DatumPolicy.yaml
+required:
+  - uuid
+  - name
+  - remoteUri
+  - createdAt
+  - createdBy
+  - columns
+  - testDataType
+  - dataStoreConfigUUID

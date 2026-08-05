@@ -1,0 +1,63 @@
+generated: '2026-08-04'
+method: searched
+source: https://docs.opaque.co/en/latest/public_guide/users/workflows/environment_setup/
+registries_probed:
+- {registry: pypi, result: 'opaque -> 200 but NOT first-party (python libopaque wrapper by Stefan
+    Marsiske, github.com/stef/libopaque); opaque-client, opaque-sdk, mc2client, opaque-systems -> 404'}
+- {registry: npm, result: 'no @opaque scope, no opaque-systems package'}
+- {registry: maven-central, result: not searched — no JVM client is documented}
+- {registry: nuget, result: not searched — no .NET client is documented}
+- {registry: rubygems, result: not searched — no Ruby client is documented}
+- {registry: crates.io, result: not searched — no Rust client is documented}
+packages:
+- language: python
+  name: opaque
+  registry: none
+  distribution: private ZIP archive supplied by OPAQUE, version-matched to the deployment
+  install: unzip opaque-python-package.zip && pip install opaque-<OPAQUE_VERSION>.tar.gz
+  import: from opaque.workflow import WorkflowService
+  requires: Python 3.10+
+  url: https://docs.opaque.co/en/latest/public_guide/users/workflows/environment_setup/
+  reference: https://docs.opaque.co/en/latest/api_reference/python_sdk_reference/
+  official: true
+  public: false
+  note: >-
+    The current OPAQUE Python SDK is NOT published to PyPI. The docs instruct customers to obtain
+    a ZIP file from their OPAQUE contact matching their deployment version. The PyPI project named
+    `opaque` is a different, unrelated library. This is the single largest developer-experience
+    gap in OPAQUE's surface: a documented, version-pinned SDK that no one outside a customer
+    account can install.
+- language: python
+  name: opaqueprompts
+  registry: pypi
+  version_seen: 0.1.2
+  url: https://pypi.org/project/opaqueprompts/
+  install: pip install opaqueprompts
+  repo: https://github.com/opaque-systems/opaqueprompts-python
+  official: true
+  note: >-
+    First-party (published from the opaque-systems GitHub org) but for OpaquePrompts, an earlier
+    LLM privacy-layer product, not for the current Confidential AI Platform REST API or workflow
+    SDK. Recorded for completeness; it is not the platform client.
+related_open_source:
+- org: https://github.com/opaque-systems
+  public_repos: 20
+  note: >-
+    Mostly confidential-computing forks and research (mc2, duckdb/spdlog forks for Open Enclave,
+    atls-python (archived), opaquegateway-python, kata-containers, cloud-api-adaptor) plus
+    platform-samples ("Samples for the Opaque 3.x platform") and a `cli` repo — neither of which
+    publishes an installable client at the time of this pass.
+- org: https://github.com/agentrust-io
+  note: >-
+    AgenTrust — "open standards for trustworthy agentic AI", announced by OPAQUE as the
+    open-source home of Confidential MCP (cmcp), TRACE attestation (trace-spec), Agent Manifest,
+    and ca2a. Adjacent open-source effort, not an OPAQUE platform client library.
+  source: https://www.opaque.co/resources/articles/opaque-extends-the-agent-governance-toolkit-with-verifiable-identity-and-first-ever-verifiably-governed-and-secure-mcp
+sdk_summary:
+  public_installable_clients: 0
+  first_party_clients: 2
+  note: >-
+    No SDKs pointer is wired in apis.yml. OPAQUE ships a real, documented, first-party Python SDK,
+    but it is not obtainable from any public registry, so it does not satisfy an SDK-availability
+    check the way a published client would. Publishing the platform SDK to PyPI would be the
+    cheapest single fix on this profile.

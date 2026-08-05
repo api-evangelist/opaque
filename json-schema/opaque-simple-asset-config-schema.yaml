@@ -1,0 +1,38 @@
+---
+title: SimpleAssetConfig
+type: object
+description: A subset of the AssetConfig Object with the metadata fields and definition needed for a list operation
+properties:
+  uuid:
+    type: string
+    format: uuid
+    description: UUID that uniquely identifies this asset configuration
+  name:
+    type: string
+    description: Name of the asset config
+  description:
+    type: string
+    description: Description of the asset config
+  assetType:
+    type: string
+    enum:
+      - data_connector
+      - llm_connector
+    description: Type of asset config
+  definition:
+    type: string
+    description: Base64-encoded protobuf definition of the asset configuration
+  creator:
+    $ref: ./User.yaml
+    description: The user who created the asset config
+  updatedAt:
+    type: string
+    format: date-time
+    description: ISO-formatted timestamp when the asset configuration was last updated
+required:
+  - uuid
+  - name
+  - assetType
+  - definition
+  - creator
+  - updatedAt

@@ -1,0 +1,52 @@
+generated: '2026-08-04'
+method: searched
+source: https://docs.opaque.co/en/latest/public_guide/users/workflows/using_test_mode/
+kind: in-product test mode (no public sandbox, no test credentials)
+test_vs_live:
+  separated: true
+  mechanism: >-
+    Test mode is a per-workflow toggle set while the workflow is in Draft, before approval is
+    requested. Once approved, the workflow is launched into the "Testing" status rather than
+    "Live". There are no test-vs-live API key prefixes and no separate sandbox host — the same
+    deployment, the same credentials, and the same confidential runtime serve both.
+  statuses: [draft, under review, accepted, rejected, launching, live, shutting down, failed]
+  testing_status: Testing (launched with Test mode enabled)
+  warning_published: >-
+    When Test mode is enabled a banner appears on the canvas warning that execution traces may
+    expose sensitive data. This is the trade OPAQUE makes explicit: observability in test mode
+    costs some of the confidentiality guarantee.
+capabilities:
+- name: Execution traces
+  description: >-
+    Per-node inputs and outputs, tool invocations, live status, run duration, active nodes,
+    elapsed time per node, and the full trace JSON.
+  since: 2.6.0 (trace logs), 2.6.1 (live status and expanded trace view)
+- name: Request context
+  description: >-
+    When a workflow uses runtime context mapping via the MCP Tool, the Execution tab exposes a
+    Request context section for supplying runtime values (user roles, identifiers) that are mapped
+    onto API parameters, so personalization can be tested without editing the workflow.
+  since: 2.6.1
+- name: Test-run marking on job runs
+  description: >-
+    The JobRun model carries a required boolean `isTestRun`, so a test execution is
+    distinguishable in the API and in run history.
+  source: json-schema/opaque-job-run-schema.yaml
+- name: Synthetic and mock data typing
+  description: >-
+    Datum and OrganizationData carry a required `testDataType` enum of synthetic | mock | none,
+    so datasets can be labelled as test data at the platform level.
+  source: json-schema/opaque-datum-schema.yaml
+test_values:
+  published: false
+  note: >-
+    OPAQUE publishes no test credentials, no magic identifiers, no fixture data and no test
+    clock. Nothing was invented here. Access requires an OPAQUE deployment plus SSO, so there is
+    no way for a developer outside a customer account to exercise the API.
+public_sandbox: none
+public_sandbox_evidence:
+- {url: 'https://www.opaque.co/pricing', status: 404}
+- {url: 'https://app.opaque.co/', status: 0, note: hostname does not resolve}
+docs:
+- https://docs.opaque.co/en/latest/public_guide/users/workflows/using_test_mode/
+- https://docs.opaque.co/en/latest/public_guide/users/jobs/notebook_jobs/test_queries/

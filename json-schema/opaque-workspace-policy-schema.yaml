@@ -1,0 +1,15 @@
+---
+title: Workspace Policy
+type: object
+description: Policy configuration for a workspace
+nullable: true
+properties:
+  approvalPolicy:
+    $ref: ./ApprovalPolicy.yaml
+    description: Approval policy for the workspace
+  runPolicy:
+    $ref: ./RunPolicy.yaml
+    description: Policy for who can run workloads in the workspace
+required:
+  - approvalPolicy
+  - runPolicy
