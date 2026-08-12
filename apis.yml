@@ -33,30 +33,16 @@ tags:
 - data-clean-room
 - model-context-protocol
 apis:
-- name: OPAQUE Platform REST API
-  description: 'REST API exposed by the OPAQUE client / API pod for the Confidential AI Platform.
-    Covers workspaces, datasets and data upload from AWS S3 / Azure Blob / Azure Files / Google
-    Cloud Storage, analytics and notebook jobs, job runs, results and logs, agentic workflows
-    (create, review, launch, stop), asset configurations, predefined and pinned queries, users,
-    and organization membership. Requests and responses are JSON; authentication is by session
-    token (JWT bearer, 10-minute lifetime), a refresh-token cookie, and a user identity secret
-    cookie for cryptographic/sensitive operations. Because OPAQUE runs the API pod inside the
-    customer environment, the base URL is per-deployment and follows the documented pattern
-    https://api.<your-subdomain>/<version>.'
+- aid: opaque:opaque-asset-configs-api
+  name: OPAQUE Asset Configs API
+  description: Asset Configurations
   humanURL: https://docs.opaque.co/en/latest/api_reference/rest_api/
   baseURL: https://api.<your-subdomain>/v2.5
   tags:
-  - confidential-computing
-  - confidential-ai
-  - agentic-workflows
-  - secure-analytics
-  - attestation
-  - workflows
-  - jobs
-  - datasets
+  - asset-configs
   properties:
   - type: OpenAPI
-    url: openapi/opaque-platform-api-openapi.yml
+    url: openapi/opaque-asset-configs-api-openapi.yml
   - type: Documentation
     url: https://docs.opaque.co/en/latest/public_guide/developers/rest_api/
   - type: APIReference
@@ -69,8 +55,227 @@ apis:
     url: errors/opaque-problem-types.yml
   - type: DataModel
     url: data-model/opaque-data-model.yml
-  - type: Overlay
-    url: overlays/opaque-platform-api-overlay.yaml
+- aid: opaque:opaque-auth-api
+  name: OPAQUE Auth API
+  description: Authentication
+  humanURL: https://docs.opaque.co/en/latest/api_reference/rest_api/
+  baseURL: https://api.<your-subdomain>/v2.5
+  tags:
+  - auth
+  properties:
+  - type: OpenAPI
+    url: openapi/opaque-auth-api-openapi.yml
+  - type: Documentation
+    url: https://docs.opaque.co/en/latest/public_guide/developers/rest_api/
+  - type: APIReference
+    url: https://docs.opaque.co/en/latest/api_reference/rest_api/
+  - type: Authentication
+    url: authentication/opaque-authentication.yml
+  - type: Conventions
+    url: conventions/opaque-conventions.yml
+  - type: ErrorCatalog
+    url: errors/opaque-problem-types.yml
+  - type: DataModel
+    url: data-model/opaque-data-model.yml
+- aid: opaque:opaque-datasets-api
+  name: OPAQUE Datasets API
+  description: Data & Datum
+  humanURL: https://docs.opaque.co/en/latest/api_reference/rest_api/
+  baseURL: https://api.<your-subdomain>/v2.5
+  tags:
+  - datasets
+  properties:
+  - type: OpenAPI
+    url: openapi/opaque-datasets-api-openapi.yml
+  - type: Documentation
+    url: https://docs.opaque.co/en/latest/public_guide/developers/rest_api/
+  - type: APIReference
+    url: https://docs.opaque.co/en/latest/api_reference/rest_api/
+  - type: Authentication
+    url: authentication/opaque-authentication.yml
+  - type: Conventions
+    url: conventions/opaque-conventions.yml
+  - type: ErrorCatalog
+    url: errors/opaque-problem-types.yml
+  - type: DataModel
+    url: data-model/opaque-data-model.yml
+- aid: opaque:opaque-jobs-api
+  name: OPAQUE Jobs API
+  description: Jobs
+  humanURL: https://docs.opaque.co/en/latest/api_reference/rest_api/
+  baseURL: https://api.<your-subdomain>/v2.5
+  tags:
+  - jobs
+  properties:
+  - type: OpenAPI
+    url: openapi/opaque-jobs-api-openapi.yml
+  - type: Documentation
+    url: https://docs.opaque.co/en/latest/public_guide/developers/rest_api/
+  - type: APIReference
+    url: https://docs.opaque.co/en/latest/api_reference/rest_api/
+  - type: Authentication
+    url: authentication/opaque-authentication.yml
+  - type: Conventions
+    url: conventions/opaque-conventions.yml
+  - type: ErrorCatalog
+    url: errors/opaque-problem-types.yml
+  - type: DataModel
+    url: data-model/opaque-data-model.yml
+- aid: opaque:opaque-organizations-api
+  name: OPAQUE Organizations API
+  description: The organizations API from OPAQUE — 4 operation(s) for organizations.
+  humanURL: https://docs.opaque.co/en/latest/api_reference/rest_api/
+  baseURL: https://api.<your-subdomain>/v2.5
+  tags:
+  - organizations
+  properties:
+  - type: OpenAPI
+    url: openapi/opaque-organizations-api-openapi.yml
+  - type: Documentation
+    url: https://docs.opaque.co/en/latest/public_guide/developers/rest_api/
+  - type: APIReference
+    url: https://docs.opaque.co/en/latest/api_reference/rest_api/
+  - type: Authentication
+    url: authentication/opaque-authentication.yml
+  - type: Conventions
+    url: conventions/opaque-conventions.yml
+  - type: ErrorCatalog
+    url: errors/opaque-problem-types.yml
+  - type: DataModel
+    url: data-model/opaque-data-model.yml
+- aid: opaque:opaque-pinned-queries-api
+  name: OPAQUE Pinned Queries API
+  description: The pinned-queries API from OPAQUE — 3 operation(s) for pinned-queries.
+  humanURL: https://docs.opaque.co/en/latest/api_reference/rest_api/
+  baseURL: https://api.<your-subdomain>/v2.5
+  tags:
+  - pinned-queries
+  properties:
+  - type: OpenAPI
+    url: openapi/opaque-pinned-queries-api-openapi.yml
+  - type: Documentation
+    url: https://docs.opaque.co/en/latest/public_guide/developers/rest_api/
+  - type: APIReference
+    url: https://docs.opaque.co/en/latest/api_reference/rest_api/
+  - type: Authentication
+    url: authentication/opaque-authentication.yml
+  - type: Conventions
+    url: conventions/opaque-conventions.yml
+  - type: ErrorCatalog
+    url: errors/opaque-problem-types.yml
+  - type: DataModel
+    url: data-model/opaque-data-model.yml
+- aid: opaque:opaque-predefined-query-templates-api
+  name: OPAQUE Predefined Query Templates API
+  description: >-
+    The predefined-query-templates API from OPAQUE — 3 operation(s) for predefined-query-templates.
+  humanURL: https://docs.opaque.co/en/latest/api_reference/rest_api/
+  baseURL: https://api.<your-subdomain>/v2.5
+  tags:
+  - predefined-query-templates
+  properties:
+  - type: OpenAPI
+    url: openapi/opaque-predefined-query-templates-api-openapi.yml
+  - type: Documentation
+    url: https://docs.opaque.co/en/latest/public_guide/developers/rest_api/
+  - type: APIReference
+    url: https://docs.opaque.co/en/latest/api_reference/rest_api/
+  - type: Authentication
+    url: authentication/opaque-authentication.yml
+  - type: Conventions
+    url: conventions/opaque-conventions.yml
+  - type: ErrorCatalog
+    url: errors/opaque-problem-types.yml
+  - type: DataModel
+    url: data-model/opaque-data-model.yml
+- aid: opaque:opaque-users-api
+  name: OPAQUE Users API
+  description: Users
+  humanURL: https://docs.opaque.co/en/latest/api_reference/rest_api/
+  baseURL: https://api.<your-subdomain>/v2.5
+  tags:
+  - users
+  properties:
+  - type: OpenAPI
+    url: openapi/opaque-users-api-openapi.yml
+  - type: Documentation
+    url: https://docs.opaque.co/en/latest/public_guide/developers/rest_api/
+  - type: APIReference
+    url: https://docs.opaque.co/en/latest/api_reference/rest_api/
+  - type: Authentication
+    url: authentication/opaque-authentication.yml
+  - type: Conventions
+    url: conventions/opaque-conventions.yml
+  - type: ErrorCatalog
+    url: errors/opaque-problem-types.yml
+  - type: DataModel
+    url: data-model/opaque-data-model.yml
+- aid: opaque:opaque-versioning-api
+  name: OPAQUE Versioning API
+  description: The versioning API from OPAQUE — 1 operation(s) for versioning.
+  humanURL: https://docs.opaque.co/en/latest/api_reference/rest_api/
+  baseURL: https://api.<your-subdomain>/v2.5
+  tags:
+  - versioning
+  properties:
+  - type: OpenAPI
+    url: openapi/opaque-versioning-api-openapi.yml
+  - type: Documentation
+    url: https://docs.opaque.co/en/latest/public_guide/developers/rest_api/
+  - type: APIReference
+    url: https://docs.opaque.co/en/latest/api_reference/rest_api/
+  - type: Authentication
+    url: authentication/opaque-authentication.yml
+  - type: Conventions
+    url: conventions/opaque-conventions.yml
+  - type: ErrorCatalog
+    url: errors/opaque-problem-types.yml
+  - type: DataModel
+    url: data-model/opaque-data-model.yml
+- aid: opaque:opaque-workflows-api
+  name: OPAQUE Workflows API
+  description: The workflows API from OPAQUE — 9 operation(s) for workflows.
+  humanURL: https://docs.opaque.co/en/latest/api_reference/rest_api/
+  baseURL: https://api.<your-subdomain>/v2.5
+  tags:
+  - workflows
+  properties:
+  - type: OpenAPI
+    url: openapi/opaque-workflows-api-openapi.yml
+  - type: Documentation
+    url: https://docs.opaque.co/en/latest/public_guide/developers/rest_api/
+  - type: APIReference
+    url: https://docs.opaque.co/en/latest/api_reference/rest_api/
+  - type: Authentication
+    url: authentication/opaque-authentication.yml
+  - type: Conventions
+    url: conventions/opaque-conventions.yml
+  - type: ErrorCatalog
+    url: errors/opaque-problem-types.yml
+  - type: DataModel
+    url: data-model/opaque-data-model.yml
+- aid: opaque:opaque-workspaces-api
+  name: OPAQUE Workspaces API
+  description: Workspaces
+  humanURL: https://docs.opaque.co/en/latest/api_reference/rest_api/
+  baseURL: https://api.<your-subdomain>/v2.5
+  tags:
+  - workspaces
+  properties:
+  - type: OpenAPI
+    url: openapi/opaque-workspaces-api-openapi.yml
+  - type: Documentation
+    url: https://docs.opaque.co/en/latest/public_guide/developers/rest_api/
+  - type: APIReference
+    url: https://docs.opaque.co/en/latest/api_reference/rest_api/
+  - type: Authentication
+    url: authentication/opaque-authentication.yml
+  - type: Conventions
+    url: conventions/opaque-conventions.yml
+  - type: ErrorCatalog
+    url: errors/opaque-problem-types.yml
+  - type: DataModel
+    url: data-model/opaque-data-model.yml
 x-notes:
 - 'baseURL is the per-deployment pattern OPAQUE publishes, not a shared production host. OPAQUE
   ships a hybrid architecture in which the web UI and REST API are served from inside the
@@ -84,6 +289,8 @@ maintainers:
 - FN: APIs.json
   email: info@apis.io
 common:
+- type: MCPServer
+  url: mcp/opaque-mcp.yml
 - type: DomainSecurity
   url: security/opaque-domain-security.yml
 - type: Website
