@@ -1,0 +1,551 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Opaque UI Datasets API",
+    "version": "2.5"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "datasets",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get data for workspace",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "http://localhost:5001/:version/workspace/:workspace-uuid/data",
+            "params": [
+              {
+                "name": "version",
+                "value": "",
+                "type": "path",
+                "description": "Version of the API to call"
+              },
+              {
+                "name": "workspace-uuid",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Get a list of all datum matching the workspace UUID.\n`conditions` and `conditionDropdowns` will be **null** in objects where the user is not the creator."
+        },
+        {
+          "info": {
+            "name": "Remove data from workspace",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "http://localhost:5001/:version/workspace/:workspace-uuid/data",
+            "params": [
+              {
+                "name": "version",
+                "value": "",
+                "type": "path",
+                "description": "Version of the API to call"
+              },
+              {
+                "name": "workspace-uuid",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "dataset-path",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "data-store-config-uuid",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "Remove data from workspace"
+        },
+        {
+          "info": {
+            "name": "Get datum",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "http://localhost:5001/:version/datum/:datum-uuid",
+            "params": [
+              {
+                "name": "datum-uuid",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "version",
+                "value": "",
+                "type": "path",
+                "description": "Version of the API to call"
+              }
+            ]
+          },
+          "docs": "Get a datum.\n`conditions` and `conditionDropdowns` will be **null** if the user is not the creator."
+        },
+        {
+          "info": {
+            "name": "Update data in workspace",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "http://localhost:5001/:version/datum/:datum-uuid",
+            "params": [
+              {
+                "name": "datum-uuid",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "version",
+                "value": "",
+                "type": "path",
+                "description": "Version of the API to call"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Update data in workspace"
+        },
+        {
+          "info": {
+            "name": "Delete datum",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "http://localhost:5001/:version/datum/:datum-uuid",
+            "params": [
+              {
+                "name": "datum-uuid",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "version",
+                "value": "",
+                "type": "path",
+                "description": "Version of the API to call"
+              }
+            ]
+          },
+          "docs": "Delete the datum with the provided id"
+        },
+        {
+          "info": {
+            "name": "List Data",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "http://localhost:5001/:version/organization/datasets",
+            "params": [
+              {
+                "name": "version",
+                "value": "",
+                "type": "path",
+                "description": "Version of the API to call"
+              }
+            ]
+          },
+          "docs": "List Data"
+        },
+        {
+          "info": {
+            "name": "Get dataset metadata",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "http://localhost:5001/:version/organization/data",
+            "params": [
+              {
+                "name": "version",
+                "value": "",
+                "type": "path",
+                "description": "Version of the API to call"
+              },
+              {
+                "name": "dataset-path",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "data-store-config-uuid",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "Get dataset metadata"
+        },
+        {
+          "info": {
+            "name": "Update dataset",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "http://localhost:5001/:version/organization/data",
+            "params": [
+              {
+                "name": "version",
+                "value": "",
+                "type": "path",
+                "description": "Version of the API to call"
+              },
+              {
+                "name": "dataset-path",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "data-store-config-uuid",
+                "value": "",
+                "type": "query"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Update dataset"
+        },
+        {
+          "info": {
+            "name": "Delete dataset",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "http://localhost:5001/:version/organization/data",
+            "params": [
+              {
+                "name": "version",
+                "value": "",
+                "type": "path",
+                "description": "Version of the API to call"
+              },
+              {
+                "name": "dataset-path",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "data-store-config-uuid",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "Delete dataset"
+        },
+        {
+          "info": {
+            "name": "Upload dataset schema",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "http://localhost:5001/:version/organization/data/schema",
+            "params": [
+              {
+                "name": "version",
+                "value": "",
+                "type": "path",
+                "description": "Version of the API to call"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Upload a datum's schema."
+        },
+        {
+          "info": {
+            "name": "Batch share organization data with workspace",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "http://localhost:5001/:version/organization/data/share",
+            "params": [
+              {
+                "name": "version",
+                "value": "",
+                "type": "path",
+                "description": "Version of the API to call"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Batch share organization data with workspace"
+        },
+        {
+          "info": {
+            "name": "Upload data",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "http://localhost:5001/:version/organization/data/upload",
+            "params": [
+              {
+                "name": "version",
+                "value": "",
+                "type": "path",
+                "description": "Version of the API to call"
+              },
+              {
+                "name": "chunked",
+                "value": "",
+                "type": "query",
+                "description": "Boolean indicating if a chunked upload is occurring"
+              }
+            ],
+            "body": {
+              "type": "multipart-form",
+              "data": [
+                {
+                  "name": "file",
+                  "type": "text",
+                  "value": ""
+                },
+                {
+                  "name": "schemaId",
+                  "type": "text",
+                  "value": ""
+                },
+                {
+                  "name": "name",
+                  "type": "text",
+                  "value": ""
+                },
+                {
+                  "name": "policy",
+                  "type": "text",
+                  "value": ""
+                },
+                {
+                  "name": "testDataType",
+                  "type": "text",
+                  "value": ""
+                },
+                {
+                  "name": "description",
+                  "type": "text",
+                  "value": ""
+                },
+                {
+                  "name": "dzchunkindex",
+                  "type": "text",
+                  "value": ""
+                },
+                {
+                  "name": "dzchunkbyteoffset",
+                  "type": "text",
+                  "value": ""
+                },
+                {
+                  "name": "dztotalchunkcount",
+                  "type": "text",
+                  "value": ""
+                },
+                {
+                  "name": "dztotalfilesize",
+                  "type": "text",
+                  "value": ""
+                }
+              ]
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "userIdentitySecret",
+              "value": "{{userIdentitySecret}}",
+              "placement": "query"
+            }
+          },
+          "docs": "Upload dataset to the Opaque platform for encryption and upload to cloud storage. If the `chunked=true` query parameter is specified, then this endpoint expects additional form parameters for chunking as specified by Dropzone.js.\nThe data file should be a CSV file with an optional header row detailing the names of the columns. If the header row is absent, it will be deduced from the associated schema file instead prior to uploading the encrypted data to the cloud.\nIf the policy parameter is incl"
+        },
+        {
+          "info": {
+            "name": "Upload data from AWS S3",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "http://localhost:5001/:version/organization/data/upload_aws_s3",
+            "params": [
+              {
+                "name": "version",
+                "value": "",
+                "type": "path",
+                "description": "Version of the API to call"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "userIdentitySecret",
+              "value": "{{userIdentitySecret}}",
+              "placement": "query"
+            }
+          },
+          "docs": "Upload dataset to the Opaque platform by streaming existing data from AWS S3."
+        },
+        {
+          "info": {
+            "name": "Upload data from Azure Blob Storage",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "http://localhost:5001/:version/organization/data/upload_azure_blob_storage",
+            "params": [
+              {
+                "name": "version",
+                "value": "",
+                "type": "path",
+                "description": "Version of the API to call"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "userIdentitySecret",
+              "value": "{{userIdentitySecret}}",
+              "placement": "query"
+            }
+          },
+          "docs": "Upload dataset to the Opaque platform by streaming existing data from Azure Blob Storage."
+        },
+        {
+          "info": {
+            "name": "Upload data from Azure Files",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "http://localhost:5001/:version/organization/data/upload_azure_files",
+            "params": [
+              {
+                "name": "version",
+                "value": "",
+                "type": "path",
+                "description": "Version of the API to call"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "userIdentitySecret",
+              "value": "{{userIdentitySecret}}",
+              "placement": "query"
+            }
+          },
+          "docs": "Upload dataset to the Opaque platform by streaming existing data from Azure Files."
+        },
+        {
+          "info": {
+            "name": "Upload data from Google Cloud Storage",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "http://localhost:5001/:version/organization/data/upload_google_cloud_storage",
+            "params": [
+              {
+                "name": "version",
+                "value": "",
+                "type": "path",
+                "description": "Version of the API to call"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "userIdentitySecret",
+              "value": "{{userIdentitySecret}}",
+              "placement": "query"
+            }
+          },
+          "docs": "Upload dataset to the Opaque platform by streaming existing data from Google Cloud Storage."
+        },
+        {
+          "info": {
+            "name": "Download data",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "http://localhost:5001/:version/organization/data/download",
+            "params": [
+              {
+                "name": "version",
+                "value": "",
+                "type": "path",
+                "description": "Version of the API to call"
+              },
+              {
+                "name": "dataset-path",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "data-store-config-uuid",
+                "value": "",
+                "type": "query"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "sessionTokenCookie",
+              "value": "{{sessionTokenCookie}}",
+              "placement": "query"
+            }
+          },
+          "docs": "Download data"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

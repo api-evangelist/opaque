@@ -1,0 +1,325 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Opaque UI Workflows API",
+    "version": "2.5"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "workflows",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Create workflow",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "http://localhost:5001/:version/workspace/:workspace-uuid/workflow",
+            "params": [
+              {
+                "name": "workspace-uuid",
+                "value": "",
+                "type": "path",
+                "description": "Workspace UUID"
+              },
+              {
+                "name": "version",
+                "value": "",
+                "type": "path",
+                "description": "Version of the API to call"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Create a new workflow"
+        },
+        {
+          "info": {
+            "name": "Get workflow",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "http://localhost:5001/:version/workflow/:workflow-uuid",
+            "params": [
+              {
+                "name": "workflow-uuid",
+                "value": "",
+                "type": "path",
+                "description": "Workflow UUID"
+              },
+              {
+                "name": "version",
+                "value": "",
+                "type": "path",
+                "description": "Version of the API to call"
+              }
+            ]
+          },
+          "docs": "Get a workflow by UUID"
+        },
+        {
+          "info": {
+            "name": "Update workflow",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "http://localhost:5001/:version/workflow/:workflow-uuid",
+            "params": [
+              {
+                "name": "workflow-uuid",
+                "value": "",
+                "type": "path",
+                "description": "Workflow UUID"
+              },
+              {
+                "name": "version",
+                "value": "",
+                "type": "path",
+                "description": "Version of the API to call"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Update the workflow with one or more of the provided values.\nCan only be called by the workflow's creator or an admin."
+        },
+        {
+          "info": {
+            "name": "Delete workflow",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "http://localhost:5001/:version/workflow/:workflow-uuid",
+            "params": [
+              {
+                "name": "workflow-uuid",
+                "value": "",
+                "type": "path",
+                "description": "Workflow UUID"
+              },
+              {
+                "name": "version",
+                "value": "",
+                "type": "path",
+                "description": "Version of the API to call"
+              }
+            ]
+          },
+          "docs": "Delete a workflow by UUID. Only works if the workflow is in the DRAFT state."
+        },
+        {
+          "info": {
+            "name": "Request workflow review",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "http://localhost:5001/:version/workflow/:workflow-uuid/request-review",
+            "params": [
+              {
+                "name": "workflow-uuid",
+                "value": "",
+                "type": "path",
+                "description": "Workflow UUID"
+              },
+              {
+                "name": "version",
+                "value": "",
+                "type": "path",
+                "description": "Version of the API to call"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Request a review for a workflow. A workflow graph must also be provided to be compared against the existing workflow graph for security purposes."
+        },
+        {
+          "info": {
+            "name": "Canel workflow review",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "http://localhost:5001/:version/workflow/:workflow-uuid/cancel-review",
+            "params": [
+              {
+                "name": "workflow-uuid",
+                "value": "",
+                "type": "path",
+                "description": "Workflow UUID"
+              },
+              {
+                "name": "version",
+                "value": "",
+                "type": "path",
+                "description": "Version of the API to call"
+              }
+            ]
+          },
+          "docs": "Cancel workflow reivew and set back the status to draft."
+        },
+        {
+          "info": {
+            "name": "Review workflow",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "http://localhost:5001/:version/workflow/:workflow-uuid/review",
+            "params": [
+              {
+                "name": "workflow-uuid",
+                "value": "",
+                "type": "path",
+                "description": "Workflow UUID"
+              },
+              {
+                "name": "version",
+                "value": "",
+                "type": "path",
+                "description": "Version of the API to call"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "userIdentitySecret",
+              "value": "{{userIdentitySecret}}",
+              "placement": "query"
+            }
+          },
+          "docs": "Review a workflow."
+        },
+        {
+          "info": {
+            "name": "Get workflow reviews",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "http://localhost:5001/:version/workflow/:workflow-uuid/reviews",
+            "params": [
+              {
+                "name": "workflow-uuid",
+                "value": "",
+                "type": "path",
+                "description": "Workflow UUID"
+              },
+              {
+                "name": "version",
+                "value": "",
+                "type": "path",
+                "description": "Version of the API to call"
+              }
+            ]
+          },
+          "docs": "Returns all the reviews for a workflow, ordered by creation descending."
+        },
+        {
+          "info": {
+            "name": "Launch workflow",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "http://localhost:5001/:version/workflow/:workflow-uuid/launch-workflow",
+            "params": [
+              {
+                "name": "workflow-uuid",
+                "value": "",
+                "type": "path",
+                "description": "Workflow UUID"
+              },
+              {
+                "name": "version",
+                "value": "",
+                "type": "path",
+                "description": "Version of the API to call"
+              }
+            ]
+          },
+          "docs": "launch a workflow by UUID"
+        },
+        {
+          "info": {
+            "name": "Stop or shutdown workflow",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "http://localhost:5001/:version/workflow/:workflow-uuid/stop-workflow",
+            "params": [
+              {
+                "name": "workflow-uuid",
+                "value": "",
+                "type": "path",
+                "description": "Workflow UUID"
+              },
+              {
+                "name": "version",
+                "value": "",
+                "type": "path",
+                "description": "Version of the API to call"
+              }
+            ]
+          },
+          "docs": "stop or shutdown a workflow by UUID"
+        },
+        {
+          "info": {
+            "name": "Get workspace workflows",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "http://localhost:5001/:version/workspace/:workspace-uuid/workflows",
+            "params": [
+              {
+                "name": "workspace-uuid",
+                "value": "",
+                "type": "path",
+                "description": "Workspace UUID"
+              },
+              {
+                "name": "version",
+                "value": "",
+                "type": "path",
+                "description": "Version of the API to call"
+              }
+            ]
+          },
+          "docs": "Get all metadata about all workflows associated with a workspace"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

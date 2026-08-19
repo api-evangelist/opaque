@@ -1,0 +1,213 @@
+openapi: 3.2.0
+info:
+  title: Opaque UI Auth API
+  version: '2.5'
+  description: This documentation details the REST API endpoints that the client exposes.
+  contact:
+    name: Opaque Systems
+    email: hello@opaque.co
+servers:
+- url: http://localhost:5001/
+  description: Local Server
+security:
+- sessionToken: []
+  refreshTokenCookie: []
+tags:
+- name: auth
+  description: Authentication
+paths:
+  /{version}/auth/logout:
+    parameters:
+    - $ref: '#/components/parameters/version'
+    post:
+      summary: Invalidate session token
+      operationId: user_logout
+      responses:
+        '200':
+          description: OK
+      description: Invalidate the session token provided in the header.
+      tags:
+      - auth
+  /{version}/auth/register-with-sso:
+    parameters:
+    - $ref: '#/components/parameters/version'
+    post:
+      summary: Register With SSO
+      operationId: user_register_with_sso
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  userIdentitySecret:
+                    type: string
+                    x-stoplight:
+                      id: 8667rjfgm3j9y
+                    format: byte
+                required:
+                - userIdentitySecret
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                id_token:
+                  type: string
+                  description: ID token returned from auth0, must contain an email claim.
+                passkey:
+                  type: string
+                  description: Result of passing the password through the PBKDF2-SHA256 algorithm with the email as the salt. This can be done locally (recommended) or via the create_passkey_from_password endpoint.
+                refreshToken:
+                  type: string
+                  description: refresh token returned from auth0
+              required:
+              - id_token
+              - passkey
+      description: 'Create a new user using an id_token and access_token gotten from auth0. Access token should be sent as a bearer token like other endpoints. Returns the users user_identity_secret.
+
+        Note: This method will only work if the flask server is run with the OPAQUE_FF_USE_SSO_INTEGRATION feature flag set to true.'
+      tags:
+      - auth
+      parameters:
+      - schema:
+          type: string
+        in: header
+        name: Set-Cookie
+      security:
+      - sessionToken: []
+  /{version}/auth/refresh-token:
+    parameters:
+    - $ref: '#/components/parameters/version'
+    post:
+      summary: Get a new session token, id token pair
+      operationId: refresh_user_tokens
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  accessToken:
+                    type: string
+                  idToken:
+                    type: string
+                required:
+                - accessToken
+        '400':
+          description: 'Bad Request
+
+            - httpOnly cookie is not set'
+          content:
+            application/json:
+              schema:
+                $ref: ../models/Error.yaml
+        '401':
+          description: 'Unauthorized
+
+            - refresh token is expired.'
+      description: 'Returns a session token from the refresh token. The refresh token will be
+
+        taken from the refresh token cookie.'
+      tags:
+      - auth
+      parameters: []
+      security:
+      - sessionToken: []
+        refreshTokenCookie: []
+  /{version}/auth/api-key:
+    parameters:
+    - $ref: '#/components/parameters/version'
+    get:
+      summary: Get API key
+      operationId: get_api_key
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  apiKey:
+                    type: string
+                required:
+                - apiKey
+      description: Get the API key for the user.
+      tags:
+      - auth
+      security:
+      - userIdentitySecret: []
+        refreshTokenCookie: []
+  /{version}/auth/create-passkey-from-password:
+    parameters:
+    - $ref: '#/components/parameters/version'
+    post:
+      summary: Create passkey from password
+      tags:
+      - auth
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  passkey:
+                    type: string
+                required:
+                - passkey
+      operationId: create_passkey_from_password
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                  format: email
+                password:
+                  type: string
+              required:
+              - email
+              - password
+      description: "Create a passkey from a password passed through the PBKDF2-SHA256 algorithm configured to use 600,011 iterations and the email as a salt. The supplied password must conform to the following guidelines:\n* The password has a minimum length of eight characters.\n* The password contains at least three of the following:\n  * A lowercase letter (a–z)\n  * An uppercase letter (A–Z)\n  * A number (0–9)\n  * A special character (@ $ ! % *  # ? &)\nNote that it is recommended to perform this encryption yourself locally; use of this endpoint is just an optional backup method."
+      security: []
+components:
+  parameters:
+    version:
+      in: path
+      name: version
+      schema:
+        type: string
+        default: v1.2
+        example: v1.2
+      description: Version of the API to call
+      required: true
+  securitySchemes:
+    sessionToken:
+      type: http
+      scheme: bearer
+      description: The bearer token is obtained from the `/login` and `/register` endpoints.
+    userIdentitySecret:
+      name: userIdentitySecret
+      type: apiKey
+      in: cookie
+      description: A binary blob derived from a user's passkey. It can be obtained from the `/login` and `/register` endpoints.
+    sessionTokenCookie:
+      name: sessionTokenCookie
+      type: apiKey
+      in: cookie
+    refreshTokenCookie:
+      name: refreshTokenCookie
+      type: apiKey
+      in: cookie
+x-origin: origin
+x-extension-with: x-extension-with

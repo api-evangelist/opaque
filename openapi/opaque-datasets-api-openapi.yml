@@ -1,0 +1,787 @@
+openapi: 3.2.0
+info:
+  title: Opaque UI Datasets API
+  version: '2.5'
+  description: This documentation details the REST API endpoints that the client exposes.
+  contact:
+    name: Opaque Systems
+    email: hello@opaque.co
+servers:
+- url: http://localhost:5001/
+  description: Local Server
+security:
+- sessionToken: []
+  refreshTokenCookie: []
+tags:
+- name: datasets
+  description: Data & Datum
+paths:
+  /{version}/workspace/{workspace-uuid}/data:
+    parameters:
+    - $ref: '#/components/parameters/version'
+    - schema:
+        type: string
+      name: workspace-uuid
+      in: path
+      required: true
+    get:
+      summary: Get data for workspace
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: ../models/Datum.yaml
+      operationId: get_data_by_workspace
+      description: 'Get a list of all datum matching the workspace UUID.
+
+        `conditions` and `conditionDropdowns` will be **null** in objects where the user is not the creator.'
+      tags:
+      - datasets
+    delete:
+      summary: Remove data from workspace
+      tags:
+      - datasets
+      parameters:
+      - schema:
+          type: string
+        name: dataset-path
+        in: query
+        required: true
+      - schema:
+          type: string
+        name: data-store-config-uuid
+        in: query
+        required: true
+      responses:
+        '204':
+          description: No Content
+      operationId: remove_workspace_data
+  /{version}/datum/{datum-uuid}:
+    parameters:
+    - schema:
+        type: string
+      name: datum-uuid
+      in: path
+      required: true
+    - $ref: '#/components/parameters/version'
+    get:
+      summary: Get datum
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: ../models/Datum.yaml
+      operationId: get_datum
+      description: 'Get a datum.
+
+        `conditions` and `conditionDropdowns` will be **null** if the user is not the creator.'
+      tags:
+      - datasets
+    delete:
+      summary: Delete datum
+      operationId: delete_datum
+      responses:
+        '204':
+          description: No Content
+        '500':
+          description: 'Internal Server Error
+
+            - Provider deletion failed'
+          content:
+            application/json:
+              schema:
+                $ref: ../models/Error.yaml
+      tags:
+      - datasets
+      description: Delete the datum with the provided id
+    patch:
+      summary: Update data in workspace
+      tags:
+      - datasets
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: ../models/Datum.yaml
+      operationId: update_workspace_data
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                description:
+                  type: string
+                  x-stoplight:
+                    id: lj7wjfrbrvoe4
+  /{version}/organization/datasets:
+    parameters:
+    - $ref: '#/components/parameters/version'
+    get:
+      summary: List Data
+      tags:
+      - datasets
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: ../models/OrganizationData.yaml
+      operationId: list_data
+  /{version}/organization/data:
+    parameters:
+    - $ref: '#/components/parameters/version'
+    - schema:
+        type: string
+      name: dataset-path
+      in: query
+      required: true
+    - schema:
+        type: string
+      name: data-store-config-uuid
+      in: query
+      required: true
+    get:
+      summary: Get dataset metadata
+      tags:
+      - datasets
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: ../models/OrganizationData.yaml
+        '400':
+          description: Bad Request
+      operationId: get_data_metadata
+    patch:
+      summary: Update dataset
+      tags:
+      - datasets
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: ../models/OrganizationData.yaml
+      operationId: update_data
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  x-stoplight:
+                    id: 1236qktwgl5h8
+                description:
+                  type: string
+                  x-stoplight:
+                    id: 7xpiox3s2axqp
+                testDataType:
+                  type: string
+                  enum:
+                  - synthetic
+                  - mock
+                  description: Type of test data to generate. Synthetic test data simulates the original data file. Mock test data is faked data that only uses the data schema.
+    delete:
+      summary: Delete dataset
+      tags:
+      - datasets
+      responses:
+        '204':
+          description: No Content
+      operationId: delete_data
+  /{version}/organization/data/schema:
+    parameters:
+    - $ref: '#/components/parameters/version'
+    post:
+      summary: Upload dataset schema
+      operationId: upload_dataset_schema
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  schemaId:
+                    type: string
+                    description: The upload id corresponding to this schema upload.
+                required:
+                - schemaId
+        '500':
+          description: 'Internal Server Error
+
+            - Could not write schema to disk'
+          content:
+            application/json:
+              schema:
+                $ref: ../models/Error.yaml
+      description: Upload a datum's schema.
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                file:
+                  type: string
+                  format: Binary
+                  description: Schema file getting uploaded.
+              required:
+              - file
+          application/json:
+            schema:
+              type: object
+      tags:
+      - datasets
+  /{version}/organization/data/share:
+    parameters:
+    - $ref: '#/components/parameters/version'
+    post:
+      summary: Batch share organization data with workspace
+      tags:
+      - datasets
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: ../models/Datum.yaml
+      operationId: share_org_data_with_workspace
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                type: object
+                properties:
+                  workspace-uuid:
+                    type: string
+                  dataset-path:
+                    type: string
+                  data-store-config-uuid:
+                    type: string
+                  description:
+                    type: string
+                required:
+                - workspace-uuid
+                - dataset-path
+                - data-store-config-uuid
+  /{version}/organization/data/upload:
+    parameters:
+    - $ref: '#/components/parameters/version'
+    post:
+      summary: Upload data
+      operationId: upload_data
+      responses:
+        '200':
+          description: 'OK
+
+            - Data upload successful'
+          content:
+            application/json:
+              schema:
+                $ref: ../models/OrganizationData.yaml
+        '204':
+          description: 'No Content
+
+            - Chunk upload successful'
+        '400':
+          description: 'Bad Request
+
+            - File already exists'
+          content:
+            application/json:
+              schema:
+                $ref: ../models/Error.yaml
+        '500':
+          description: 'Internal Server Error
+
+            - Could not write file to disk
+
+            - Size mismatch
+
+            - Encryption failed
+
+            - Upload to provider failed'
+          content:
+            application/json:
+              schema:
+                $ref: ../models/Error.yaml
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                file:
+                  type: string
+                  format: Binary
+                schemaId:
+                  type: string
+                name:
+                  type: string
+                policy:
+                  $ref: ../models/DatumPolicy.yaml
+                testDataType:
+                  type: string
+                  enum:
+                  - synthetic
+                  - mock
+                  description: Type of test data to generate. Synthetic test data simulates the original data file. Mock test data is faked data that only uses the data schema.
+                description:
+                  type: string
+                dzchunkindex:
+                  type: string
+                  description: The current chunk index. Required if chunked = true.
+                dzchunkbyteoffset:
+                  type: string
+                  description: The byte offset to place chunk at in file. Required if chunked = true.
+                dztotalchunkcount:
+                  type: string
+                  description: Total number of chunks. Required if chunked = true.
+                dztotalfilesize:
+                  type: string
+                  description: Total file size. Required if chunked = true.
+              required:
+              - file
+              - schemaId
+              - name
+              - policy
+              - testDataType
+            encoding:
+              policy:
+                contentType: application/json
+      description: 'Upload dataset to the Opaque platform for encryption and upload to cloud storage. If the `chunked=true` query parameter is specified, then this endpoint expects additional form parameters for chunking as specified by Dropzone.js.
+
+        The data file should be a CSV file with an optional header row detailing the names of the columns. If the header row is absent, it will be deduced from the associated schema file instead prior to uploading the encrypted data to the cloud.
+
+        If the policy parameter is included in the request body, it may need to be converted to a string before being provided. For example if you are using python
+
+        to send the requests you could use `json.loads(policy)` to convert the policy dictionary to a string.'
+      parameters:
+      - schema:
+          type: boolean
+        in: query
+        name: chunked
+        description: Boolean indicating if a chunked upload is occurring
+      security:
+      - userIdentitySecret: []
+        sessionToken: []
+      tags:
+      - datasets
+  /{version}/organization/data/upload_aws_s3:
+    parameters:
+    - $ref: '#/components/parameters/version'
+    post:
+      summary: Upload data from AWS S3
+      operationId: upload_data_aws_s3
+      responses:
+        '200':
+          description: 'OK
+
+            - Data upload from AWS S3 successful'
+          content:
+            application/json:
+              schema:
+                $ref: ../models/OrganizationData.yaml
+        '400':
+          description: 'Bad Request
+
+            - File already exists'
+          content:
+            application/json:
+              schema:
+                $ref: ../models/Error.yaml
+        '500':
+          description: 'Internal Server Error
+
+            - Streaming from AWS S3 failed
+
+            - Upload to provider failed'
+          content:
+            application/json:
+              schema:
+                $ref: ../models/Error.yaml
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  description: Name of the dataset after uploading
+                policy:
+                  $ref: ../models/DatumPolicy.yaml
+                testDataType:
+                  type: string
+                  enum:
+                  - synthetic
+                  - mock
+                  description: Type of test data to generate. Synthetic test data simulates the original data file. Mock test data is faked data that only uses the data schema.
+                schemaId:
+                  type: string
+                bucketName:
+                  type: string
+                  description: Name of the data source AWS S3 bucket
+                fileName:
+                  type: string
+                  description: Name of the data file in the AWS S3 bucket (that is, the key)
+                accessKey:
+                  type: string
+                  description: AWS access key ID
+                secretKey:
+                  type: string
+                  description: AWS secret access key
+                description:
+                  type: string
+                  description: A description of the dataset
+              required:
+              - name
+              - policy
+              - testDataType
+              - schemaId
+              - bucketName
+              - fileName
+              - accessKey
+              - secretKey
+      tags:
+      - datasets
+      description: Upload dataset to the Opaque platform by streaming existing data from AWS S3.
+      security:
+      - userIdentitySecret: []
+        sessionToken: []
+  /{version}/organization/data/upload_azure_blob_storage:
+    parameters:
+    - $ref: '#/components/parameters/version'
+    post:
+      summary: Upload data from Azure Blob Storage
+      operationId: upload_data_azure_blob_storage
+      responses:
+        '200':
+          description: 'OK
+
+            - Data upload from Azure Blob Storage successful'
+          content:
+            application/json:
+              schema:
+                $ref: ../models/OrganizationData.yaml
+        '400':
+          description: 'Bad Request
+
+            - File already exists'
+          content:
+            application/json:
+              schema:
+                $ref: ../models/Error.yaml
+        '500':
+          description: 'Internal Server Error
+
+            - Streaming from Azure Blob Storage failed
+
+            - Upload to provider failed'
+          content:
+            application/json:
+              schema:
+                $ref: ../models/Error.yaml
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  description: Name of the dataset after uploading
+                policy:
+                  $ref: ../models/DatumPolicy.yaml
+                testDataType:
+                  type: string
+                  enum:
+                  - synthetic
+                  - mock
+                  description: Type of test data to generate. Synthetic test data simulates the original data file. Mock test data is faked data that only uses the data schema.
+                schemaId:
+                  type: string
+                containerName:
+                  type: string
+                  description: Name of the data source Azure Blob Storage container
+                blobName:
+                  type: string
+                  description: Name of the data file (that is, the blob) in the Azure Blob Storage container
+                connectionString:
+                  type: string
+                  description: 'Azure Storage connection string
+
+                    https://learn.microsoft.com/en-us/azure/storage/common/storage-configure-connection-string'
+                description:
+                  type: string
+                  description: A description of the dataset
+              required:
+              - name
+              - policy
+              - testDataType
+              - schemaId
+              - containerName
+              - blobName
+              - connectionString
+      tags:
+      - datasets
+      description: Upload dataset to the Opaque platform by streaming existing data from Azure Blob Storage.
+      security:
+      - userIdentitySecret: []
+        sessionToken: []
+  /{version}/organization/data/upload_azure_files:
+    parameters:
+    - $ref: '#/components/parameters/version'
+    post:
+      summary: Upload data from Azure Files
+      operationId: upload_data_azure_files
+      responses:
+        '200':
+          description: 'OK
+
+            - Data upload from Azure Files successful'
+          content:
+            application/json:
+              schema:
+                $ref: ../models/OrganizationData.yaml
+        '400':
+          description: 'Bad Request
+
+            - File already exists'
+          content:
+            application/json:
+              schema:
+                $ref: ../models/Error.yaml
+        '500':
+          description: 'Internal Server Error
+
+            - Streaming from Azure Files failed
+
+            - Upload to provider failed'
+          content:
+            application/json:
+              schema:
+                $ref: ../models/Error.yaml
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  description: Name of the dataset after uploading
+                policy:
+                  $ref: ../models/DatumPolicy.yaml
+                testDataType:
+                  type: string
+                  enum:
+                  - synthetic
+                  - mock
+                  description: Type of test data to generate. Synthetic test data simulates the original data file. Mock test data is faked data that only uses the data schema.
+                schemaId:
+                  type: string
+                shareName:
+                  type: string
+                  description: Name of the Azure Files file share
+                filePath:
+                  type: string
+                  description: Path of the file on Azure Files
+                connectionString:
+                  type: string
+                  description: 'Azure Storage connection string
+
+                    https://learn.microsoft.com/en-us/azure/storage/common/storage-configure-connection-string'
+                description:
+                  type: string
+                  description: A description of the dataset
+              required:
+              - name
+              - policy
+              - testDataType
+              - schemaId
+              - shareName
+              - filePath
+              - connectionString
+      tags:
+      - datasets
+      description: Upload dataset to the Opaque platform by streaming existing data from Azure Files.
+      security:
+      - userIdentitySecret: []
+        sessionToken: []
+  /{version}/organization/data/upload_google_cloud_storage:
+    parameters:
+    - $ref: '#/components/parameters/version'
+    post:
+      summary: Upload data from Google Cloud Storage
+      operationId: upload_data_google_cloud_storage
+      responses:
+        '200':
+          description: 'OK
+
+            - Data upload from Google Cloud Storage successful'
+          content:
+            application/json:
+              schema:
+                $ref: ../models/OrganizationData.yaml
+        '400':
+          description: 'Bad Request
+
+            - File already exists'
+          content:
+            application/json:
+              schema:
+                $ref: ../models/Error.yaml
+        '500':
+          description: 'Internal Server Error
+
+            - Streaming from Google Cloud Storage failed
+
+            - Upload to provider failed'
+          content:
+            application/json:
+              schema:
+                $ref: ../models/Error.yaml
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  description: Name of the dataset after uploading
+                policy:
+                  $ref: ../models/DatumPolicy.yaml
+                testDataType:
+                  type: string
+                  enum:
+                  - synthetic
+                  - mock
+                  description: Type of test data to generate. Synthetic test data simulates the original data file. Mock test data is faked data that only uses the data schema.
+                schemaId:
+                  type: string
+                bucketName:
+                  type: string
+                  description: Name of the bucket containing data file
+                objectName:
+                  type: string
+                  description: Name of the data object
+                credentialsJson:
+                  type: string
+                  description: 'Google application credential JSON
+
+                    https://cloud.google.com/docs/authentication/application-default-credentials'
+                description:
+                  type: string
+                  description: A description of the dataset
+              required:
+              - name
+              - policy
+              - testDataType
+              - schemaId
+              - bucketName
+              - objectName
+              - credentialsJson
+      tags:
+      - datasets
+      description: Upload dataset to the Opaque platform by streaming existing data from Google Cloud Storage.
+      security:
+      - userIdentitySecret: []
+        sessionToken: []
+  /{version}/organization/data/download:
+    parameters:
+    - $ref: '#/components/parameters/version'
+    - schema:
+        type: string
+      name: dataset-path
+      in: query
+      required: true
+    - schema:
+        type: string
+      name: data-store-config-uuid
+      in: query
+      required: true
+    get:
+      summary: Download data
+      tags:
+      - datasets
+      responses:
+        '200':
+          description: OK
+          content:
+            text/plain:
+              schema:
+                format: binary
+                type: string
+                description: Data as a CSV file
+          headers:
+            Set-Cookie:
+              schema:
+                type: string
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: ../models/Error.yaml
+      operationId: download_data
+      security:
+      - sessionTokenCookie: []
+        userIdentitySecret: []
+        refreshTokenCookie: []
+components:
+  parameters:
+    version:
+      in: path
+      name: version
+      schema:
+        type: string
+        default: v1.2
+        example: v1.2
+      description: Version of the API to call
+      required: true
+  securitySchemes:
+    sessionToken:
+      type: http
+      scheme: bearer
+      description: The bearer token is obtained from the `/login` and `/register` endpoints.
+    userIdentitySecret:
+      name: userIdentitySecret
+      type: apiKey
+      in: cookie
+      description: A binary blob derived from a user's passkey. It can be obtained from the `/login` and `/register` endpoints.
+    sessionTokenCookie:
+      name: sessionTokenCookie
+      type: apiKey
+      in: cookie
+    refreshTokenCookie:
+      name: refreshTokenCookie
+      type: apiKey
+      in: cookie
+x-origin: origin
+x-extension-with: x-extension-with

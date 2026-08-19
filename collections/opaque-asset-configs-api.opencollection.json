@@ -1,0 +1,236 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Opaque UI Asset Configs API",
+    "version": "2.5"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "asset-configs",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Create asset config",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "http://localhost:5001/:version/asset-config",
+            "params": [
+              {
+                "name": "version",
+                "value": "",
+                "type": "path",
+                "description": "Version of the API to call"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Create a new asset config"
+        },
+        {
+          "info": {
+            "name": "Get asset configs by organization",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "http://localhost:5001/:version/organization/asset-configs",
+            "params": [
+              {
+                "name": "version",
+                "value": "",
+                "type": "path",
+                "description": "Version of the API to call"
+              },
+              {
+                "name": "assetType",
+                "value": "",
+                "type": "query",
+                "description": "Filter asset configs by asset type"
+              }
+            ]
+          },
+          "docs": "Get asset configs associated with the user's organization, optionally filtered by asset type"
+        },
+        {
+          "info": {
+            "name": "Batch share organization asset configs with workspaces.",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "http://localhost:5001/:version/organization/asset-configs/share",
+            "params": [
+              {
+                "name": "version",
+                "value": "",
+                "type": "path",
+                "description": "Version of the API to call"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Batch share an organization's asset configs with one or more workspaces.\nThe body is a list of asset config UUIDs and workspace UUIDs pairs.\nReturns the UUIDs of the workspaces that the asset configs were shared with.\n"
+        },
+        {
+          "info": {
+            "name": "Get asset configs by workspace",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "http://localhost:5001/:version/asset-configs/workspace/:workspace_uuid",
+            "params": [
+              {
+                "name": "version",
+                "value": "",
+                "type": "path",
+                "description": "Version of the API to call"
+              },
+              {
+                "name": "workspace_uuid",
+                "value": "",
+                "type": "path",
+                "description": "UUID of the workspace to query asset configs for"
+              },
+              {
+                "name": "assetType",
+                "value": "",
+                "type": "query",
+                "description": "Filter asset configs by asset type"
+              }
+            ]
+          },
+          "docs": "Get asset configs associated with a specific workspace, optionally filtered by asset type"
+        },
+        {
+          "info": {
+            "name": "Get asset config by UUID",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "http://localhost:5001/:version/asset-config/:asset_config_uuid",
+            "params": [
+              {
+                "name": "version",
+                "value": "",
+                "type": "path",
+                "description": "Version of the API to call"
+              },
+              {
+                "name": "asset_config_uuid",
+                "value": "",
+                "type": "path",
+                "description": "UUID of the asset config to retrieve"
+              }
+            ]
+          },
+          "docs": "Get a specific asset config by UUID"
+        },
+        {
+          "info": {
+            "name": "Edit asset config",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "http://localhost:5001/:version/asset-config/:asset_config_uuid",
+            "params": [
+              {
+                "name": "version",
+                "value": "",
+                "type": "path",
+                "description": "Version of the API to call"
+              },
+              {
+                "name": "asset_config_uuid",
+                "value": "",
+                "type": "path",
+                "description": "UUID of the asset config to retrieve"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Update asset config with change classification and impact handling.\n- Metadata-only changes (name, description) apply immediately with no workflow impact\n- Non-metadata/secret changes require impact computation and stop affected workflows\n"
+        },
+        {
+          "info": {
+            "name": "Delete asset config",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "http://localhost:5001/:version/asset-config/:asset_config_uuid",
+            "params": [
+              {
+                "name": "version",
+                "value": "",
+                "type": "path",
+                "description": "Version of the API to call"
+              },
+              {
+                "name": "asset_config_uuid",
+                "value": "",
+                "type": "path",
+                "description": "UUID of the asset config to retrieve"
+              }
+            ]
+          },
+          "docs": "Delete a specific asset config by UUID"
+        },
+        {
+          "info": {
+            "name": "Revoke asset config from workspace",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "http://localhost:5001/:version/workspace/:workspace-uuid/asset-config/:asset-config-uuid",
+            "params": [
+              {
+                "name": "version",
+                "value": "",
+                "type": "path",
+                "description": "Version of the API to call"
+              },
+              {
+                "name": "workspace-uuid",
+                "value": "",
+                "type": "path",
+                "description": "Workspace UUID"
+              },
+              {
+                "name": "asset-config-uuid",
+                "value": "",
+                "type": "path",
+                "description": "Asset Config UUID"
+              }
+            ]
+          },
+          "docs": "Remove the specified asset config from the specified workspace."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

@@ -1,0 +1,146 @@
+openapi: 3.2.0
+info:
+  title: Opaque UI Organizations API
+  version: '2.5'
+  description: This documentation details the REST API endpoints that the client exposes.
+  contact:
+    name: Opaque Systems
+    email: hello@opaque.co
+servers:
+- url: http://localhost:5001/
+  description: Local Server
+security:
+- sessionToken: []
+  refreshTokenCookie: []
+tags:
+- name: organizations
+paths:
+  /{version}/organization/invite:
+    parameters:
+    - $ref: '#/components/parameters/version'
+    post:
+      summary: Invite a new organization member via email
+      operationId: invite_organization_member
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: ../models/OrganizationInvitation.yaml
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                  description: Invitee email
+                  format: email
+                organizationRoles:
+                  type: array
+                  items:
+                    type: string
+                    description: new users are not allowed to take on the organization_admin role
+                    enum:
+                    - consortium_admin
+              required:
+              - email
+              - organizationRoles
+      description: Send email invite to a new user to join the current user's organization. Only the organization admin can call this endpoint.
+      tags:
+      - organizations
+  /{version}/organization/invitation/{invitation-id}:
+    parameters:
+    - $ref: '#/components/parameters/version'
+    - schema:
+        type: string
+      name: invitation-id
+      in: path
+      required: true
+    get:
+      summary: Get an invitation to organization
+      description: Get a specific invitation to an organization. Only the organization admin can call this endpoint.
+      operationId: get_organization_invitation
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: ../models/OrganizationInvitation.yaml
+      tags:
+      - organizations
+  /{version}/organization/invitations:
+    parameters:
+    - $ref: '#/components/parameters/version'
+    get:
+      summary: Get invitations to organization
+      description: Get all the invitations to an organization. Only the organization admin can call this endpoint.
+      operationId: get_organization_invitations
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: ../models/OrganizationInvitation.yaml
+      tags:
+      - organizations
+  /{version}/organization/members:
+    parameters:
+    - $ref: '#/components/parameters/version'
+    get:
+      summary: Get organization members
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: ../models/UserWithRoles.yaml
+      operationId: get_organization_members
+      description: Get the members of the organization.
+      tags:
+      - organizations
+      parameters: []
+      security:
+      - sessionToken: []
+        refreshTokenCookie: []
+      x-internal: true
+components:
+  parameters:
+    version:
+      in: path
+      name: version
+      schema:
+        type: string
+        default: v1.2
+        example: v1.2
+      description: Version of the API to call
+      required: true
+  securitySchemes:
+    sessionToken:
+      type: http
+      scheme: bearer
+      description: The bearer token is obtained from the `/login` and `/register` endpoints.
+    userIdentitySecret:
+      name: userIdentitySecret
+      type: apiKey
+      in: cookie
+      description: A binary blob derived from a user's passkey. It can be obtained from the `/login` and `/register` endpoints.
+    sessionTokenCookie:
+      name: sessionTokenCookie
+      type: apiKey
+      in: cookie
+    refreshTokenCookie:
+      name: refreshTokenCookie
+      type: apiKey
+      in: cookie
+x-origin: origin
+x-extension-with: x-extension-with

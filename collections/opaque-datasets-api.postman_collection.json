@@ -1,0 +1,3515 @@
+{
+  "item": [
+    {
+      "id": "731335f5-a584-491c-b6fe-98cadf0d72b7",
+      "name": "datasets",
+      "description": {
+        "content": "Data & Datum",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "677a8709-c825-46f2-88a1-20b28bb64e43",
+          "name": "Get data for workspace",
+          "request": {
+            "name": "Get data for workspace",
+            "description": {
+              "content": "Get a list of all datum matching the workspace UUID.\n`conditions` and `conditionDropdowns` will be **null** in objects where the user is not the creator.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                ":version",
+                "workspace",
+                ":workspace-uuid",
+                "data"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "v1.2",
+                  "key": "version",
+                  "description": "(Required) Version of the API to call"
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "workspace-uuid",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "50c07f40-66ea-44d5-b48c-7e92fa261fe9",
+              "name": "OK",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    ":version",
+                    "workspace",
+                    ":workspace-uuid",
+                    "data"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "v1.2",
+                      "key": "version",
+                      "description": "(Required) Version of the API to call"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "workspace-uuid",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "[\n  {\n    \"value\": \"reference ../models/Datum.yaml not found in the OpenAPI spec\"\n  },\n  {\n    \"value\": \"reference ../models/Datum.yaml not found in the OpenAPI spec\"\n  }\n]",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "5373609a-708c-4e0b-b89d-e366da519918",
+          "name": "Remove data from workspace",
+          "request": {
+            "name": "Remove data from workspace",
+            "description": {},
+            "url": {
+              "path": [
+                ":version",
+                "workspace",
+                ":workspace-uuid",
+                "data"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "dataset-path",
+                  "value": "<string>",
+                  "description": "(Required) "
+                },
+                {
+                  "disabled": false,
+                  "key": "data-store-config-uuid",
+                  "value": "<string>",
+                  "description": "(Required) "
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "v1.2",
+                  "key": "version",
+                  "description": "(Required) Version of the API to call"
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "workspace-uuid",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "method": "DELETE",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "f8be5c36-135e-4032-a3d3-e42696d4c458",
+              "name": "No Content",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    ":version",
+                    "workspace",
+                    ":workspace-uuid",
+                    "data"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "dataset-path",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "data-store-config-uuid",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "v1.2",
+                      "key": "version",
+                      "description": "(Required) Version of the API to call"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "workspace-uuid",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "No Content",
+              "code": 204,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "b88c193f-9a91-46df-acbd-270a5526df1e",
+          "name": "Get datum",
+          "request": {
+            "name": "Get datum",
+            "description": {
+              "content": "Get a datum.\n`conditions` and `conditionDropdowns` will be **null** if the user is not the creator.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                ":version",
+                "datum",
+                ":datum-uuid"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "datum-uuid",
+                  "description": "(Required) "
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "v1.2",
+                  "key": "version",
+                  "description": "(Required) Version of the API to call"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "e9251ec3-d6da-4adc-8962-41e7809da47b",
+              "name": "OK",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    ":version",
+                    "datum",
+                    ":datum-uuid"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "datum-uuid",
+                      "description": "(Required) "
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "v1.2",
+                      "key": "version",
+                      "description": "(Required) Version of the API to call"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "7b65ba60-8510-4078-b078-63fc0c673f5c",
+          "name": "Delete datum",
+          "request": {
+            "name": "Delete datum",
+            "description": {
+              "content": "Delete the datum with the provided id",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                ":version",
+                "datum",
+                ":datum-uuid"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "datum-uuid",
+                  "description": "(Required) "
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "v1.2",
+                  "key": "version",
+                  "description": "(Required) Version of the API to call"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "DELETE",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "67f970d5-1a5d-4263-8c71-f8dc82b8ae66",
+              "name": "No Content",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    ":version",
+                    "datum",
+                    ":datum-uuid"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "datum-uuid",
+                      "description": "(Required) "
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "v1.2",
+                      "key": "version",
+                      "description": "(Required) Version of the API to call"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "No Content",
+              "code": 204,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "0c99968c-481f-4843-b087-ff49049906d8",
+              "name": "Internal Server Error\n- Provider deletion failed",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    ":version",
+                    "datum",
+                    ":datum-uuid"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "datum-uuid",
+                      "description": "(Required) "
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "v1.2",
+                      "key": "version",
+                      "description": "(Required) Version of the API to call"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "a96f938f-cb28-4e35-a57a-415c3620ab11",
+          "name": "Update data in workspace",
+          "request": {
+            "name": "Update data in workspace",
+            "description": {},
+            "url": {
+              "path": [
+                ":version",
+                "datum",
+                ":datum-uuid"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "datum-uuid",
+                  "description": "(Required) "
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "v1.2",
+                  "key": "version",
+                  "description": "(Required) Version of the API to call"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "PATCH",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"description\": \"<string>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "44d527b0-081e-44b9-a4ca-fcc02fbaaac2",
+              "name": "OK",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    ":version",
+                    "datum",
+                    ":datum-uuid"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "datum-uuid",
+                      "description": "(Required) "
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "v1.2",
+                      "key": "version",
+                      "description": "(Required) Version of the API to call"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PATCH",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"description\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "bea05596-749a-4f0a-bae0-fcb6c0b05b18",
+          "name": "List Data",
+          "request": {
+            "name": "List Data",
+            "description": {},
+            "url": {
+              "path": [
+                ":version",
+                "organization",
+                "datasets"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "v1.2",
+                  "key": "version",
+                  "description": "(Required) Version of the API to call"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "df08eaac-179e-4299-b5cb-e19663ea0bfb",
+              "name": "OK",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    ":version",
+                    "organization",
+                    "datasets"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "v1.2",
+                      "key": "version",
+                      "description": "(Required) Version of the API to call"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "[\n  {\n    \"value\": \"reference ../models/OrganizationData.yaml not found in the OpenAPI spec\"\n  },\n  {\n    \"value\": \"reference ../models/OrganizationData.yaml not found in the OpenAPI spec\"\n  }\n]",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "33ab18dc-ceaf-4a49-a567-d92c4ce9a5fa",
+          "name": "Get dataset metadata",
+          "request": {
+            "name": "Get dataset metadata",
+            "description": {},
+            "url": {
+              "path": [
+                ":version",
+                "organization",
+                "data"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "dataset-path",
+                  "value": "<string>",
+                  "description": "(Required) "
+                },
+                {
+                  "disabled": false,
+                  "key": "data-store-config-uuid",
+                  "value": "<string>",
+                  "description": "(Required) "
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "v1.2",
+                  "key": "version",
+                  "description": "(Required) Version of the API to call"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "943583fd-e735-496d-8ee4-41ce5a058c89",
+              "name": "OK",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    ":version",
+                    "organization",
+                    "data"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "dataset-path",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "data-store-config-uuid",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "v1.2",
+                      "key": "version",
+                      "description": "(Required) Version of the API to call"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "a5108b37-f9c8-423f-9888-1404d6d64408",
+              "name": "Bad Request",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    ":version",
+                    "organization",
+                    "data"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "dataset-path",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "data-store-config-uuid",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "v1.2",
+                      "key": "version",
+                      "description": "(Required) Version of the API to call"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "dcfd0bd1-804c-442a-ac6a-b8e7419ed580",
+          "name": "Update dataset",
+          "request": {
+            "name": "Update dataset",
+            "description": {},
+            "url": {
+              "path": [
+                ":version",
+                "organization",
+                "data"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "dataset-path",
+                  "value": "<string>",
+                  "description": "(Required) "
+                },
+                {
+                  "disabled": false,
+                  "key": "data-store-config-uuid",
+                  "value": "<string>",
+                  "description": "(Required) "
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "v1.2",
+                  "key": "version",
+                  "description": "(Required) Version of the API to call"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "PATCH",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"<string>\",\n  \"description\": \"<string>\",\n  \"testDataType\": \"<string>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "ed6e0330-a634-4749-bbe4-10a5d217ed7d",
+              "name": "OK",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    ":version",
+                    "organization",
+                    "data"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "dataset-path",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "data-store-config-uuid",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "v1.2",
+                      "key": "version",
+                      "description": "(Required) Version of the API to call"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PATCH",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"name\": \"<string>\",\n  \"description\": \"<string>\",\n  \"testDataType\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "fe3fb110-3f82-40a6-bde5-cbac132fd1ed",
+          "name": "Delete dataset",
+          "request": {
+            "name": "Delete dataset",
+            "description": {},
+            "url": {
+              "path": [
+                ":version",
+                "organization",
+                "data"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "dataset-path",
+                  "value": "<string>",
+                  "description": "(Required) "
+                },
+                {
+                  "disabled": false,
+                  "key": "data-store-config-uuid",
+                  "value": "<string>",
+                  "description": "(Required) "
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "v1.2",
+                  "key": "version",
+                  "description": "(Required) Version of the API to call"
+                }
+              ]
+            },
+            "method": "DELETE",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "94a4c81a-996a-4d88-9fb2-eed00013d70c",
+              "name": "No Content",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    ":version",
+                    "organization",
+                    "data"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "dataset-path",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "data-store-config-uuid",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "v1.2",
+                      "key": "version",
+                      "description": "(Required) Version of the API to call"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "No Content",
+              "code": 204,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "17687387-bea2-423c-a191-85a55878de5d",
+          "name": "Upload dataset schema",
+          "request": {
+            "name": "Upload dataset schema",
+            "description": {
+              "content": "Upload a datum's schema.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                ":version",
+                "organization",
+                "data",
+                "schema"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "v1.2",
+                  "key": "version",
+                  "description": "(Required) Version of the API to call"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "multipart/form-data"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "file",
+                  "value": "<Binary>",
+                  "type": "text",
+                  "description": "(Required) Schema file getting uploaded."
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "cabbcf70-4a41-47a8-8f74-175c3abf8130",
+              "name": "OK",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    ":version",
+                    "organization",
+                    "data",
+                    "schema"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "v1.2",
+                      "key": "version",
+                      "description": "(Required) Version of the API to call"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "formdata",
+                  "formdata": [
+                    {
+                      "description": {
+                        "content": "(Required) Schema file getting uploaded.",
+                        "type": "text/plain"
+                      },
+                      "key": "file",
+                      "value": "<Binary>",
+                      "type": "text"
+                    }
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"schemaId\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "4adedf1c-44f5-4aa0-8eb9-5196278dffd6",
+              "name": "Internal Server Error\n- Could not write schema to disk",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    ":version",
+                    "organization",
+                    "data",
+                    "schema"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "v1.2",
+                      "key": "version",
+                      "description": "(Required) Version of the API to call"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "formdata",
+                  "formdata": [
+                    {
+                      "description": {
+                        "content": "(Required) Schema file getting uploaded.",
+                        "type": "text/plain"
+                      },
+                      "key": "file",
+                      "value": "<Binary>",
+                      "type": "text"
+                    }
+                  ]
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "f710f0f6-5d47-4a41-8656-5245f5669af6",
+          "name": "Batch share organization data with workspace",
+          "request": {
+            "name": "Batch share organization data with workspace",
+            "description": {},
+            "url": {
+              "path": [
+                ":version",
+                "organization",
+                "data",
+                "share"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "v1.2",
+                  "key": "version",
+                  "description": "(Required) Version of the API to call"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "[\n  {\n    \"workspace-uuid\": \"<string>\",\n    \"dataset-path\": \"<string>\",\n    \"data-store-config-uuid\": \"<string>\",\n    \"description\": \"<string>\"\n  },\n  {\n    \"workspace-uuid\": \"<string>\",\n    \"dataset-path\": \"<string>\",\n    \"data-store-config-uuid\": \"<string>\",\n    \"description\": \"<string>\"\n  }\n]",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "f353e9c5-72fb-41d1-9d82-6d21d53b7e6d",
+              "name": "OK",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    ":version",
+                    "organization",
+                    "data",
+                    "share"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "v1.2",
+                      "key": "version",
+                      "description": "(Required) Version of the API to call"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "[\n  {\n    \"workspace-uuid\": \"<string>\",\n    \"dataset-path\": \"<string>\",\n    \"data-store-config-uuid\": \"<string>\",\n    \"description\": \"<string>\"\n  },\n  {\n    \"workspace-uuid\": \"<string>\",\n    \"dataset-path\": \"<string>\",\n    \"data-store-config-uuid\": \"<string>\",\n    \"description\": \"<string>\"\n  }\n]",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "[\n  {\n    \"value\": \"reference ../models/Datum.yaml not found in the OpenAPI spec\"\n  },\n  {\n    \"value\": \"reference ../models/Datum.yaml not found in the OpenAPI spec\"\n  }\n]",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "ed56486e-13e9-43a0-82d6-6b4a6e32df4d",
+          "name": "Upload data",
+          "request": {
+            "name": "Upload data",
+            "description": {
+              "content": "Upload dataset to the Opaque platform for encryption and upload to cloud storage. If the `chunked=true` query parameter is specified, then this endpoint expects additional form parameters for chunking as specified by Dropzone.js.\nThe data file should be a CSV file with an optional header row detailing the names of the columns. If the header row is absent, it will be deduced from the associated schema file instead prior to uploading the encrypted data to the cloud.\nIf the policy parameter is included in the request body, it may need to be converted to a string before being provided. For example if you are using python\nto send the requests you could use `json.loads(policy)` to convert the policy dictionary to a string.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                ":version",
+                "organization",
+                "data",
+                "upload"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "chunked",
+                  "value": "<boolean>",
+                  "description": "Boolean indicating if a chunked upload is occurring"
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "v1.2",
+                  "key": "version",
+                  "description": "(Required) Version of the API to call"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "multipart/form-data"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": {
+              "type": "apikey",
+              "apikey": [
+                {
+                  "key": "key",
+                  "value": "userIdentitySecret"
+                },
+                {
+                  "key": "value",
+                  "value": "{{apiKey}}"
+                },
+                {
+                  "key": "in",
+                  "value": "header"
+                }
+              ]
+            },
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "file",
+                  "value": "<Binary>",
+                  "type": "text",
+                  "description": "(Required) "
+                },
+                {
+                  "key": "schemaId",
+                  "value": "<string>",
+                  "type": "text",
+                  "description": "(Required) "
+                },
+                {
+                  "key": "name",
+                  "value": "<string>",
+                  "type": "text",
+                  "description": "(Required) "
+                },
+                {
+                  "key": "policy",
+                  "value": "{\"value\":\"reference ../models/DatumPolicy.yaml not found in the OpenAPI spec\"}",
+                  "type": "text",
+                  "contentType": "application/json",
+                  "description": "(Required) "
+                },
+                {
+                  "key": "testDataType",
+                  "value": "<string>",
+                  "type": "text",
+                  "description": "(Required) Type of test data to generate. Synthetic test data simulates the original data file. Mock test data is faked data that only uses the data schema. (This can only be one of synthetic,mock)"
+                },
+                {
+                  "key": "description",
+                  "value": "<string>",
+                  "type": "text",
+                  "description": ""
+                },
+                {
+                  "key": "dzchunkindex",
+                  "value": "<string>",
+                  "type": "text",
+                  "description": "The current chunk index. Required if chunked = true."
+                },
+                {
+                  "key": "dzchunkbyteoffset",
+                  "value": "<string>",
+                  "type": "text",
+                  "description": "The byte offset to place chunk at in file. Required if chunked = true."
+                },
+                {
+                  "key": "dztotalchunkcount",
+                  "value": "<string>",
+                  "type": "text",
+                  "description": "Total number of chunks. Required if chunked = true."
+                },
+                {
+                  "key": "dztotalfilesize",
+                  "value": "<string>",
+                  "type": "text",
+                  "description": "Total file size. Required if chunked = true."
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "3f8eae2e-fb65-4a22-8ccc-73e832d7d53f",
+              "name": "OK\n- Data upload successful",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    ":version",
+                    "organization",
+                    "data",
+                    "upload"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "chunked",
+                      "value": "<boolean>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "v1.2",
+                      "key": "version",
+                      "description": "(Required) Version of the API to call"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "userIdentitySecret",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "formdata",
+                  "formdata": [
+                    {
+                      "description": {
+                        "content": "(Required) ",
+                        "type": "text/plain"
+                      },
+                      "key": "file",
+                      "value": "<Binary>",
+                      "type": "text"
+                    },
+                    {
+                      "description": {
+                        "content": "(Required) ",
+                        "type": "text/plain"
+                      },
+                      "key": "schemaId",
+                      "value": "<string>",
+                      "type": "text"
+                    },
+                    {
+                      "description": {
+                        "content": "(Required) ",
+                        "type": "text/plain"
+                      },
+                      "key": "name",
+                      "value": "<string>",
+                      "type": "text"
+                    },
+                    {
+                      "description": {
+                        "content": "(Required) ",
+                        "type": "text/plain"
+                      },
+                      "key": "policy",
+                      "value": "{\"value\":\"reference ../models/DatumPolicy.yaml not found in the OpenAPI spec\"}",
+                      "type": "text",
+                      "contentType": "application/json"
+                    },
+                    {
+                      "description": {
+                        "content": "(Required) Type of test data to generate. Synthetic test data simulates the original data file. Mock test data is faked data that only uses the data schema. (This can only be one of synthetic,mock)",
+                        "type": "text/plain"
+                      },
+                      "key": "testDataType",
+                      "value": "<string>",
+                      "type": "text"
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "key": "description",
+                      "value": "<string>",
+                      "type": "text"
+                    },
+                    {
+                      "description": {
+                        "content": "The current chunk index. Required if chunked = true.",
+                        "type": "text/plain"
+                      },
+                      "key": "dzchunkindex",
+                      "value": "<string>",
+                      "type": "text"
+                    },
+                    {
+                      "description": {
+                        "content": "The byte offset to place chunk at in file. Required if chunked = true.",
+                        "type": "text/plain"
+                      },
+                      "key": "dzchunkbyteoffset",
+                      "value": "<string>",
+                      "type": "text"
+                    },
+                    {
+                      "description": {
+                        "content": "Total number of chunks. Required if chunked = true.",
+                        "type": "text/plain"
+                      },
+                      "key": "dztotalchunkcount",
+                      "value": "<string>",
+                      "type": "text"
+                    },
+                    {
+                      "description": {
+                        "content": "Total file size. Required if chunked = true.",
+                        "type": "text/plain"
+                      },
+                      "key": "dztotalfilesize",
+                      "value": "<string>",
+                      "type": "text"
+                    }
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "56555861-7ccc-4a30-bd28-11e3a402ccb5",
+              "name": "No Content\n- Chunk upload successful",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    ":version",
+                    "organization",
+                    "data",
+                    "upload"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "chunked",
+                      "value": "<boolean>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "v1.2",
+                      "key": "version",
+                      "description": "(Required) Version of the API to call"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "userIdentitySecret",
+                    "value": "<API Key>"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "formdata",
+                  "formdata": [
+                    {
+                      "description": {
+                        "content": "(Required) ",
+                        "type": "text/plain"
+                      },
+                      "key": "file",
+                      "value": "<Binary>",
+                      "type": "text"
+                    },
+                    {
+                      "description": {
+                        "content": "(Required) ",
+                        "type": "text/plain"
+                      },
+                      "key": "schemaId",
+                      "value": "<string>",
+                      "type": "text"
+                    },
+                    {
+                      "description": {
+                        "content": "(Required) ",
+                        "type": "text/plain"
+                      },
+                      "key": "name",
+                      "value": "<string>",
+                      "type": "text"
+                    },
+                    {
+                      "description": {
+                        "content": "(Required) ",
+                        "type": "text/plain"
+                      },
+                      "key": "policy",
+                      "value": "{\"value\":\"reference ../models/DatumPolicy.yaml not found in the OpenAPI spec\"}",
+                      "type": "text",
+                      "contentType": "application/json"
+                    },
+                    {
+                      "description": {
+                        "content": "(Required) Type of test data to generate. Synthetic test data simulates the original data file. Mock test data is faked data that only uses the data schema. (This can only be one of synthetic,mock)",
+                        "type": "text/plain"
+                      },
+                      "key": "testDataType",
+                      "value": "<string>",
+                      "type": "text"
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "key": "description",
+                      "value": "<string>",
+                      "type": "text"
+                    },
+                    {
+                      "description": {
+                        "content": "The current chunk index. Required if chunked = true.",
+                        "type": "text/plain"
+                      },
+                      "key": "dzchunkindex",
+                      "value": "<string>",
+                      "type": "text"
+                    },
+                    {
+                      "description": {
+                        "content": "The byte offset to place chunk at in file. Required if chunked = true.",
+                        "type": "text/plain"
+                      },
+                      "key": "dzchunkbyteoffset",
+                      "value": "<string>",
+                      "type": "text"
+                    },
+                    {
+                      "description": {
+                        "content": "Total number of chunks. Required if chunked = true.",
+                        "type": "text/plain"
+                      },
+                      "key": "dztotalchunkcount",
+                      "value": "<string>",
+                      "type": "text"
+                    },
+                    {
+                      "description": {
+                        "content": "Total file size. Required if chunked = true.",
+                        "type": "text/plain"
+                      },
+                      "key": "dztotalfilesize",
+                      "value": "<string>",
+                      "type": "text"
+                    }
+                  ]
+                }
+              },
+              "status": "No Content",
+              "code": 204,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "90ae29e4-f234-4e67-aebb-7bec3fb4d13c",
+              "name": "Bad Request\n- File already exists",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    ":version",
+                    "organization",
+                    "data",
+                    "upload"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "chunked",
+                      "value": "<boolean>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "v1.2",
+                      "key": "version",
+                      "description": "(Required) Version of the API to call"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "userIdentitySecret",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "formdata",
+                  "formdata": [
+                    {
+                      "description": {
+                        "content": "(Required) ",
+                        "type": "text/plain"
+                      },
+                      "key": "file",
+                      "value": "<Binary>",
+                      "type": "text"
+                    },
+                    {
+                      "description": {
+                        "content": "(Required) ",
+                        "type": "text/plain"
+                      },
+                      "key": "schemaId",
+                      "value": "<string>",
+                      "type": "text"
+                    },
+                    {
+                      "description": {
+                        "content": "(Required) ",
+                        "type": "text/plain"
+                      },
+                      "key": "name",
+                      "value": "<string>",
+                      "type": "text"
+                    },
+                    {
+                      "description": {
+                        "content": "(Required) ",
+                        "type": "text/plain"
+                      },
+                      "key": "policy",
+                      "value": "{\"value\":\"reference ../models/DatumPolicy.yaml not found in the OpenAPI spec\"}",
+                      "type": "text",
+                      "contentType": "application/json"
+                    },
+                    {
+                      "description": {
+                        "content": "(Required) Type of test data to generate. Synthetic test data simulates the original data file. Mock test data is faked data that only uses the data schema. (This can only be one of synthetic,mock)",
+                        "type": "text/plain"
+                      },
+                      "key": "testDataType",
+                      "value": "<string>",
+                      "type": "text"
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "key": "description",
+                      "value": "<string>",
+                      "type": "text"
+                    },
+                    {
+                      "description": {
+                        "content": "The current chunk index. Required if chunked = true.",
+                        "type": "text/plain"
+                      },
+                      "key": "dzchunkindex",
+                      "value": "<string>",
+                      "type": "text"
+                    },
+                    {
+                      "description": {
+                        "content": "The byte offset to place chunk at in file. Required if chunked = true.",
+                        "type": "text/plain"
+                      },
+                      "key": "dzchunkbyteoffset",
+                      "value": "<string>",
+                      "type": "text"
+                    },
+                    {
+                      "description": {
+                        "content": "Total number of chunks. Required if chunked = true.",
+                        "type": "text/plain"
+                      },
+                      "key": "dztotalchunkcount",
+                      "value": "<string>",
+                      "type": "text"
+                    },
+                    {
+                      "description": {
+                        "content": "Total file size. Required if chunked = true.",
+                        "type": "text/plain"
+                      },
+                      "key": "dztotalfilesize",
+                      "value": "<string>",
+                      "type": "text"
+                    }
+                  ]
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "5307d85f-656f-41fc-bb6f-20abc522f7a1",
+              "name": "Internal Server Error\n- Could not write file to disk\n- Size mismatch\n- Encryption failed\n- Upload to provider failed",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    ":version",
+                    "organization",
+                    "data",
+                    "upload"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "chunked",
+                      "value": "<boolean>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "v1.2",
+                      "key": "version",
+                      "description": "(Required) Version of the API to call"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "userIdentitySecret",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "formdata",
+                  "formdata": [
+                    {
+                      "description": {
+                        "content": "(Required) ",
+                        "type": "text/plain"
+                      },
+                      "key": "file",
+                      "value": "<Binary>",
+                      "type": "text"
+                    },
+                    {
+                      "description": {
+                        "content": "(Required) ",
+                        "type": "text/plain"
+                      },
+                      "key": "schemaId",
+                      "value": "<string>",
+                      "type": "text"
+                    },
+                    {
+                      "description": {
+                        "content": "(Required) ",
+                        "type": "text/plain"
+                      },
+                      "key": "name",
+                      "value": "<string>",
+                      "type": "text"
+                    },
+                    {
+                      "description": {
+                        "content": "(Required) ",
+                        "type": "text/plain"
+                      },
+                      "key": "policy",
+                      "value": "{\"value\":\"reference ../models/DatumPolicy.yaml not found in the OpenAPI spec\"}",
+                      "type": "text",
+                      "contentType": "application/json"
+                    },
+                    {
+                      "description": {
+                        "content": "(Required) Type of test data to generate. Synthetic test data simulates the original data file. Mock test data is faked data that only uses the data schema. (This can only be one of synthetic,mock)",
+                        "type": "text/plain"
+                      },
+                      "key": "testDataType",
+                      "value": "<string>",
+                      "type": "text"
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "key": "description",
+                      "value": "<string>",
+                      "type": "text"
+                    },
+                    {
+                      "description": {
+                        "content": "The current chunk index. Required if chunked = true.",
+                        "type": "text/plain"
+                      },
+                      "key": "dzchunkindex",
+                      "value": "<string>",
+                      "type": "text"
+                    },
+                    {
+                      "description": {
+                        "content": "The byte offset to place chunk at in file. Required if chunked = true.",
+                        "type": "text/plain"
+                      },
+                      "key": "dzchunkbyteoffset",
+                      "value": "<string>",
+                      "type": "text"
+                    },
+                    {
+                      "description": {
+                        "content": "Total number of chunks. Required if chunked = true.",
+                        "type": "text/plain"
+                      },
+                      "key": "dztotalchunkcount",
+                      "value": "<string>",
+                      "type": "text"
+                    },
+                    {
+                      "description": {
+                        "content": "Total file size. Required if chunked = true.",
+                        "type": "text/plain"
+                      },
+                      "key": "dztotalfilesize",
+                      "value": "<string>",
+                      "type": "text"
+                    }
+                  ]
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "7164098a-85cb-4e27-9be5-c5951616d8de",
+          "name": "Upload data from AWS S3",
+          "request": {
+            "name": "Upload data from AWS S3",
+            "description": {
+              "content": "Upload dataset to the Opaque platform by streaming existing data from AWS S3.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                ":version",
+                "organization",
+                "data",
+                "upload_aws_s3"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "v1.2",
+                  "key": "version",
+                  "description": "(Required) Version of the API to call"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": {
+              "type": "apikey",
+              "apikey": [
+                {
+                  "key": "key",
+                  "value": "userIdentitySecret"
+                },
+                {
+                  "key": "value",
+                  "value": "{{apiKey}}"
+                },
+                {
+                  "key": "in",
+                  "value": "header"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"<string>\",\n  \"policy\": {\n    \"value\": \"reference ../models/DatumPolicy.yaml not found in the OpenAPI spec\"\n  },\n  \"testDataType\": \"<string>\",\n  \"schemaId\": \"<string>\",\n  \"bucketName\": \"<string>\",\n  \"fileName\": \"<string>\",\n  \"accessKey\": \"<string>\",\n  \"secretKey\": \"<string>\",\n  \"description\": \"<string>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "44ec0400-dcf3-4529-b830-200ab2573918",
+              "name": "OK\n- Data upload from AWS S3 successful",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    ":version",
+                    "organization",
+                    "data",
+                    "upload_aws_s3"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "v1.2",
+                      "key": "version",
+                      "description": "(Required) Version of the API to call"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "userIdentitySecret",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"name\": \"<string>\",\n  \"policy\": {\n    \"value\": \"reference ../models/DatumPolicy.yaml not found in the OpenAPI spec\"\n  },\n  \"testDataType\": \"<string>\",\n  \"schemaId\": \"<string>\",\n  \"bucketName\": \"<string>\",\n  \"fileName\": \"<string>\",\n  \"accessKey\": \"<string>\",\n  \"secretKey\": \"<string>\",\n  \"description\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "ac512d20-b420-43f5-9ad3-a6b27289c7cf",
+              "name": "Bad Request\n- File already exists",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    ":version",
+                    "organization",
+                    "data",
+                    "upload_aws_s3"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "v1.2",
+                      "key": "version",
+                      "description": "(Required) Version of the API to call"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "userIdentitySecret",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"name\": \"<string>\",\n  \"policy\": {\n    \"value\": \"reference ../models/DatumPolicy.yaml not found in the OpenAPI spec\"\n  },\n  \"testDataType\": \"<string>\",\n  \"schemaId\": \"<string>\",\n  \"bucketName\": \"<string>\",\n  \"fileName\": \"<string>\",\n  \"accessKey\": \"<string>\",\n  \"secretKey\": \"<string>\",\n  \"description\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "18d9b6de-8907-461e-a45f-d4e64eb51ea3",
+              "name": "Internal Server Error\n- Streaming from AWS S3 failed\n- Upload to provider failed",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    ":version",
+                    "organization",
+                    "data",
+                    "upload_aws_s3"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "v1.2",
+                      "key": "version",
+                      "description": "(Required) Version of the API to call"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "userIdentitySecret",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"name\": \"<string>\",\n  \"policy\": {\n    \"value\": \"reference ../models/DatumPolicy.yaml not found in the OpenAPI spec\"\n  },\n  \"testDataType\": \"<string>\",\n  \"schemaId\": \"<string>\",\n  \"bucketName\": \"<string>\",\n  \"fileName\": \"<string>\",\n  \"accessKey\": \"<string>\",\n  \"secretKey\": \"<string>\",\n  \"description\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "164e9262-fb27-45bc-98c6-715f69805565",
+          "name": "Upload data from Azure Blob Storage",
+          "request": {
+            "name": "Upload data from Azure Blob Storage",
+            "description": {
+              "content": "Upload dataset to the Opaque platform by streaming existing data from Azure Blob Storage.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                ":version",
+                "organization",
+                "data",
+                "upload_azure_blob_storage"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "v1.2",
+                  "key": "version",
+                  "description": "(Required) Version of the API to call"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": {
+              "type": "apikey",
+              "apikey": [
+                {
+                  "key": "key",
+                  "value": "userIdentitySecret"
+                },
+                {
+                  "key": "value",
+                  "value": "{{apiKey}}"
+                },
+                {
+                  "key": "in",
+                  "value": "header"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"<string>\",\n  \"policy\": {\n    \"value\": \"reference ../models/DatumPolicy.yaml not found in the OpenAPI spec\"\n  },\n  \"testDataType\": \"<string>\",\n  \"schemaId\": \"<string>\",\n  \"containerName\": \"<string>\",\n  \"blobName\": \"<string>\",\n  \"connectionString\": \"<string>\",\n  \"description\": \"<string>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "43cb1dc2-7b85-46b6-8416-8204e9c8f4fa",
+              "name": "OK\n- Data upload from Azure Blob Storage successful",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    ":version",
+                    "organization",
+                    "data",
+                    "upload_azure_blob_storage"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "v1.2",
+                      "key": "version",
+                      "description": "(Required) Version of the API to call"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "userIdentitySecret",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"name\": \"<string>\",\n  \"policy\": {\n    \"value\": \"reference ../models/DatumPolicy.yaml not found in the OpenAPI spec\"\n  },\n  \"testDataType\": \"<string>\",\n  \"schemaId\": \"<string>\",\n  \"containerName\": \"<string>\",\n  \"blobName\": \"<string>\",\n  \"connectionString\": \"<string>\",\n  \"description\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "01b77f9d-ee50-46d1-8cde-0b719ef1a8a8",
+              "name": "Bad Request\n- File already exists",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    ":version",
+                    "organization",
+                    "data",
+                    "upload_azure_blob_storage"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "v1.2",
+                      "key": "version",
+                      "description": "(Required) Version of the API to call"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "userIdentitySecret",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"name\": \"<string>\",\n  \"policy\": {\n    \"value\": \"reference ../models/DatumPolicy.yaml not found in the OpenAPI spec\"\n  },\n  \"testDataType\": \"<string>\",\n  \"schemaId\": \"<string>\",\n  \"containerName\": \"<string>\",\n  \"blobName\": \"<string>\",\n  \"connectionString\": \"<string>\",\n  \"description\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "e49161ec-bd87-49ec-9995-e4c3ca4d605c",
+              "name": "Internal Server Error\n- Streaming from Azure Blob Storage failed\n- Upload to provider failed",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    ":version",
+                    "organization",
+                    "data",
+                    "upload_azure_blob_storage"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "v1.2",
+                      "key": "version",
+                      "description": "(Required) Version of the API to call"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "userIdentitySecret",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"name\": \"<string>\",\n  \"policy\": {\n    \"value\": \"reference ../models/DatumPolicy.yaml not found in the OpenAPI spec\"\n  },\n  \"testDataType\": \"<string>\",\n  \"schemaId\": \"<string>\",\n  \"containerName\": \"<string>\",\n  \"blobName\": \"<string>\",\n  \"connectionString\": \"<string>\",\n  \"description\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "3a964f33-0dc5-4812-8515-300b438ffdc6",
+          "name": "Upload data from Azure Files",
+          "request": {
+            "name": "Upload data from Azure Files",
+            "description": {
+              "content": "Upload dataset to the Opaque platform by streaming existing data from Azure Files.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                ":version",
+                "organization",
+                "data",
+                "upload_azure_files"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "v1.2",
+                  "key": "version",
+                  "description": "(Required) Version of the API to call"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": {
+              "type": "apikey",
+              "apikey": [
+                {
+                  "key": "key",
+                  "value": "userIdentitySecret"
+                },
+                {
+                  "key": "value",
+                  "value": "{{apiKey}}"
+                },
+                {
+                  "key": "in",
+                  "value": "header"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"<string>\",\n  \"policy\": {\n    \"value\": \"reference ../models/DatumPolicy.yaml not found in the OpenAPI spec\"\n  },\n  \"testDataType\": \"<string>\",\n  \"schemaId\": \"<string>\",\n  \"shareName\": \"<string>\",\n  \"filePath\": \"<string>\",\n  \"connectionString\": \"<string>\",\n  \"description\": \"<string>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "806dba85-82b4-4d15-8656-0637e77e0b25",
+              "name": "OK\n- Data upload from Azure Files successful",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    ":version",
+                    "organization",
+                    "data",
+                    "upload_azure_files"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "v1.2",
+                      "key": "version",
+                      "description": "(Required) Version of the API to call"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "userIdentitySecret",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"name\": \"<string>\",\n  \"policy\": {\n    \"value\": \"reference ../models/DatumPolicy.yaml not found in the OpenAPI spec\"\n  },\n  \"testDataType\": \"<string>\",\n  \"schemaId\": \"<string>\",\n  \"shareName\": \"<string>\",\n  \"filePath\": \"<string>\",\n  \"connectionString\": \"<string>\",\n  \"description\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "5bf883d7-cd86-43cb-b4c4-9e81cdb558be",
+              "name": "Bad Request\n- File already exists",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    ":version",
+                    "organization",
+                    "data",
+                    "upload_azure_files"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "v1.2",
+                      "key": "version",
+                      "description": "(Required) Version of the API to call"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "userIdentitySecret",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"name\": \"<string>\",\n  \"policy\": {\n    \"value\": \"reference ../models/DatumPolicy.yaml not found in the OpenAPI spec\"\n  },\n  \"testDataType\": \"<string>\",\n  \"schemaId\": \"<string>\",\n  \"shareName\": \"<string>\",\n  \"filePath\": \"<string>\",\n  \"connectionString\": \"<string>\",\n  \"description\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "64c318c6-36c4-4c42-969b-7901b7139cc1",
+              "name": "Internal Server Error\n- Streaming from Azure Files failed\n- Upload to provider failed",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    ":version",
+                    "organization",
+                    "data",
+                    "upload_azure_files"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "v1.2",
+                      "key": "version",
+                      "description": "(Required) Version of the API to call"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "userIdentitySecret",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"name\": \"<string>\",\n  \"policy\": {\n    \"value\": \"reference ../models/DatumPolicy.yaml not found in the OpenAPI spec\"\n  },\n  \"testDataType\": \"<string>\",\n  \"schemaId\": \"<string>\",\n  \"shareName\": \"<string>\",\n  \"filePath\": \"<string>\",\n  \"connectionString\": \"<string>\",\n  \"description\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "15640298-7cb8-49eb-9fad-23512fec240f",
+          "name": "Upload data from Google Cloud Storage",
+          "request": {
+            "name": "Upload data from Google Cloud Storage",
+            "description": {
+              "content": "Upload dataset to the Opaque platform by streaming existing data from Google Cloud Storage.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                ":version",
+                "organization",
+                "data",
+                "upload_google_cloud_storage"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "v1.2",
+                  "key": "version",
+                  "description": "(Required) Version of the API to call"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": {
+              "type": "apikey",
+              "apikey": [
+                {
+                  "key": "key",
+                  "value": "userIdentitySecret"
+                },
+                {
+                  "key": "value",
+                  "value": "{{apiKey}}"
+                },
+                {
+                  "key": "in",
+                  "value": "header"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"<string>\",\n  \"policy\": {\n    \"value\": \"reference ../models/DatumPolicy.yaml not found in the OpenAPI spec\"\n  },\n  \"testDataType\": \"<string>\",\n  \"schemaId\": \"<string>\",\n  \"bucketName\": \"<string>\",\n  \"objectName\": \"<string>\",\n  \"credentialsJson\": \"<string>\",\n  \"description\": \"<string>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "1dbe9772-cb6d-4a1a-a771-4ea8296d0564",
+              "name": "OK\n- Data upload from Google Cloud Storage successful",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    ":version",
+                    "organization",
+                    "data",
+                    "upload_google_cloud_storage"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "v1.2",
+                      "key": "version",
+                      "description": "(Required) Version of the API to call"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "userIdentitySecret",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"name\": \"<string>\",\n  \"policy\": {\n    \"value\": \"reference ../models/DatumPolicy.yaml not found in the OpenAPI spec\"\n  },\n  \"testDataType\": \"<string>\",\n  \"schemaId\": \"<string>\",\n  \"bucketName\": \"<string>\",\n  \"objectName\": \"<string>\",\n  \"credentialsJson\": \"<string>\",\n  \"description\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "fc3ba24f-c048-4b85-83c7-d3b8a6d33c9f",
+              "name": "Bad Request\n- File already exists",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    ":version",
+                    "organization",
+                    "data",
+                    "upload_google_cloud_storage"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "v1.2",
+                      "key": "version",
+                      "description": "(Required) Version of the API to call"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "userIdentitySecret",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"name\": \"<string>\",\n  \"policy\": {\n    \"value\": \"reference ../models/DatumPolicy.yaml not found in the OpenAPI spec\"\n  },\n  \"testDataType\": \"<string>\",\n  \"schemaId\": \"<string>\",\n  \"bucketName\": \"<string>\",\n  \"objectName\": \"<string>\",\n  \"credentialsJson\": \"<string>\",\n  \"description\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "992fb3d1-b395-4e0f-91cc-31b839e854bd",
+              "name": "Internal Server Error\n- Streaming from Google Cloud Storage failed\n- Upload to provider failed",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    ":version",
+                    "organization",
+                    "data",
+                    "upload_google_cloud_storage"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "v1.2",
+                      "key": "version",
+                      "description": "(Required) Version of the API to call"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "userIdentitySecret",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"name\": \"<string>\",\n  \"policy\": {\n    \"value\": \"reference ../models/DatumPolicy.yaml not found in the OpenAPI spec\"\n  },\n  \"testDataType\": \"<string>\",\n  \"schemaId\": \"<string>\",\n  \"bucketName\": \"<string>\",\n  \"objectName\": \"<string>\",\n  \"credentialsJson\": \"<string>\",\n  \"description\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "a819028f-6ad6-49e4-8701-76603018d7de",
+          "name": "Download data",
+          "request": {
+            "name": "Download data",
+            "description": {},
+            "url": {
+              "path": [
+                ":version",
+                "organization",
+                "data",
+                "download"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "dataset-path",
+                  "value": "<string>",
+                  "description": "(Required) "
+                },
+                {
+                  "disabled": false,
+                  "key": "data-store-config-uuid",
+                  "value": "<string>",
+                  "description": "(Required) "
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "v1.2",
+                  "key": "version",
+                  "description": "(Required) Version of the API to call"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "text/plain"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "apikey",
+              "apikey": [
+                {
+                  "key": "key",
+                  "value": "sessionTokenCookie"
+                },
+                {
+                  "key": "value",
+                  "value": "{{apiKey}}"
+                },
+                {
+                  "key": "in",
+                  "value": "header"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "2631f0c5-1d1b-43fb-8979-49e1e027fe7b",
+              "name": "OK",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    ":version",
+                    "organization",
+                    "data",
+                    "download"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "dataset-path",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "data-store-config-uuid",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "v1.2",
+                      "key": "version",
+                      "description": "(Required) Version of the API to call"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "sessionTokenCookie",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "text/plain"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "disabled": false,
+                  "key": "Set-Cookie",
+                  "value": "string",
+                  "description": ""
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "string",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "757aea05-085c-4594-a31c-bc421c5aef6f",
+              "name": "Bad Request",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    ":version",
+                    "organization",
+                    "data",
+                    "download"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "dataset-path",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "data-store-config-uuid",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "v1.2",
+                      "key": "version",
+                      "description": "(Required) Version of the API to call"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "sessionTokenCookie",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "http://localhost:5001/",
+      "key": "baseUrl"
+    }
+  ],
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{bearerToken}}"
+      }
+    ]
+  },
+  "info": {
+    "_postman_id": "3a19d559-f3f9-4c9d-a2c8-62b5923b2e1f",
+    "name": "Opaque UI Datasets API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "This documentation details the REST API endpoints that the client exposes.\n\nContact Support:\n Name: Opaque Systems\n Email: hello@opaque.co",
+      "type": "text/plain"
+    }
+  }
+}

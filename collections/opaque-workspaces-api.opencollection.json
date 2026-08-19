@@ -1,0 +1,170 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Opaque UI Workspaces API",
+    "version": "2.5"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "workspaces",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get all workspaces",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "http://localhost:5001/:version/workspaces",
+            "params": [
+              {
+                "name": "version",
+                "value": "",
+                "type": "path",
+                "description": "Version of the API to call"
+              },
+              {
+                "name": "inviteStatus",
+                "value": "",
+                "type": "query",
+                "description": "filter workspaces returned based on user's inviteStatus"
+              },
+              {
+                "name": "archived",
+                "value": "",
+                "type": "query",
+                "description": "filter workspaces returned based on whether workspace is archived. If not provided there will be no filtering."
+              }
+            ]
+          },
+          "docs": "Get a list of all workspaces the user has access to.\nThis list includes workspaces the user has been invited to,\naccepted invites for, or has created themselves."
+        },
+        {
+          "info": {
+            "name": "Create workspace",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "http://localhost:5001/:version/workspace",
+            "params": [
+              {
+                "name": "version",
+                "value": "",
+                "type": "path",
+                "description": "Version of the API to call"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "userIdentitySecret",
+              "value": "{{userIdentitySecret}}",
+              "placement": "query"
+            }
+          },
+          "docs": "Create a new workspace."
+        },
+        {
+          "info": {
+            "name": "Get workspace",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "http://localhost:5001/:version/workspace/:workspace-uuid",
+            "params": [
+              {
+                "name": "workspace-uuid",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "version",
+                "value": "",
+                "type": "path",
+                "description": "Version of the API to call"
+              }
+            ]
+          },
+          "docs": "Get a single workspace matching the UUID."
+        },
+        {
+          "info": {
+            "name": "Update Workspace",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "http://localhost:5001/:version/workspace/:workspace-uuid",
+            "params": [
+              {
+                "name": "workspace-uuid",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "version",
+                "value": "",
+                "type": "path",
+                "description": "Version of the API to call"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Update the workspace. Can only be called by the workspace's creator."
+        },
+        {
+          "info": {
+            "name": "Decide workspace invite",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "http://localhost:5001/:version/workspace/:workspace-uuid/invite",
+            "params": [
+              {
+                "name": "version",
+                "value": "",
+                "type": "path",
+                "description": "Version of the API to call"
+              },
+              {
+                "name": "workspace-uuid",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "userIdentitySecret",
+              "value": "{{userIdentitySecret}}",
+              "placement": "query"
+            }
+          },
+          "docs": "Accept or decline an invite to a workspace."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

@@ -1,0 +1,120 @@
+openapi: 3.2.0
+info:
+  title: Opaque UI Predefined Query Templates API
+  version: '2.5'
+  description: This documentation details the REST API endpoints that the client exposes.
+  contact:
+    name: Opaque Systems
+    email: hello@opaque.co
+servers:
+- url: http://localhost:5001/
+  description: Local Server
+security:
+- sessionToken: []
+  refreshTokenCookie: []
+tags:
+- name: predefined-query-templates
+paths:
+  /{version}/organization/{organization-uuid}/predefined-query-templates:
+    parameters:
+    - $ref: '#/components/parameters/version'
+    - schema:
+        type: string
+      name: organization-uuid
+      in: path
+      required: true
+    get:
+      summary: Get predefined query templates by organization
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: ../models/PredefinedQueryTemplate.yaml
+      operationId: get_organization_predefined_query_templates
+      description: Get all the predefined query templates for an organization
+      tags:
+      - predefined-query-templates
+      parameters: []
+      x-internal: true
+      x-stoplight:
+        id: 8d5qorpzqdohr
+  /{version}/workspace/{workspace-uuid}/predefined-query-templates:
+    parameters:
+    - $ref: '#/components/parameters/version'
+    - schema:
+        type: string
+      name: workspace-uuid
+      in: path
+      required: true
+    get:
+      summary: Get predefined query templates by workspace
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: ../models/PredefinedQueryTemplate.yaml
+      operationId: get_workspace_predefined_query_templates
+      description: Get all the predefined query templates that have been added to a workspace
+      tags:
+      - predefined-query-templates
+      parameters: []
+      x-internal: true
+      x-stoplight:
+        id: 8d5qorpzqdohr
+  /{version}/predefined-query-templates:
+    parameters:
+    - $ref: '#/components/parameters/version'
+    get:
+      summary: Get all available predefined query templates
+      tags:
+      - predefined-query-templates
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: ../models/PredefinedQueryTemplate.yaml
+      operationId: get_available_predefined_query_templates
+      description: Get all available predefined query templates. This includes all public templates and private templates associated with the user's organization. Only a workspace admin can call this endpoint.
+components:
+  parameters:
+    version:
+      in: path
+      name: version
+      schema:
+        type: string
+        default: v1.2
+        example: v1.2
+      description: Version of the API to call
+      required: true
+  securitySchemes:
+    sessionToken:
+      type: http
+      scheme: bearer
+      description: The bearer token is obtained from the `/login` and `/register` endpoints.
+    userIdentitySecret:
+      name: userIdentitySecret
+      type: apiKey
+      in: cookie
+      description: A binary blob derived from a user's passkey. It can be obtained from the `/login` and `/register` endpoints.
+    sessionTokenCookie:
+      name: sessionTokenCookie
+      type: apiKey
+      in: cookie
+    refreshTokenCookie:
+      name: refreshTokenCookie
+      type: apiKey
+      in: cookie
+x-origin: origin
+x-extension-with: x-extension-with

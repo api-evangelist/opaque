@@ -1,0 +1,222 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Opaque UI Users API",
+    "version": "2.5"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "users",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get user",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "http://localhost:5001/:version/user",
+            "params": [
+              {
+                "name": "version",
+                "value": "",
+                "type": "path",
+                "description": "Version of the API to call"
+              }
+            ]
+          },
+          "docs": "Get user details."
+        },
+        {
+          "info": {
+            "name": "Update user",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "http://localhost:5001/:version/user",
+            "params": [
+              {
+                "name": "version",
+                "value": "",
+                "type": "path",
+                "description": "Version of the API to call"
+              }
+            ],
+            "body": {
+              "type": "multipart-form",
+              "data": [
+                {
+                  "name": "email",
+                  "type": "text",
+                  "value": ""
+                },
+                {
+                  "name": "name",
+                  "type": "text",
+                  "value": ""
+                },
+                {
+                  "name": "org",
+                  "type": "text",
+                  "value": ""
+                },
+                {
+                  "name": "publicKey",
+                  "type": "text",
+                  "value": ""
+                },
+                {
+                  "name": "privateKey",
+                  "type": "text",
+                  "value": ""
+                },
+                {
+                  "name": "symmetricKey",
+                  "type": "text",
+                  "value": ""
+                }
+              ]
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "userIdentitySecret",
+              "value": "{{userIdentitySecret}}",
+              "placement": "query"
+            }
+          },
+          "docs": "Update user details.\n**THIS ENDPOINT WILL NOT BE IMPLEMENTED YET**"
+        },
+        {
+          "info": {
+            "name": "Delete user",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "http://localhost:5001/:version/user",
+            "params": [
+              {
+                "name": "version",
+                "value": "",
+                "type": "path",
+                "description": "Version of the API to call"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "userIdentitySecret",
+              "value": "{{userIdentitySecret}}",
+              "placement": "query"
+            }
+          },
+          "docs": "Delete the user account.\n**THIS ENDPOINT WILL NOT BE IMPLEMENTED YET**"
+        },
+        {
+          "info": {
+            "name": "Check user existence",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "http://localhost:5001/:version/user/exists",
+            "params": [
+              {
+                "name": "version",
+                "value": "",
+                "type": "path",
+                "description": "Version of the API to call"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Check if the user associated with the bearer token exists on the database."
+        },
+        {
+          "info": {
+            "name": "Get user keys",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "http://localhost:5001/:version/user/keys",
+            "params": [
+              {
+                "name": "version",
+                "value": "",
+                "type": "path",
+                "description": "Version of the API to call"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "userIdentitySecret",
+              "value": "{{userIdentitySecret}}",
+              "placement": "query"
+            }
+          },
+          "docs": "Get the logged in user public, private, and symmetric keys.\n**THIS ENDPOINT WILL NOT BE IMPLEMENTED YET**"
+        },
+        {
+          "info": {
+            "name": "Update another user's organization roles",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "http://localhost:5001/:version/user/organization-roles",
+            "params": [
+              {
+                "name": "version",
+                "value": "",
+                "type": "path",
+                "description": "Version of the API to call"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Update another user's organization roles.\nOnly organization admins can update a user's organization roles."
+        },
+        {
+          "info": {
+            "name": "Get shared workspace members",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "http://localhost:5001/:version/workspaces/members",
+            "params": [
+              {
+                "name": "version",
+                "value": "",
+                "type": "path",
+                "description": "Version of the API to call"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Get the members which share a workspace with the requesting user"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

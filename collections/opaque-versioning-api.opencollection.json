@@ -1,0 +1,43 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Opaque UI Versioning API",
+    "version": "2.5"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "versioning",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get latest client version",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "http://localhost:5001/:version/client/upgrade",
+            "params": [
+              {
+                "name": "version",
+                "value": "",
+                "type": "path",
+                "description": "Version of the API to call"
+              }
+            ]
+          },
+          "docs": "Gets the latest client version available"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

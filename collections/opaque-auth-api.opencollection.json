@@ -1,0 +1,147 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Opaque UI Auth API",
+    "version": "2.5"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "auth",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Invalidate session token",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "http://localhost:5001/:version/auth/logout",
+            "params": [
+              {
+                "name": "version",
+                "value": "",
+                "type": "path",
+                "description": "Version of the API to call"
+              }
+            ]
+          },
+          "docs": "Invalidate the session token provided in the header."
+        },
+        {
+          "info": {
+            "name": "Register With SSO",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "http://localhost:5001/:version/auth/register-with-sso",
+            "headers": [
+              {
+                "name": "Set-Cookie",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "version",
+                "value": "",
+                "type": "path",
+                "description": "Version of the API to call"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Create a new user using an id_token and access_token gotten from auth0. Access token should be sent as a bearer token like other endpoints. Returns the users user_identity_secret.\nNote: This method will only work if the flask server is run with the OPAQUE_FF_USE_SSO_INTEGRATION feature flag set to true."
+        },
+        {
+          "info": {
+            "name": "Get a new session token, id token pair",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "http://localhost:5001/:version/auth/refresh-token",
+            "params": [
+              {
+                "name": "version",
+                "value": "",
+                "type": "path",
+                "description": "Version of the API to call"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Returns a session token from the refresh token. The refresh token will be\ntaken from the refresh token cookie."
+        },
+        {
+          "info": {
+            "name": "Get API key",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "http://localhost:5001/:version/auth/api-key",
+            "params": [
+              {
+                "name": "version",
+                "value": "",
+                "type": "path",
+                "description": "Version of the API to call"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "userIdentitySecret",
+              "value": "{{userIdentitySecret}}",
+              "placement": "query"
+            }
+          },
+          "docs": "Get the API key for the user."
+        },
+        {
+          "info": {
+            "name": "Create passkey from password",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "http://localhost:5001/:version/auth/create-passkey-from-password",
+            "params": [
+              {
+                "name": "version",
+                "value": "",
+                "type": "path",
+                "description": "Version of the API to call"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Create a passkey from a password passed through the PBKDF2-SHA256 algorithm configured to use 600,011 iterations and the email as a salt. The supplied password must conform to the following guidelines:\n* The password has a minimum length of eight characters.\n* The password contains at least three of the following:\n  * A lowercase letter (a–z)\n  * An uppercase letter (A–Z)\n  * A number (0–9)\n  * A special character (@ $ ! % *  # ? &)\nNote that it is recommended to perform this encryption yourself"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

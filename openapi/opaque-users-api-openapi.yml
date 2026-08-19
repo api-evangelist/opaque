@@ -1,0 +1,245 @@
+openapi: 3.2.0
+info:
+  title: Opaque UI Users API
+  version: '2.5'
+  description: This documentation details the REST API endpoints that the client exposes.
+  contact:
+    name: Opaque Systems
+    email: hello@opaque.co
+servers:
+- url: http://localhost:5001/
+  description: Local Server
+security:
+- sessionToken: []
+  refreshTokenCookie: []
+tags:
+- name: users
+  description: Users
+paths:
+  /{version}/user:
+    parameters:
+    - $ref: '#/components/parameters/version'
+    get:
+      summary: Get user
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: ../models/User.yaml
+      operationId: get_user
+      description: Get user details.
+      tags:
+      - users
+      parameters: []
+    patch:
+      summary: Update user
+      operationId: update_user
+      responses:
+        '200':
+          description: OK
+      description: 'Update user details.
+
+        **THIS ENDPOINT WILL NOT BE IMPLEMENTED YET**'
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                  format: email
+                name:
+                  type: string
+                org:
+                  type: string
+                publicKey:
+                  type: string
+                  format: blob
+                privateKey:
+                  type: string
+                  format: blob
+                symmetricKey:
+                  type: string
+                  format: blob
+        description: ''
+      tags:
+      - users
+      parameters: []
+      security:
+      - userIdentitySecret: []
+        sessionToken: []
+        refreshTokenCookie: []
+      x-internal: true
+    delete:
+      summary: Delete user
+      operationId: delete_user
+      responses:
+        '200':
+          description: User deleted
+      tags:
+      - users
+      description: 'Delete the user account.
+
+        **THIS ENDPOINT WILL NOT BE IMPLEMENTED YET**'
+      security:
+      - userIdentitySecret: []
+        sessionToken: []
+        refreshTokenCookie: []
+      x-internal: true
+  /{version}/user/exists:
+    parameters:
+    - $ref: '#/components/parameters/version'
+    get:
+      summary: Check user existence
+      operationId: check_user_exists
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: boolean
+      description: Check if the user associated with the bearer token exists on the database.
+      tags:
+      - users
+      parameters: []
+      security:
+      - sessionToken: []
+  /{version}/user/keys:
+    parameters:
+    - $ref: '#/components/parameters/version'
+    get:
+      summary: Get user keys
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  public:
+                    type: string
+                    format: blob
+                  private:
+                    type: string
+                    format: blob
+                  symmetric:
+                    type: string
+                    format: blob
+      operationId: get_user_keys
+      description: 'Get the logged in user public, private, and symmetric keys.
+
+        **THIS ENDPOINT WILL NOT BE IMPLEMENTED YET**'
+      tags:
+      - users
+      parameters: []
+      security:
+      - userIdentitySecret: []
+        sessionToken: []
+        refreshTokenCookie: []
+      x-internal: true
+  /{version}/user/organization-roles:
+    parameters:
+    - $ref: '#/components/parameters/version'
+    patch:
+      summary: Update another user's organization roles
+      operationId: update_user_organization_roles
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: ../models/User.yaml
+        '400':
+          description: 'Bad Request
+
+            - Organization admin role cannot be added or removed'
+          content:
+            application/json:
+              schema:
+                $ref: ../models/Error.yaml
+      description: 'Update another user''s organization roles.
+
+        Only organization admins can update a user''s organization roles.'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                  description: Email of the target user
+                  format: email
+                organizationRoles:
+                  type: array
+                  description: '`organization_admin` is not changeable, it should be consistent for org member'
+                  items:
+                    type: string
+                    enum:
+                    - consortium_admin
+                    - organization_admin
+              required:
+              - email
+              - organizationRoles
+      tags:
+      - users
+  /{version}/workspaces/members:
+    parameters:
+    - $ref: '#/components/parameters/version'
+    get:
+      summary: Get shared workspace members
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: ../models/User.yaml
+      operationId: get_shared_workspace_members
+      description: Get the members which share a workspace with the requesting user
+      tags:
+      - users
+      parameters: []
+      security:
+      - sessionToken: []
+        refreshTokenCookie: []
+      x-internal: true
+components:
+  parameters:
+    version:
+      in: path
+      name: version
+      schema:
+        type: string
+        default: v1.2
+        example: v1.2
+      description: Version of the API to call
+      required: true
+  securitySchemes:
+    sessionToken:
+      type: http
+      scheme: bearer
+      description: The bearer token is obtained from the `/login` and `/register` endpoints.
+    userIdentitySecret:
+      name: userIdentitySecret
+      type: apiKey
+      in: cookie
+      description: A binary blob derived from a user's passkey. It can be obtained from the `/login` and `/register` endpoints.
+    sessionTokenCookie:
+      name: sessionTokenCookie
+      type: apiKey
+      in: cookie
+    refreshTokenCookie:
+      name: refreshTokenCookie
+      type: apiKey
+      in: cookie
+x-origin: origin
+x-extension-with: x-extension-with

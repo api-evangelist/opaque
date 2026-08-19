@@ -1,0 +1,250 @@
+openapi: 3.2.0
+info:
+  title: Opaque UI Workspaces API
+  version: '2.5'
+  description: This documentation details the REST API endpoints that the client exposes.
+  contact:
+    name: Opaque Systems
+    email: hello@opaque.co
+servers:
+- url: http://localhost:5001/
+  description: Local Server
+security:
+- sessionToken: []
+  refreshTokenCookie: []
+tags:
+- name: workspaces
+  description: Workspaces
+paths:
+  /{version}/workspaces:
+    parameters:
+    - $ref: '#/components/parameters/version'
+    get:
+      summary: Get all workspaces
+      tags:
+      - workspaces
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: ../models/Workspace.yaml
+      operationId: get_workspaces
+      parameters:
+      - schema:
+          type: string
+          enum:
+          - accepted
+          - invited
+        in: query
+        name: inviteStatus
+        description: filter workspaces returned based on user's inviteStatus
+      - schema:
+          type: boolean
+        in: query
+        name: archived
+        description: filter workspaces returned based on whether workspace is archived. If not provided there will be no filtering.
+      description: 'Get a list of all workspaces the user has access to.
+
+        This list includes workspaces the user has been invited to,
+
+        accepted invites for, or has created themselves.'
+  /{version}/workspace:
+    parameters:
+    - $ref: '#/components/parameters/version'
+    post:
+      summary: Create workspace
+      operationId: create_workspace
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: ../models/Workspace.yaml
+        '400':
+          description: 'Bad Request
+
+            - One or more members do not exist
+
+            - Workspace name does not match required format'
+          content:
+            application/json:
+              schema:
+                $ref: ../models/Error.yaml
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  description: Workspace name
+                  minLength: 1
+                  maxLength: 50
+                type:
+                  type: string
+                  description: Workspace type
+                  enum:
+                  - analytics
+                  - agentic
+                members:
+                  type: array
+                  description: Defaults to a one-item array with creator's email if not provided
+                  items:
+                    type: string
+                    format: email
+                predefinedQueryTemplates:
+                  type: array
+                  items:
+                    type: string
+                  description: Templates that are available to users inside the workspace
+                policy:
+                  $ref: ../models/WorkspacePolicy.yaml
+                description:
+                  type: string
+                  description: Description of the workspace
+                  maxLength: 150
+              required:
+              - name
+              - type
+      description: Create a new workspace.
+      tags:
+      - workspaces
+      security:
+      - userIdentitySecret: []
+        sessionToken: []
+        refreshTokenCookie: []
+  /{version}/workspace/{workspace-uuid}:
+    parameters:
+    - schema:
+        type: string
+      name: workspace-uuid
+      in: path
+      required: true
+    - $ref: '#/components/parameters/version'
+    get:
+      summary: Get workspace
+      tags:
+      - workspaces
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: ../models/Workspace.yaml
+      operationId: get_workspace
+      parameters: []
+      description: Get a single workspace matching the UUID.
+    patch:
+      summary: Update Workspace
+      operationId: update_workspace
+      tags:
+      - workspaces
+      responses:
+        '200':
+          description: OK
+      description: Update the workspace. Can only be called by the workspace's creator.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                archived:
+                  type: boolean
+                  x-stoplight:
+                    id: mnnksbwlaqrwa
+                  description: If set to true, archives the workspace
+                predefinedQueryTemplates:
+                  type: array
+                  items:
+                    type: string
+                  description: Sets the templates that are available to users inside the workspace
+                description:
+                  type: string
+                  description: The new description of the workspace
+  /{version}/workspace/{workspace-uuid}/invite:
+    parameters:
+    - $ref: '#/components/parameters/version'
+    - schema:
+        type: string
+      name: workspace-uuid
+      in: path
+      required: true
+    post:
+      summary: Decide workspace invite
+      operationId: respond_workspace_invite
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: ../models/Workspace.yaml
+        '400':
+          description: 'Bad Request
+
+            - Already responded to invite
+
+            - inviteStatus must be accepted or rejected'
+          content:
+            application/json:
+              schema:
+                $ref: ../models/Error.yaml
+      description: Accept or decline an invite to a workspace.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                inviteStatus:
+                  type: string
+                  enum:
+                  - accepted
+                  - rejected
+              required:
+              - inviteStatus
+      tags:
+      - workspaces
+      security:
+      - userIdentitySecret: []
+        sessionToken: []
+        refreshTokenCookie: []
+components:
+  parameters:
+    version:
+      in: path
+      name: version
+      schema:
+        type: string
+        default: v1.2
+        example: v1.2
+      description: Version of the API to call
+      required: true
+  securitySchemes:
+    sessionToken:
+      type: http
+      scheme: bearer
+      description: The bearer token is obtained from the `/login` and `/register` endpoints.
+    userIdentitySecret:
+      name: userIdentitySecret
+      type: apiKey
+      in: cookie
+      description: A binary blob derived from a user's passkey. It can be obtained from the `/login` and `/register` endpoints.
+    sessionTokenCookie:
+      name: sessionTokenCookie
+      type: apiKey
+      in: cookie
+    refreshTokenCookie:
+      name: refreshTokenCookie
+      type: apiKey
+      in: cookie
+x-origin: origin
+x-extension-with: x-extension-with

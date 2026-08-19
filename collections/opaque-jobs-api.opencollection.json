@@ -1,0 +1,542 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Opaque UI Jobs API",
+    "version": "2.5"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "jobs",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get jobs",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "http://localhost:5001/:version/workspace/:workspace-uuid/jobs",
+            "params": [
+              {
+                "name": "workspace-uuid",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "version",
+                "value": "",
+                "type": "path",
+                "description": "Version of the API to call"
+              },
+              {
+                "name": "queryType",
+                "value": "",
+                "type": "query",
+                "description": "Type of job to fetch"
+              },
+              {
+                "name": "archived",
+                "value": "",
+                "type": "query",
+                "description": "filter jobs returned based on whether job is archived. If not provided there will be no filtering."
+              }
+            ]
+          },
+          "docs": "Get a list of all jobs in the workspace."
+        },
+        {
+          "info": {
+            "name": "Create job",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "http://localhost:5001/:version/workspace/:workspace-uuid/job",
+            "params": [
+              {
+                "name": "workspace-uuid",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "version",
+                "value": "",
+                "type": "path",
+                "description": "Version of the API to call"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Create a new job in draft status.\nA new job is filled with defaults."
+        },
+        {
+          "info": {
+            "name": "Get job metadata",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "http://localhost:5001/:version/job/:job-uuid",
+            "params": [
+              {
+                "name": "job-uuid",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "version",
+                "value": "",
+                "type": "path",
+                "description": "Version of the API to call"
+              }
+            ]
+          },
+          "docs": "Get the job with the provided UUID."
+        },
+        {
+          "info": {
+            "name": "Update job",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "http://localhost:5001/:version/job/:job-uuid",
+            "params": [
+              {
+                "name": "job-uuid",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "version",
+                "value": "",
+                "type": "path",
+                "description": "Version of the API to call"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "userIdentitySecret",
+              "value": "{{userIdentitySecret}}",
+              "placement": "query"
+            }
+          },
+          "docs": "Update the job with one or more of the provided values.\nUpdating repeatability or inputVariables only works in draft state"
+        },
+        {
+          "info": {
+            "name": "Delete job",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "http://localhost:5001/:version/job/:job-uuid",
+            "params": [
+              {
+                "name": "job-uuid",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "version",
+                "value": "",
+                "type": "path",
+                "description": "Version of the API to call"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "userIdentitySecret",
+              "value": "{{userIdentitySecret}}",
+              "placement": "query"
+            }
+          },
+          "docs": "Delete the job, only if there are no submitted JobRuns associated with the Job"
+        },
+        {
+          "info": {
+            "name": "Create job input_variable",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "http://localhost:5001/:version/job/:job-uuid/input-variable",
+            "params": [
+              {
+                "name": "job-uuid",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "version",
+                "value": "",
+                "type": "path",
+                "description": "Version of the API to call"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Create a new input variable for a job"
+        },
+        {
+          "info": {
+            "name": "Update job input_variable",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "http://localhost:5001/:version/input-variable/:input-variable-uuid",
+            "params": [
+              {
+                "name": "input-variable-uuid",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "version",
+                "value": "",
+                "type": "path",
+                "description": "Version of the API to call"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Update an existing input variable for a job"
+        },
+        {
+          "info": {
+            "name": "Remove job input_variable",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "http://localhost:5001/:version/input-variable/:input-variable-uuid",
+            "params": [
+              {
+                "name": "input-variable-uuid",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "version",
+                "value": "",
+                "type": "path",
+                "description": "Version of the API to call"
+              }
+            ]
+          },
+          "docs": "Deletes an existing input variable for a job"
+        },
+        {
+          "info": {
+            "name": "Update job review",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "http://localhost:5001/:version/job/:job-uuid/review",
+            "params": [
+              {
+                "name": "job-uuid",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "version",
+                "value": "",
+                "type": "path",
+                "description": "Version of the API to call"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "userIdentitySecret",
+              "value": "{{userIdentitySecret}}",
+              "placement": "query"
+            }
+          },
+          "docs": "Update a review on the job.\nMust provide a comment if `decision` is `rejected`."
+        },
+        {
+          "info": {
+            "name": "Create Job Run",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "http://localhost:5001/:version/job/:job-uuid/job-run",
+            "params": [
+              {
+                "name": "job-uuid",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "version",
+                "value": "",
+                "type": "path",
+                "description": "Version of the API to call"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "userIdentitySecret",
+              "value": "{{userIdentitySecret}}",
+              "placement": "query"
+            }
+          },
+          "docs": "Submit the Job creating a new Job Run. Requires the Job to be in the Accepted state if testRun is false. Can only be done once unless the job is repeatable."
+        },
+        {
+          "info": {
+            "name": "Get job query",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "http://localhost:5001/:version/job/:job-uuid/query",
+            "params": [
+              {
+                "name": "job-uuid",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "version",
+                "value": "",
+                "type": "path",
+                "description": "Version of the API to call"
+              }
+            ]
+          },
+          "docs": "Get the query for the provided job UIUD."
+        },
+        {
+          "info": {
+            "name": "Update job query",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "http://localhost:5001/:version/job/:job-uuid/query",
+            "params": [
+              {
+                "name": "job-uuid",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "version",
+                "value": "",
+                "type": "path",
+                "description": "Version of the API to call"
+              }
+            ],
+            "body": {
+              "type": "multipart-form",
+              "data": [
+                {
+                  "name": "query",
+                  "type": "text",
+                  "value": ""
+                }
+              ]
+            }
+          },
+          "docs": "Update the query of a job, replacing the entire existing query with the new value."
+        },
+        {
+          "info": {
+            "name": "Get predefined query",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "http://localhost:5001/:version/job/:job-uuid/predefined-query",
+            "params": [
+              {
+                "name": "job-uuid",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "version",
+                "value": "",
+                "type": "path",
+                "description": "Version of the API to call"
+              }
+            ]
+          },
+          "docs": "Gets the predefined query associated with the job"
+        },
+        {
+          "info": {
+            "name": "Update predefined query",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "http://localhost:5001/:version/job/:job-uuid/predefined-query",
+            "params": [
+              {
+                "name": "job-uuid",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "version",
+                "value": "",
+                "type": "path",
+                "description": "Version of the API to call"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Update the predefined query associated with a job, replacing the entire existing predefined query with the new value."
+        },
+        {
+          "info": {
+            "name": "Get job reviews",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "http://localhost:5001/:version/job/:job-uuid/reviews",
+            "params": [
+              {
+                "name": "version",
+                "value": "",
+                "type": "path",
+                "description": "Version of the API to call"
+              },
+              {
+                "name": "job-uuid",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Returns all the reviews for a job"
+        },
+        {
+          "info": {
+            "name": "Get job results",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "http://localhost:5001/:version/job-run/:job_run_uuid/results",
+            "params": [
+              {
+                "name": "version",
+                "value": "",
+                "type": "path",
+                "description": "Version of the API to call"
+              },
+              {
+                "name": "job_run_uuid",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "userIdentitySecret",
+              "value": "{{userIdentitySecret}}",
+              "placement": "query"
+            }
+          },
+          "docs": "Get the results using the provided jobRun UUID."
+        },
+        {
+          "info": {
+            "name": "Get job logs",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "http://localhost:5001/:version/job-run/:job_run_uuid/logs",
+            "params": [
+              {
+                "name": "version",
+                "value": "",
+                "type": "path",
+                "description": "Version of the API to call"
+              },
+              {
+                "name": "job_run_uuid",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "userIdentitySecret",
+              "value": "{{userIdentitySecret}}",
+              "placement": "query"
+            }
+          },
+          "docs": "Get the log using the provided jobRun UUID."
+        },
+        {
+          "info": {
+            "name": "Cancel job",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "http://localhost:5001/:version/job-run/:job_run_uuid/cancel",
+            "params": [
+              {
+                "name": "version",
+                "value": "",
+                "type": "path",
+                "description": "Version of the API to call"
+              },
+              {
+                "name": "job_run_uuid",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Cancels a queued or running jobRun, moving the jobRun to a **failed** status."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

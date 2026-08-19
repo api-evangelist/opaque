@@ -1,0 +1,91 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Opaque UI Predefined Query Templates API",
+    "version": "2.5"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "predefined-query-templates",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get predefined query templates by organization",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "http://localhost:5001/:version/organization/:organization-uuid/predefined-query-templates",
+            "params": [
+              {
+                "name": "version",
+                "value": "",
+                "type": "path",
+                "description": "Version of the API to call"
+              },
+              {
+                "name": "organization-uuid",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Get all the predefined query templates for an organization"
+        },
+        {
+          "info": {
+            "name": "Get predefined query templates by workspace",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "http://localhost:5001/:version/workspace/:workspace-uuid/predefined-query-templates",
+            "params": [
+              {
+                "name": "version",
+                "value": "",
+                "type": "path",
+                "description": "Version of the API to call"
+              },
+              {
+                "name": "workspace-uuid",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Get all the predefined query templates that have been added to a workspace"
+        },
+        {
+          "info": {
+            "name": "Get all available predefined query templates",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "http://localhost:5001/:version/predefined-query-templates",
+            "params": [
+              {
+                "name": "version",
+                "value": "",
+                "type": "path",
+                "description": "Version of the API to call"
+              }
+            ]
+          },
+          "docs": "Get all available predefined query templates. This includes all public templates and private templates associated with the user's organization. Only a workspace admin can call this endpoint."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

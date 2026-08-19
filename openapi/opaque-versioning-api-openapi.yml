@@ -1,0 +1,66 @@
+openapi: 3.2.0
+info:
+  title: Opaque UI Versioning API
+  version: '2.5'
+  description: This documentation details the REST API endpoints that the client exposes.
+  contact:
+    name: Opaque Systems
+    email: hello@opaque.co
+servers:
+- url: http://localhost:5001/
+  description: Local Server
+security:
+- sessionToken: []
+  refreshTokenCookie: []
+tags:
+- name: versioning
+paths:
+  /{version}/client/upgrade:
+    parameters:
+    - $ref: '#/components/parameters/version'
+    get:
+      summary: Get latest client version
+      tags:
+      - versioning
+      responses:
+        '200':
+          description: OK
+          headers: {}
+          content:
+            text/plain:
+              schema:
+                type: string
+                description: 'The latest available version of the client in semver format '
+      operationId: get_latest_client_version
+      description: Gets the latest client version available
+components:
+  parameters:
+    version:
+      in: path
+      name: version
+      schema:
+        type: string
+        default: v1.2
+        example: v1.2
+      description: Version of the API to call
+      required: true
+  securitySchemes:
+    sessionToken:
+      type: http
+      scheme: bearer
+      description: The bearer token is obtained from the `/login` and `/register` endpoints.
+    userIdentitySecret:
+      name: userIdentitySecret
+      type: apiKey
+      in: cookie
+      description: A binary blob derived from a user's passkey. It can be obtained from the `/login` and `/register` endpoints.
+    sessionTokenCookie:
+      name: sessionTokenCookie
+      type: apiKey
+      in: cookie
+    refreshTokenCookie:
+      name: refreshTokenCookie
+      type: apiKey
+      in: cookie
+x-origin: origin
+x-extension-with: x-extension-with

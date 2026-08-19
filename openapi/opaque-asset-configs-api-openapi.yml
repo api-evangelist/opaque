@@ -1,0 +1,329 @@
+openapi: 3.2.0
+info:
+  title: Opaque UI Asset Configs API
+  version: '2.5'
+  description: This documentation details the REST API endpoints that the client exposes.
+  contact:
+    name: Opaque Systems
+    email: hello@opaque.co
+servers:
+- url: http://localhost:5001/
+  description: Local Server
+security:
+- sessionToken: []
+  refreshTokenCookie: []
+tags:
+- name: asset-configs
+  description: Asset Configurations
+paths:
+  /{version}/asset-config:
+    parameters:
+    - $ref: '#/components/parameters/version'
+    post:
+      summary: Create asset config
+      tags:
+      - asset-configs
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+              - name
+              - assetType
+              - definition
+              properties:
+                name:
+                  type: string
+                  description: Name of the asset config
+                assetType:
+                  type: string
+                  enum:
+                  - data_connector
+                  - llm_connector
+                  description: Type of asset config
+                definition:
+                  type: string
+                  description: Base64 encoded serialized Asset Config Protobuf
+                description:
+                  type: string
+                  description: Description of the asset config
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: ../models/SimpleAssetConfig.yaml
+        '400':
+          description: 'Bad Request
+
+            - Definition is not valid base64
+
+            - Definition cannot be parsed as a protobuf'
+          content:
+            application/json:
+              schema:
+                $ref: ../models/Error.yaml
+      operationId: create_asset_config
+      description: Create a new asset config
+  /{version}/organization/asset-configs:
+    parameters:
+    - $ref: '#/components/parameters/version'
+    get:
+      summary: Get asset configs by organization
+      tags:
+      - asset-configs
+      parameters:
+      - $ref: '#/components/parameters/AssetConfigTypeParam'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: ../models/SimpleAssetConfig.yaml
+      operationId: get_asset_configs_by_organization
+      description: Get asset configs associated with the user's organization, optionally filtered by asset type
+  /{version}/organization/asset-configs/share:
+    parameters:
+    - $ref: '#/components/parameters/version'
+    post:
+      summary: Batch share organization asset configs with workspaces.
+      description: 'Batch share an organization''s asset configs with one or more workspaces.
+
+        The body is a list of asset config UUIDs and workspace UUIDs pairs.
+
+        Returns the UUIDs of the workspaces that the asset configs were shared with.
+
+        '
+      tags:
+      - asset-configs
+      operationId: share_asset_configs_with_workspaces
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                type: object
+                properties:
+                  asset-config-uuid:
+                    type: string
+                  workspace-uuid:
+                    type: string
+                required:
+                - asset-config-uuid
+                - workspace-uuid
+      responses:
+        '200':
+          description: A list of UUIDs of the workspaces the asset config was shared with.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: string
+                  format: uuid
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: ../models/Error.yaml
+  /{version}/asset-configs/workspace/{workspace_uuid}:
+    parameters:
+    - $ref: '#/components/parameters/version'
+    - schema:
+        type: string
+        format: uuid
+      name: workspace_uuid
+      in: path
+      required: true
+      description: UUID of the workspace to query asset configs for
+    get:
+      summary: Get asset configs by workspace
+      tags:
+      - asset-configs
+      parameters:
+      - $ref: '#/components/parameters/AssetConfigTypeParam'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: ../models/SimpleAssetConfig.yaml
+      operationId: get_asset_configs_by_workspace
+      description: Get asset configs associated with a specific workspace, optionally filtered by asset type
+  /{version}/asset-config/{asset_config_uuid}:
+    parameters:
+    - $ref: '#/components/parameters/version'
+    - schema:
+        type: string
+        format: uuid
+      name: asset_config_uuid
+      in: path
+      required: true
+      description: UUID of the asset config to retrieve
+    get:
+      summary: Get asset config by UUID
+      tags:
+      - asset-configs
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: ../models/AssetConfig.yaml
+        '404':
+          description: Asset config not found
+          content:
+            application/json:
+              schema:
+                $ref: ../models/Error.yaml
+      operationId: get_asset_config
+      description: Get a specific asset config by UUID
+    patch:
+      summary: Edit asset config
+      operationId: edit_asset_config
+      tags:
+      - asset-configs
+      description: 'Update asset config with change classification and impact handling.
+
+        - Metadata-only changes (name, description) apply immediately with no workflow impact
+
+        - Non-metadata/secret changes require impact computation and stop affected workflows
+
+        '
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  description: New name for the asset config
+                description:
+                  type: string
+                  description: New description for the asset config
+                definition:
+                  type: string
+                  description: Base64 encoded serialized Asset Config Protobuf
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: ../models/SimpleAssetConfig.yaml
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: ../models/Error.yaml
+    delete:
+      summary: Delete asset config
+      tags:
+      - asset-configs
+      responses:
+        '204':
+          description: No Content
+        '404':
+          description: Asset config not found
+          content:
+            application/json:
+              schema:
+                $ref: ../models/Error.yaml
+        '403':
+          description: Forbidden - insufficient permissions
+          content:
+            application/json:
+              schema:
+                $ref: ../models/Error.yaml
+      operationId: delete_asset_config
+      description: Delete a specific asset config by UUID
+  /{version}/workspace/{workspace-uuid}/asset-config/{asset-config-uuid}:
+    parameters:
+    - $ref: '#/components/parameters/version'
+    - schema:
+        type: string
+        format: uuid
+      name: workspace-uuid
+      in: path
+      required: true
+      description: Workspace UUID
+    - schema:
+        type: string
+        format: uuid
+      name: asset-config-uuid
+      in: path
+      required: true
+      description: Asset Config UUID
+    delete:
+      summary: Revoke asset config from workspace
+      tags:
+      - asset-configs
+      operationId: revoke_asset_config_from_workspace
+      responses:
+        '204':
+          description: No Content
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: ../models/Error.yaml
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: ../models/Error.yaml
+      description: Remove the specified asset config from the specified workspace.
+components:
+  parameters:
+    AssetConfigTypeParam:
+      name: assetType
+      in: query
+      required: false
+      schema:
+        $ref: ../models/AssetConfigType.yaml
+      description: Filter asset configs by asset type
+    version:
+      in: path
+      name: version
+      schema:
+        type: string
+        default: v1.2
+        example: v1.2
+      description: Version of the API to call
+      required: true
+  securitySchemes:
+    sessionToken:
+      type: http
+      scheme: bearer
+      description: The bearer token is obtained from the `/login` and `/register` endpoints.
+    userIdentitySecret:
+      name: userIdentitySecret
+      type: apiKey
+      in: cookie
+      description: A binary blob derived from a user's passkey. It can be obtained from the `/login` and `/register` endpoints.
+    sessionTokenCookie:
+      name: sessionTokenCookie
+      type: apiKey
+      in: cookie
+    refreshTokenCookie:
+      name: refreshTokenCookie
+      type: apiKey
+      in: cookie
+x-origin: origin
+x-extension-with: x-extension-with

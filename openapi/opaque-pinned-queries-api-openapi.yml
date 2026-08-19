@@ -1,0 +1,125 @@
+openapi: 3.2.0
+info:
+  title: Opaque UI Pinned Queries API
+  version: '2.5'
+  description: This documentation details the REST API endpoints that the client exposes.
+  contact:
+    name: Opaque Systems
+    email: hello@opaque.co
+servers:
+- url: http://localhost:5001/
+  description: Local Server
+security:
+- sessionToken: []
+  refreshTokenCookie: []
+tags:
+- name: pinned-queries
+paths:
+  /{version}/pinned-queries:
+    parameters:
+    - $ref: '#/components/parameters/version'
+    get:
+      summary: Get all pinned queries
+      tags:
+      - pinned-queries
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: ../models/PinnedQuery.yaml
+      operationId: get_pinned_queries
+      description: Get all the pinned queries made by the requesting user and part of workspace `workspaceUUID`.
+      parameters:
+      - schema:
+          type: string
+        in: query
+        name: workspaceUUID
+        required: true
+        description: UUID of the workspace the queries are associated with
+  /{version}/workspace/{workspace-uuid}/pinned-query:
+    parameters:
+    - $ref: '#/components/parameters/version'
+    - schema:
+        type: string
+      name: workspace-uuid
+      in: path
+      required: true
+    post:
+      summary: Create new pinned query
+      operationId: create_pinned_query
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: ../models/PinnedQuery.yaml
+      description: Create a new pinned query in workspace `workspace-uuid`.
+      parameters: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                queryString:
+                  type: string
+              required:
+              - name
+              - queryString
+      tags:
+      - pinned-queries
+  /{version}/pinned-query/{pinned-query-uuid}:
+    parameters:
+    - $ref: '#/components/parameters/version'
+    - schema:
+        type: string
+      name: pinned-query-uuid
+      in: path
+      required: true
+    delete:
+      summary: Delete pinned query
+      operationId: delete_pinned_query
+      responses:
+        '204':
+          description: No Content
+      tags:
+      - pinned-queries
+      description: Delete a pinned query.
+components:
+  parameters:
+    version:
+      in: path
+      name: version
+      schema:
+        type: string
+        default: v1.2
+        example: v1.2
+      description: Version of the API to call
+      required: true
+  securitySchemes:
+    sessionToken:
+      type: http
+      scheme: bearer
+      description: The bearer token is obtained from the `/login` and `/register` endpoints.
+    userIdentitySecret:
+      name: userIdentitySecret
+      type: apiKey
+      in: cookie
+      description: A binary blob derived from a user's passkey. It can be obtained from the `/login` and `/register` endpoints.
+    sessionTokenCookie:
+      name: sessionTokenCookie
+      type: apiKey
+      in: cookie
+    refreshTokenCookie:
+      name: refreshTokenCookie
+      type: apiKey
+      in: cookie
+x-origin: origin
+x-extension-with: x-extension-with

@@ -1,0 +1,689 @@
+openapi: 3.2.0
+info:
+  title: Opaque UI Jobs API
+  version: '2.5'
+  description: This documentation details the REST API endpoints that the client exposes.
+  contact:
+    name: Opaque Systems
+    email: hello@opaque.co
+servers:
+- url: http://localhost:5001/
+  description: Local Server
+security:
+- sessionToken: []
+  refreshTokenCookie: []
+tags:
+- name: jobs
+  description: Jobs
+paths:
+  /{version}/workspace/{workspace-uuid}/jobs:
+    parameters:
+    - schema:
+        type: string
+      name: workspace-uuid
+      in: path
+      required: true
+    - $ref: '#/components/parameters/version'
+    get:
+      summary: Get jobs
+      tags:
+      - jobs
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: ../models/Job.yaml
+      operationId: get_jobs_by_workspace
+      description: Get a list of all jobs in the workspace.
+      parameters:
+      - schema:
+          type: string
+          enum:
+          - python
+          - predefined
+        in: query
+        name: queryType
+        allowEmptyValue: true
+        description: Type of job to fetch
+      - schema:
+          type: boolean
+        in: query
+        name: archived
+        description: filter jobs returned based on whether job is archived. If not provided there will be no filtering.
+  /{version}/workspace/{workspace-uuid}/job:
+    parameters:
+    - schema:
+        type: string
+      name: workspace-uuid
+      in: path
+      required: true
+    - $ref: '#/components/parameters/version'
+    post:
+      summary: Create job
+      operationId: create_job
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: ../models/Job.yaml
+        '400':
+          description: 'Bad Request
+
+            - Invalid workspace status
+
+            - Invalid body parameter'
+          content:
+            application/json:
+              schema:
+                $ref: ../models/Error.yaml
+      tags:
+      - jobs
+      description: 'Create a new job in draft status.
+
+        A new job is filled with defaults.'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  default: New Job
+                  maxLength: 50
+                queryType:
+                  x-stoplight:
+                    id: mx3g80igdq964
+                  type: string
+                  enum:
+                  - python
+                  - predefined
+                  default: python
+                repeatable:
+                  type: boolean
+                  default: false
+                description:
+                  type: string
+                  maxLength: 150
+              required:
+              - name
+  /{version}/job/{job-uuid}:
+    parameters:
+    - schema:
+        type: string
+      name: job-uuid
+      in: path
+      required: true
+    - $ref: '#/components/parameters/version'
+    get:
+      summary: Get job metadata
+      tags:
+      - jobs
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: ../models/Job.yaml
+      operationId: get_job
+      description: Get the job with the provided UUID.
+    patch:
+      summary: Update job
+      operationId: update_job
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: ../models/Job.yaml
+        '201':
+          description: Created
+        '400':
+          description: 'Bad Request
+
+            - Job cannot be modified after it is queued'
+          content:
+            application/json:
+              schema:
+                $ref: ../models/Error.yaml
+      tags:
+      - jobs
+      description: 'Update the job with one or more of the provided values.
+
+        Updating repeatability or inputVariables only works in draft state'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                status:
+                  type: string
+                  enum:
+                  - under review
+                  - draft
+                repeatable:
+                  type: boolean
+                archived:
+                  type: boolean
+                description:
+                  type: string
+            examples:
+              Update job and submit for review:
+                value:
+                  name: Job 1
+                  description: Example description
+                  status: under review
+        description: ''
+      security:
+      - userIdentitySecret: []
+        sessionToken: []
+        refreshTokenCookie: []
+    delete:
+      summary: Delete job
+      operationId: delete_job
+      responses:
+        '204':
+          description: No Content
+        '400':
+          description: 'Bad Request
+
+            - Job cannot be deleted after a run has been submitted'
+          content:
+            application/json:
+              schema:
+                $ref: ../models/Error.yaml
+      tags:
+      - jobs
+      description: Delete the job, only if there are no submitted JobRuns associated with the Job
+      security:
+      - userIdentitySecret: []
+        sessionToken: []
+        refreshTokenCookie: []
+  /{version}/job/{job-uuid}/input-variable:
+    parameters:
+    - schema:
+        type: string
+      name: job-uuid
+      in: path
+      required: true
+    - $ref: '#/components/parameters/version'
+    post:
+      summary: Create job input_variable
+      operationId: create_job_input_variable
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: ../models/JobInputVariable.yaml
+        '400':
+          description: 'Bad Request
+
+            - Job status must be **draft**'
+          content:
+            application/json:
+              schema:
+                $ref: ../models/Error.yaml
+      description: Create a new input variable for a job
+      tags:
+      - jobs
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                type:
+                  $ref: ../models/JobInputVariableType.yaml
+                constraints:
+                  $ref: ../models/JobInputVariableConstraintScaffolding/ConstraintOrBlock.yaml
+                description:
+                  type: string
+                  default: ''
+                default:
+                  type: string
+              required:
+              - name
+              - type
+  /{version}/input-variable/{input-variable-uuid}:
+    parameters:
+    - schema:
+        type: string
+      name: input-variable-uuid
+      in: path
+      required: true
+    - $ref: '#/components/parameters/version'
+    patch:
+      summary: Update job input_variable
+      operationId: update_job_input_variable
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: ../models/JobInputVariable.yaml
+        '400':
+          description: 'Bad Request
+
+            - Job status must be **draft**'
+          content:
+            application/json:
+              schema:
+                $ref: ../models/Error.yaml
+      description: Update an existing input variable for a job
+      tags:
+      - jobs
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                type:
+                  $ref: ../models/JobInputVariableType.yaml
+                description:
+                  type: string
+                default:
+                  type: string
+                clearDefault:
+                  type: boolean
+                  description: Clears the default value, marking the variable as required
+                constraints:
+                  $ref: ../models/JobInputVariableConstraintScaffolding/ConstraintOrBlock.yaml
+    delete:
+      summary: Remove job input_variable
+      operationId: delete_job_input_variable
+      responses:
+        '204':
+          description: No Content
+        '400':
+          description: 'Bad Request
+
+            - Job status must be **draft**'
+          content:
+            application/json:
+              schema:
+                $ref: ../models/Error.yaml
+      description: Deletes an existing input variable for a job
+      tags:
+      - jobs
+  /{version}/job/{job-uuid}/review:
+    parameters:
+    - schema:
+        type: string
+      name: job-uuid
+      in: path
+      required: true
+    - $ref: '#/components/parameters/version'
+    patch:
+      summary: Update job review
+      operationId: review_job
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: ../models/JobReview.yaml
+        '400':
+          description: 'Bad Request
+
+            - Decision is **rejected** but no comment was provided
+
+            - Job status must be **under review**'
+          content:
+            application/json:
+              schema:
+                $ref: ../models/Error.yaml
+      description: 'Update a review on the job.
+
+        Must provide a comment if `decision` is `rejected`.'
+      tags:
+      - jobs
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                decision:
+                  type: string
+                  enum:
+                  - accepted
+                  - rejected
+                comment:
+                  type: string
+        description: ''
+      security:
+      - userIdentitySecret: []
+        sessionToken: []
+        refreshTokenCookie: []
+  /{version}/job/{job-uuid}/job-run:
+    parameters:
+    - schema:
+        type: string
+      name: job-uuid
+      in: path
+      required: true
+    - $ref: '#/components/parameters/version'
+    post:
+      summary: Create Job Run
+      operationId: create_job_run
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: ../models/JobRun.yaml
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                inputValues:
+                  type: array
+                  items:
+                    $ref: ../models/JobInputValue.yaml
+                testRun:
+                  type: boolean
+                  default: false
+      description: Submit the Job creating a new Job Run. Requires the Job to be in the Accepted state if testRun is false. Can only be done once unless the job is repeatable.
+      tags:
+      - jobs
+      security:
+      - userIdentitySecret: []
+        sessionToken: []
+        refreshTokenCookie: []
+  /{version}/job/{job-uuid}/query:
+    parameters:
+    - schema:
+        type: string
+      name: job-uuid
+      in: path
+      required: true
+    - $ref: '#/components/parameters/version'
+    get:
+      summary: Get job query
+      tags:
+      - jobs
+      responses:
+        '200':
+          description: OK
+          content:
+            text/plain:
+              schema:
+                type: string
+                format: binary
+                description: The query associated with the job as a text file
+      operationId: get_job_query
+      description: Get the query for the provided job UIUD.
+    put:
+      summary: Update job query
+      operationId: update_job_query
+      responses:
+        '204':
+          description: No Content
+        '400':
+          description: 'Bad Request
+
+            - Job status must be **draft**'
+          content:
+            application/json:
+              schema:
+                $ref: ../models/Error.yaml
+      description: Update the query of a job, replacing the entire existing query with the new value.
+      tags:
+      - jobs
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              format: blob
+              properties:
+                query:
+                  type: string
+                  format: binary
+                  x-python-type: FileStorage
+              required:
+              - query
+  /{version}/job/{job-uuid}/predefined-query:
+    parameters:
+    - schema:
+        type: string
+      name: job-uuid
+      in: path
+      required: true
+    - $ref: '#/components/parameters/version'
+    put:
+      summary: Update predefined query
+      tags:
+      - jobs
+      operationId: update_job_predefined_query
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  predefinedQuery:
+                    $ref: ../models/PredefinedQuery.yaml
+                  template:
+                    $ref: ../models/PredefinedQueryTemplate.yaml
+        '400':
+          description: 'Bad Request
+
+            - Definition is not valid base64
+
+            - Definition cannot be parsed as a protobuf'
+          content:
+            application/json:
+              schema:
+                $ref: ../models/Error.yaml
+      x-stoplight:
+        id: q1z429idi5021
+      description: Update the predefined query associated with a job, replacing the entire existing predefined query with the new value.
+      parameters: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: ../models/PredefinedQuery.yaml
+    get:
+      summary: Get predefined query
+      operationId: get_job_predefined_query
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  predefinedQuery:
+                    $ref: ../models/PredefinedQuery.yaml
+                  template:
+                    $ref: ../models/PredefinedQueryTemplate.yaml
+      x-stoplight:
+        id: v38jvpphvlk43
+      description: Gets the predefined query associated with the job
+      tags:
+      - jobs
+  /{version}/job/{job-uuid}/reviews:
+    parameters:
+    - $ref: '#/components/parameters/version'
+    - schema:
+        type: string
+      name: job-uuid
+      in: path
+      required: true
+    get:
+      summary: Get job reviews
+      responses:
+        '200':
+          description: OK
+          headers: {}
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: ../models/JobReview.yaml
+      operationId: get_job_reviews
+      description: Returns all the reviews for a job
+      tags:
+      - jobs
+  /{version}/job-run/{job_run_uuid}/results:
+    parameters:
+    - $ref: '#/components/parameters/version'
+    - schema:
+        type: string
+      name: job_run_uuid
+      in: path
+      required: true
+    get:
+      summary: Get job results
+      tags:
+      - jobs
+      responses:
+        '200':
+          description: OK
+          content:
+            text/plain:
+              schema:
+                format: binary
+                type: string
+                description: Results of the job as a CSV file
+          headers:
+            Set-Cookie:
+              schema:
+                type: string
+        '400':
+          description: 'Bad Request
+
+            - Job status must be **reencryption complete**'
+          content:
+            application/json:
+              schema:
+                $ref: ../models/Error.yaml
+      operationId: get_job_run_results
+      description: Get the results using the provided jobRun UUID.
+      security:
+      - userIdentitySecret: []
+        sessionTokenCookie: []
+  /{version}/job-run/{job_run_uuid}/logs:
+    parameters:
+    - $ref: '#/components/parameters/version'
+    - schema:
+        type: string
+      name: job_run_uuid
+      in: path
+      required: true
+    get:
+      summary: Get job logs
+      tags:
+      - jobs
+      responses:
+        '200':
+          description: OK
+          content:
+            text/plain:
+              schema:
+                type: string
+                format: binary
+                description: Logs of the job as a text file
+        '400':
+          description: 'Bad Request
+
+            - Job Run status must be **succeeded** or **failed**'
+          content:
+            application/json:
+              schema:
+                $ref: ../models/Error.yaml
+      operationId: get_job_run_logs
+      description: Get the log using the provided jobRun UUID.
+      security:
+      - userIdentitySecret: []
+        sessionTokenCookie: []
+        refreshTokenCookie: []
+  /{version}/job-run/{job_run_uuid}/cancel:
+    parameters:
+    - $ref: '#/components/parameters/version'
+    - schema:
+        type: string
+      name: job_run_uuid
+      in: path
+      required: true
+    post:
+      summary: Cancel job
+      operationId: cancel_job_run
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: ../models/JobRun.yaml
+        '400':
+          description: 'Bad Request
+
+            - Job run status must be one of **queued** or **running**'
+          content:
+            application/json:
+              schema:
+                $ref: ../models/Error.yaml
+      description: Cancels a queued or running jobRun, moving the jobRun to a **failed** status.
+      tags:
+      - jobs
+components:
+  parameters:
+    version:
+      in: path
+      name: version
+      schema:
+        type: string
+        default: v1.2
+        example: v1.2
+      description: Version of the API to call
+      required: true
+  securitySchemes:
+    sessionToken:
+      type: http
+      scheme: bearer
+      description: The bearer token is obtained from the `/login` and `/register` endpoints.
+    userIdentitySecret:
+      name: userIdentitySecret
+      type: apiKey
+      in: cookie
+      description: A binary blob derived from a user's passkey. It can be obtained from the `/login` and `/register` endpoints.
+    sessionTokenCookie:
+      name: sessionTokenCookie
+      type: apiKey
+      in: cookie
+    refreshTokenCookie:
+      name: refreshTokenCookie
+      type: apiKey
+      in: cookie
+x-origin: origin
+x-extension-with: x-extension-with

@@ -1,0 +1,101 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Opaque UI Pinned Queries API",
+    "version": "2.5"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "pinned-queries",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get all pinned queries",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "http://localhost:5001/:version/pinned-queries",
+            "params": [
+              {
+                "name": "version",
+                "value": "",
+                "type": "path",
+                "description": "Version of the API to call"
+              },
+              {
+                "name": "workspaceUUID",
+                "value": "",
+                "type": "query",
+                "description": "UUID of the workspace the queries are associated with"
+              }
+            ]
+          },
+          "docs": "Get all the pinned queries made by the requesting user and part of workspace `workspaceUUID`."
+        },
+        {
+          "info": {
+            "name": "Create new pinned query",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "http://localhost:5001/:version/workspace/:workspace-uuid/pinned-query",
+            "params": [
+              {
+                "name": "version",
+                "value": "",
+                "type": "path",
+                "description": "Version of the API to call"
+              },
+              {
+                "name": "workspace-uuid",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Create a new pinned query in workspace `workspace-uuid`."
+        },
+        {
+          "info": {
+            "name": "Delete pinned query",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "http://localhost:5001/:version/pinned-query/:pinned-query-uuid",
+            "params": [
+              {
+                "name": "version",
+                "value": "",
+                "type": "path",
+                "description": "Version of the API to call"
+              },
+              {
+                "name": "pinned-query-uuid",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Delete a pinned query."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}
