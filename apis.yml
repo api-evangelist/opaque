@@ -20,6 +20,19 @@ specificationVersion: '0.23'
 created: '2026-08-04'
 modified: '2026-08-04'
 tags:
+- Confidential Computing
+- confidential-ai
+- AI Governance
+- Data Privacy
+- Trusted Execution Environment
+- Attestation
+- Agentic Workflows
+- Retrieval Augmented Generation
+- Enterprise AI
+- secure-analytics
+- Data Clean Room
+- MCP
+tags_raw:
 - confidential-computing
 - confidential-ai
 - ai-governance
@@ -61,6 +74,8 @@ apis:
   humanURL: https://docs.opaque.co/en/latest/api_reference/rest_api/
   baseURL: https://api.<your-subdomain>/v2.5
   tags:
+  - Authentication
+  tags_raw:
   - auth
   properties:
   - type: OpenAPI
@@ -83,6 +98,8 @@ apis:
   humanURL: https://docs.opaque.co/en/latest/api_reference/rest_api/
   baseURL: https://api.<your-subdomain>/v2.5
   tags:
+  - Datasets
+  tags_raw:
   - datasets
   properties:
   - type: OpenAPI
@@ -105,6 +122,8 @@ apis:
   humanURL: https://docs.opaque.co/en/latest/api_reference/rest_api/
   baseURL: https://api.<your-subdomain>/v2.5
   tags:
+  - Job
+  tags_raw:
   - jobs
   properties:
   - type: OpenAPI
@@ -127,6 +146,8 @@ apis:
   humanURL: https://docs.opaque.co/en/latest/api_reference/rest_api/
   baseURL: https://api.<your-subdomain>/v2.5
   tags:
+  - Organization
+  tags_raw:
   - organizations
   properties:
   - type: OpenAPI
@@ -194,6 +215,8 @@ apis:
   humanURL: https://docs.opaque.co/en/latest/api_reference/rest_api/
   baseURL: https://api.<your-subdomain>/v2.5
   tags:
+  - User
+  tags_raw:
   - users
   properties:
   - type: OpenAPI
@@ -216,6 +239,8 @@ apis:
   humanURL: https://docs.opaque.co/en/latest/api_reference/rest_api/
   baseURL: https://api.<your-subdomain>/v2.5
   tags:
+  - Versioning
+  tags_raw:
   - versioning
   properties:
   - type: OpenAPI
@@ -238,6 +263,8 @@ apis:
   humanURL: https://docs.opaque.co/en/latest/api_reference/rest_api/
   baseURL: https://api.<your-subdomain>/v2.5
   tags:
+  - Workflows
+  tags_raw:
   - workflows
   properties:
   - type: OpenAPI
@@ -260,6 +287,8 @@ apis:
   humanURL: https://docs.opaque.co/en/latest/api_reference/rest_api/
   baseURL: https://api.<your-subdomain>/v2.5
   tags:
+  - Workspaces
+  tags_raw:
   - workspaces
   properties:
   - type: OpenAPI
