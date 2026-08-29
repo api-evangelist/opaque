@@ -12,6 +12,18 @@ description: 'OPAQUE Systems, Inc. is a confidential-AI platform company that le
   users, organizations) described by an OpenAPI 3.0.3 specification, plus a Python SDK for invoking
   deployed workflows. It is used in insurance, financial services, and high-tech for confidential
   RAG, secure multi-party analytics, and governed agent execution.'
+deliveryModel:
+  model: saas
+  open_source: false
+  commercial: true
+  callable_host: false
+  label: Hosted service · you call their endpoint
+  confidence: medium
+  source:
+  - openapi
+  - pricing
+  generated: '2026-08-28'
+  method: derived
 image: https://cdn.prod.website-files.com/66d977be14c1ef2f8e88c93c/68cb38f2400045b985a92458_Opaque%20Logo.svg
 url: https://raw.githubusercontent.com/api-evangelist/opaque/refs/heads/main/apis.yml
 x-type: company
