@@ -32,17 +32,17 @@ specificationVersion: '0.23'
 created: '2026-08-04'
 modified: '2026-08-04'
 tags:
-- confidential-computing
+- Confidential Computing
 - confidential-ai
-- ai-governance
-- data-privacy
-- trusted-execution-environment
-- attestation
-- agentic-workflows
-- retrieval-augmented-generation
-- enterprise-ai
+- AI Governance
+- Data Privacy
+- Trusted Execution Environment
+- Attestation
+- Agentic Workflows
+- Retrieval Augmented Generation
+- Enterprise AI
 - secure-analytics
-- data-clean-room
+- Data Clean Room
 - MCP
 tags_raw:
 - confidential-computing
@@ -251,7 +251,7 @@ apis:
   humanURL: https://docs.opaque.co/en/latest/api_reference/rest_api/
   baseURL: https://api.<your-subdomain>/v2.5
   tags:
-  - versioning
+  - Versioning
   tags_raw:
   - versioning
   properties:
