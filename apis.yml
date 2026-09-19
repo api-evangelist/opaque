@@ -53,7 +53,7 @@ tags:
 - Trusted Execution Environment
 - Attestation
 - Agentic Workflows
-- Retrieval Augmented Generation
+- RAG
 - Enterprise AI
 - secure-analytics
 - Data Clean Room
@@ -313,7 +313,7 @@ apis:
   humanURL: https://docs.opaque.co/en/latest/api_reference/rest_api/
   baseURL: https://api.<your-subdomain>/v2.5
   tags:
-  - Workspaces
+  - Workspace
   tags_raw:
   - workspaces
   properties:
