@@ -1,0 +1,32 @@
+# Front Door AI Index — opaque — 2026-09-17
+# AI vocabulary counted on the provider's root page. Generated; do not edit.
+# `score` is null unless ownership is `own` — see front_door_ai.py.
+front_door_ai:
+  slug: opaque
+  lexicon_version: '1.0'
+  probed_at: '2026-09-17'
+  host: www.opaque.co
+  final_host: www.opaque.co
+  ownership: own
+  owner: opaque
+  shares_host_with: null
+  inherited_from: null
+  verdict: scored
+  score: 101
+  host_score: 101
+  density: 53.64
+  words: 1883
+  tiers:
+    agentic: 21
+    core: 80
+    model: 0
+  ambiguous: 16
+  top_terms:
+    AI: 77
+    agent: 16
+    AI agent: 8
+    RAG: 5
+    agentic: 5
+    generative ai: 3
+    inference: 2
+    MCP: 1

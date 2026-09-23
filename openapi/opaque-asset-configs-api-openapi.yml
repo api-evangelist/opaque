@@ -91,14 +91,12 @@ paths:
     parameters:
     - $ref: '#/components/parameters/version'
     post:
-      summary: Batch share organization asset configs with workspaces.
+      summary: Batch share organization asset configs with workspaces
       description: 'Batch share an organization''s asset configs with one or more workspaces.
 
         The body is a list of asset config UUIDs and workspace UUIDs pairs.
 
-        Returns the UUIDs of the workspaces that the asset configs were shared with.
-
-        '
+        Returns the UUIDs of the workspaces that the asset configs were shared with.'
       tags:
       - asset-configs
       operationId: share_asset_configs_with_workspaces
@@ -199,9 +197,7 @@ paths:
 
         - Metadata-only changes (name, description) apply immediately with no workflow impact
 
-        - Non-metadata/secret changes require impact computation and stop affected workflows
-
-        '
+        - Non-metadata/secret changes require impact computation and stop affected workflows'
       requestBody:
         content:
           application/json:
@@ -291,13 +287,6 @@ paths:
       description: Remove the specified asset config from the specified workspace.
 components:
   parameters:
-    AssetConfigTypeParam:
-      name: assetType
-      in: query
-      required: false
-      schema:
-        $ref: ../models/AssetConfigType.yaml
-      description: Filter asset configs by asset type
     version:
       in: path
       name: version
@@ -307,6 +296,13 @@ components:
         example: v1.2
       description: Version of the API to call
       required: true
+    AssetConfigTypeParam:
+      name: assetType
+      in: query
+      required: false
+      schema:
+        $ref: ../models/AssetConfigType.yaml
+      description: Filter asset configs by asset type
   securitySchemes:
     sessionToken:
       type: http

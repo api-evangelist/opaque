@@ -13,7 +13,7 @@ security:
 - sessionToken: []
   refreshTokenCookie: []
 tags:
-- name: users
+- name: Users
   description: Users
 paths:
   /{version}/user:
@@ -31,7 +31,7 @@ paths:
       operationId: get_user
       description: Get user details.
       tags:
-      - users
+      - Users
       parameters: []
     patch:
       summary: Update user
@@ -66,7 +66,7 @@ paths:
                   format: blob
         description: ''
       tags:
-      - users
+      - Users
       parameters: []
       security:
       - userIdentitySecret: []
@@ -80,7 +80,7 @@ paths:
         '200':
           description: User deleted
       tags:
-      - users
+      - Users
       description: 'Delete the user account.
 
         **THIS ENDPOINT WILL NOT BE IMPLEMENTED YET**'
@@ -104,7 +104,7 @@ paths:
                 type: boolean
       description: Check if the user associated with the bearer token exists on the database.
       tags:
-      - users
+      - Users
       parameters: []
       security:
       - sessionToken: []
@@ -135,7 +135,7 @@ paths:
 
         **THIS ENDPOINT WILL NOT BE IMPLEMENTED YET**'
       tags:
-      - users
+      - Users
       parameters: []
       security:
       - userIdentitySecret: []
@@ -188,7 +188,7 @@ paths:
               - email
               - organizationRoles
       tags:
-      - users
+      - Users
   /{version}/workspaces/members:
     parameters:
     - $ref: '#/components/parameters/version'
@@ -206,7 +206,7 @@ paths:
       operationId: get_shared_workspace_members
       description: Get the members which share a workspace with the requesting user
       tags:
-      - users
+      - Users
       parameters: []
       security:
       - sessionToken: []

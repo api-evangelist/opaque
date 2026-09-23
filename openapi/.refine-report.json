@@ -1,17 +1,7 @@
 {
   "provider": "opaque",
   "sources": [
-    "opaque-asset-configs-api-openapi.yml",
-    "opaque-auth-api-openapi.yml",
-    "opaque-datasets-api-openapi.yml",
-    "opaque-jobs-api-openapi.yml",
-    "opaque-organizations-api-openapi.yml",
-    "opaque-pinned-queries-api-openapi.yml",
-    "opaque-predefined-query-templates-api-openapi.yml",
-    "opaque-users-api-openapi.yml",
-    "opaque-versioning-api-openapi.yml",
-    "opaque-workflows-api-openapi.yml",
-    "opaque-workspaces-api-openapi.yml"
+    "_original/opaque-platform-api-openapi.yml"
   ],
   "outputs": [
     "opaque-asset-configs-api-openapi.yml",
@@ -30,18 +20,28 @@
   "errors": [],
   "warnings": [],
   "notes": [
-    "opaque-asset-configs-api-openapi.yml: upgraded openapi 3.0.3 -> OpenAPI 3.2.0",
-    "opaque-auth-api-openapi.yml: upgraded openapi 3.0.3 -> OpenAPI 3.2.0",
-    "opaque-datasets-api-openapi.yml: upgraded openapi 3.0.3 -> OpenAPI 3.2.0",
-    "opaque-jobs-api-openapi.yml: upgraded openapi 3.0.3 -> OpenAPI 3.2.0",
-    "opaque-organizations-api-openapi.yml: upgraded openapi 3.0.3 -> OpenAPI 3.2.0",
-    "opaque-pinned-queries-api-openapi.yml: upgraded openapi 3.0.3 -> OpenAPI 3.2.0",
-    "opaque-predefined-query-templates-api-openapi.yml: upgraded openapi 3.0.3 -> OpenAPI 3.2.0",
-    "opaque-users-api-openapi.yml: upgraded openapi 3.0.3 -> OpenAPI 3.2.0",
-    "opaque-versioning-api-openapi.yml: upgraded openapi 3.0.3 -> OpenAPI 3.2.0",
-    "opaque-workflows-api-openapi.yml: upgraded openapi 3.0.3 -> OpenAPI 3.2.0",
-    "opaque-workspaces-api-openapi.yml: upgraded openapi 3.0.3 -> OpenAPI 3.2.0",
+    "1 archived document(s) dropped as subsets of other archived documents",
+    "sourced from openapi/_original/ (1 archived document(s)); previously refined output at the top level was skipped rather than re-split",
+    "opaque-platform-api-openapi.yml: upgraded openapi 3.0.3 -> OpenAPI 3.2.0",
+    "opaque-platform-api-openapi.yml: declared missing tag: organizations",
+    "opaque-platform-api-openapi.yml: declared missing tag: pinned-queries",
+    "opaque-platform-api-openapi.yml: declared missing tag: predefined-query-templates",
+    "opaque-platform-api-openapi.yml: declared missing tag: versioning",
+    "opaque-platform-api-openapi.yml: declared missing tag: workflows",
     "apis.yml register: already-registered"
   ],
-  "skipped": []
+  "skipped": [
+    "_original/opaque-ui-openapi-original.yml: archived document superseded by a larger archived document",
+    "opaque-asset-configs-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "opaque-auth-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "opaque-datasets-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "opaque-jobs-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "opaque-organizations-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "opaque-pinned-queries-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "opaque-predefined-query-templates-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "opaque-users-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "opaque-versioning-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "opaque-workflows-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "opaque-workspaces-api-openapi.yml: previously refined output, superseded by openapi/_original/"
+  ]
 }

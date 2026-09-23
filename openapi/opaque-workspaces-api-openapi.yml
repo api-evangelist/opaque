@@ -13,7 +13,7 @@ security:
 - sessionToken: []
   refreshTokenCookie: []
 tags:
-- name: workspaces
+- name: Workspaces
   description: Workspaces
 paths:
   /{version}/workspaces:
@@ -22,7 +22,7 @@ paths:
     get:
       summary: Get all workspaces
       tags:
-      - workspaces
+      - Workspaces
       responses:
         '200':
           description: OK
@@ -114,7 +114,7 @@ paths:
               - type
       description: Create a new workspace.
       tags:
-      - workspaces
+      - Workspaces
       security:
       - userIdentitySecret: []
         sessionToken: []
@@ -130,7 +130,7 @@ paths:
     get:
       summary: Get workspace
       tags:
-      - workspaces
+      - Workspaces
       responses:
         '200':
           description: OK
@@ -145,7 +145,7 @@ paths:
       summary: Update Workspace
       operationId: update_workspace
       tags:
-      - workspaces
+      - Workspaces
       responses:
         '200':
           description: OK
@@ -212,7 +212,7 @@ paths:
               required:
               - inviteStatus
       tags:
-      - workspaces
+      - Workspaces
       security:
       - userIdentitySecret: []
         sessionToken: []

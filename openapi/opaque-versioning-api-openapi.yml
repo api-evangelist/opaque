@@ -13,7 +13,7 @@ security:
 - sessionToken: []
   refreshTokenCookie: []
 tags:
-- name: versioning
+- name: Versioning
 paths:
   /{version}/client/upgrade:
     parameters:
@@ -21,7 +21,7 @@ paths:
     get:
       summary: Get latest client version
       tags:
-      - versioning
+      - Versioning
       responses:
         '200':
           description: OK

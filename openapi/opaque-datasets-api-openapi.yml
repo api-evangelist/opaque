@@ -13,7 +13,7 @@ security:
 - sessionToken: []
   refreshTokenCookie: []
 tags:
-- name: datasets
+- name: Datasets
   description: Data & Datum
 paths:
   /{version}/workspace/{workspace-uuid}/data:
@@ -40,11 +40,11 @@ paths:
 
         `conditions` and `conditionDropdowns` will be **null** in objects where the user is not the creator.'
       tags:
-      - datasets
+      - Datasets
     delete:
       summary: Remove data from workspace
       tags:
-      - datasets
+      - Datasets
       parameters:
       - schema:
           type: string
@@ -82,7 +82,7 @@ paths:
 
         `conditions` and `conditionDropdowns` will be **null** if the user is not the creator.'
       tags:
-      - datasets
+      - Datasets
     delete:
       summary: Delete datum
       operationId: delete_datum
@@ -98,12 +98,12 @@ paths:
               schema:
                 $ref: ../models/Error.yaml
       tags:
-      - datasets
+      - Datasets
       description: Delete the datum with the provided id
     patch:
       summary: Update data in workspace
       tags:
-      - datasets
+      - Datasets
       responses:
         '200':
           description: OK
@@ -128,7 +128,7 @@ paths:
     get:
       summary: List Data
       tags:
-      - datasets
+      - Datasets
       responses:
         '200':
           description: OK
@@ -155,7 +155,7 @@ paths:
     get:
       summary: Get dataset metadata
       tags:
-      - datasets
+      - Datasets
       responses:
         '200':
           description: OK
@@ -169,7 +169,7 @@ paths:
     patch:
       summary: Update dataset
       tags:
-      - datasets
+      - Datasets
       responses:
         '200':
           description: OK
@@ -201,7 +201,7 @@ paths:
     delete:
       summary: Delete dataset
       tags:
-      - datasets
+      - Datasets
       responses:
         '204':
           description: No Content
@@ -250,14 +250,14 @@ paths:
             schema:
               type: object
       tags:
-      - datasets
+      - Datasets
   /{version}/organization/data/share:
     parameters:
     - $ref: '#/components/parameters/version'
     post:
       summary: Batch share organization data with workspace
       tags:
-      - datasets
+      - Datasets
       responses:
         '200':
           description: OK
@@ -390,7 +390,7 @@ paths:
       - userIdentitySecret: []
         sessionToken: []
       tags:
-      - datasets
+      - Datasets
   /{version}/organization/data/upload_aws_s3:
     parameters:
     - $ref: '#/components/parameters/version'
@@ -468,7 +468,7 @@ paths:
               - accessKey
               - secretKey
       tags:
-      - datasets
+      - Datasets
       description: Upload dataset to the Opaque platform by streaming existing data from AWS S3.
       security:
       - userIdentitySecret: []
@@ -548,7 +548,7 @@ paths:
               - blobName
               - connectionString
       tags:
-      - datasets
+      - Datasets
       description: Upload dataset to the Opaque platform by streaming existing data from Azure Blob Storage.
       security:
       - userIdentitySecret: []
@@ -628,7 +628,7 @@ paths:
               - filePath
               - connectionString
       tags:
-      - datasets
+      - Datasets
       description: Upload dataset to the Opaque platform by streaming existing data from Azure Files.
       security:
       - userIdentitySecret: []
@@ -708,7 +708,7 @@ paths:
               - objectName
               - credentialsJson
       tags:
-      - datasets
+      - Datasets
       description: Upload dataset to the Opaque platform by streaming existing data from Google Cloud Storage.
       security:
       - userIdentitySecret: []
@@ -729,7 +729,7 @@ paths:
     get:
       summary: Download data
       tags:
-      - datasets
+      - Datasets
       responses:
         '200':
           description: OK

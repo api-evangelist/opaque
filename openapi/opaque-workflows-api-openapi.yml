@@ -13,7 +13,7 @@ security:
 - sessionToken: []
   refreshTokenCookie: []
 tags:
-- name: workflows
+- name: Workflows
 paths:
   /{version}/workspace/{workspace-uuid}/workflow:
     parameters:
@@ -27,7 +27,7 @@ paths:
     post:
       summary: Create workflow
       tags:
-      - workflows
+      - Workflows
       requestBody:
         content:
           application/json:
@@ -76,7 +76,7 @@ paths:
     get:
       summary: Get workflow
       tags:
-      - workflows
+      - Workflows
       responses:
         '200':
           description: OK
@@ -107,7 +107,7 @@ paths:
               schema:
                 $ref: ../models/Error.yaml
       tags:
-      - workflows
+      - Workflows
       description: 'Update the workflow with one or more of the provided values.
 
         Can only be called by the workflow''s creator or an admin.'
@@ -151,7 +151,7 @@ paths:
               schema:
                 $ref: ../models/Error.yaml
       tags:
-      - workflows
+      - Workflows
       description: Delete a workflow by UUID. Only works if the workflow is in the DRAFT state.
   /{version}/workflow/{workflow-uuid}/request-review:
     parameters:
@@ -182,7 +182,7 @@ paths:
                 $ref: ../models/Error.yaml
       description: Request a review for a workflow. A workflow graph must also be provided to be compared against the existing workflow graph for security purposes.
       tags:
-      - workflows
+      - Workflows
       requestBody:
         content:
           application/json:
@@ -221,7 +221,7 @@ paths:
                 $ref: ../models/Workflow.yaml
       description: Cancel workflow reivew and set back the status to draft.
       tags:
-      - workflows
+      - Workflows
   /{version}/workflow/{workflow-uuid}/review:
     parameters:
     - schema:
@@ -251,7 +251,7 @@ paths:
                 $ref: ../models/Error.yaml
       description: Review a workflow.
       tags:
-      - workflows
+      - Workflows
       requestBody:
         content:
           application/json:
@@ -300,7 +300,7 @@ paths:
       operationId: get_workflow_reviews
       description: Returns all the reviews for a workflow, ordered by creation descending.
       tags:
-      - workflows
+      - Workflows
   /{version}/workflow/{workflow-uuid}/launch-workflow:
     parameters:
     - schema:
@@ -313,7 +313,7 @@ paths:
     post:
       summary: Launch workflow
       tags:
-      - workflows
+      - Workflows
       responses:
         '200':
           description: OK
@@ -335,7 +335,7 @@ paths:
     post:
       summary: Stop or shutdown workflow
       tags:
-      - workflows
+      - Workflows
       responses:
         '200':
           description: OK
@@ -357,7 +357,7 @@ paths:
     get:
       summary: Get workspace workflows
       tags:
-      - workflows
+      - Workflows
       responses:
         '200':
           description: OK

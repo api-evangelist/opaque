@@ -13,7 +13,7 @@ security:
 - sessionToken: []
   refreshTokenCookie: []
 tags:
-- name: jobs
+- name: Jobs
   description: Jobs
 paths:
   /{version}/workspace/{workspace-uuid}/jobs:
@@ -27,7 +27,7 @@ paths:
     get:
       summary: Get jobs
       tags:
-      - jobs
+      - Jobs
       responses:
         '200':
           description: OK
@@ -83,7 +83,7 @@ paths:
               schema:
                 $ref: ../models/Error.yaml
       tags:
-      - jobs
+      - Jobs
       description: 'Create a new job in draft status.
 
         A new job is filled with defaults.'
@@ -124,7 +124,7 @@ paths:
     get:
       summary: Get job metadata
       tags:
-      - jobs
+      - Jobs
       responses:
         '200':
           description: OK
@@ -155,7 +155,7 @@ paths:
               schema:
                 $ref: ../models/Error.yaml
       tags:
-      - jobs
+      - Jobs
       description: 'Update the job with one or more of the provided values.
 
         Updating repeatability or inputVariables only works in draft state'
@@ -204,7 +204,7 @@ paths:
               schema:
                 $ref: ../models/Error.yaml
       tags:
-      - jobs
+      - Jobs
       description: Delete the job, only if there are no submitted JobRuns associated with the Job
       security:
       - userIdentitySecret: []
@@ -238,7 +238,7 @@ paths:
                 $ref: ../models/Error.yaml
       description: Create a new input variable for a job
       tags:
-      - jobs
+      - Jobs
       requestBody:
         content:
           application/json:
@@ -287,7 +287,7 @@ paths:
                 $ref: ../models/Error.yaml
       description: Update an existing input variable for a job
       tags:
-      - jobs
+      - Jobs
       requestBody:
         content:
           application/json:
@@ -323,7 +323,7 @@ paths:
                 $ref: ../models/Error.yaml
       description: Deletes an existing input variable for a job
       tags:
-      - jobs
+      - Jobs
   /{version}/job/{job-uuid}/review:
     parameters:
     - schema:
@@ -356,7 +356,7 @@ paths:
 
         Must provide a comment if `decision` is `rejected`.'
       tags:
-      - jobs
+      - Jobs
       requestBody:
         content:
           application/json:
@@ -408,7 +408,7 @@ paths:
                   default: false
       description: Submit the Job creating a new Job Run. Requires the Job to be in the Accepted state if testRun is false. Can only be done once unless the job is repeatable.
       tags:
-      - jobs
+      - Jobs
       security:
       - userIdentitySecret: []
         sessionToken: []
@@ -424,7 +424,7 @@ paths:
     get:
       summary: Get job query
       tags:
-      - jobs
+      - Jobs
       responses:
         '200':
           description: OK
@@ -452,7 +452,7 @@ paths:
                 $ref: ../models/Error.yaml
       description: Update the query of a job, replacing the entire existing query with the new value.
       tags:
-      - jobs
+      - Jobs
       requestBody:
         content:
           multipart/form-data:
@@ -477,7 +477,7 @@ paths:
     put:
       summary: Update predefined query
       tags:
-      - jobs
+      - Jobs
       operationId: update_job_predefined_query
       responses:
         '200':
@@ -529,7 +529,7 @@ paths:
         id: v38jvpphvlk43
       description: Gets the predefined query associated with the job
       tags:
-      - jobs
+      - Jobs
   /{version}/job/{job-uuid}/reviews:
     parameters:
     - $ref: '#/components/parameters/version'
@@ -553,7 +553,7 @@ paths:
       operationId: get_job_reviews
       description: Returns all the reviews for a job
       tags:
-      - jobs
+      - Jobs
   /{version}/job-run/{job_run_uuid}/results:
     parameters:
     - $ref: '#/components/parameters/version'
@@ -565,7 +565,7 @@ paths:
     get:
       summary: Get job results
       tags:
-      - jobs
+      - Jobs
       responses:
         '200':
           description: OK
@@ -603,7 +603,7 @@ paths:
     get:
       summary: Get job logs
       tags:
-      - jobs
+      - Jobs
       responses:
         '200':
           description: OK
@@ -655,7 +655,7 @@ paths:
                 $ref: ../models/Error.yaml
       description: Cancels a queued or running jobRun, moving the jobRun to a **failed** status.
       tags:
-      - jobs
+      - Jobs
 components:
   parameters:
     version:

@@ -13,7 +13,7 @@ security:
 - sessionToken: []
   refreshTokenCookie: []
 tags:
-- name: organizations
+- name: Organizations
 paths:
   /{version}/organization/invite:
     parameters:
@@ -50,7 +50,7 @@ paths:
               - organizationRoles
       description: Send email invite to a new user to join the current user's organization. Only the organization admin can call this endpoint.
       tags:
-      - organizations
+      - Organizations
   /{version}/organization/invitation/{invitation-id}:
     parameters:
     - $ref: '#/components/parameters/version'
@@ -71,7 +71,7 @@ paths:
               schema:
                 $ref: ../models/OrganizationInvitation.yaml
       tags:
-      - organizations
+      - Organizations
   /{version}/organization/invitations:
     parameters:
     - $ref: '#/components/parameters/version'
@@ -89,7 +89,7 @@ paths:
                 items:
                   $ref: ../models/OrganizationInvitation.yaml
       tags:
-      - organizations
+      - Organizations
   /{version}/organization/members:
     parameters:
     - $ref: '#/components/parameters/version'
@@ -107,7 +107,7 @@ paths:
       operationId: get_organization_members
       description: Get the members of the organization.
       tags:
-      - organizations
+      - Organizations
       parameters: []
       security:
       - sessionToken: []

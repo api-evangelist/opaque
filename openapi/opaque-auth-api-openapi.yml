@@ -13,7 +13,7 @@ security:
 - sessionToken: []
   refreshTokenCookie: []
 tags:
-- name: auth
+- name: Auth
   description: Authentication
 paths:
   /{version}/auth/logout:
@@ -27,7 +27,7 @@ paths:
           description: OK
       description: Invalidate the session token provided in the header.
       tags:
-      - auth
+      - Auth
   /{version}/auth/register-with-sso:
     parameters:
     - $ref: '#/components/parameters/version'
@@ -71,7 +71,7 @@ paths:
 
         Note: This method will only work if the flask server is run with the OPAQUE_FF_USE_SSO_INTEGRATION feature flag set to true.'
       tags:
-      - auth
+      - Auth
       parameters:
       - schema:
           type: string
@@ -115,7 +115,7 @@ paths:
 
         taken from the refresh token cookie.'
       tags:
-      - auth
+      - Auth
       parameters: []
       security:
       - sessionToken: []
@@ -140,7 +140,7 @@ paths:
                 - apiKey
       description: Get the API key for the user.
       tags:
-      - auth
+      - Auth
       security:
       - userIdentitySecret: []
         refreshTokenCookie: []
@@ -150,7 +150,7 @@ paths:
     post:
       summary: Create passkey from password
       tags:
-      - auth
+      - Auth
       responses:
         '200':
           description: OK
@@ -178,7 +178,21 @@ paths:
               required:
               - email
               - password
-      description: "Create a passkey from a password passed through the PBKDF2-SHA256 algorithm configured to use 600,011 iterations and the email as a salt. The supplied password must conform to the following guidelines:\n* The password has a minimum length of eight characters.\n* The password contains at least three of the following:\n  * A lowercase letter (a–z)\n  * An uppercase letter (A–Z)\n  * A number (0–9)\n  * A special character (@ $ ! % *  # ? &)\nNote that it is recommended to perform this encryption yourself locally; use of this endpoint is just an optional backup method."
+      description: 'Create a passkey from a password passed through the PBKDF2-SHA256 algorithm configured to use 600,011 iterations and the email as a salt. The supplied password must conform to the following guidelines:
+
+        * The password has a minimum length of eight characters.
+
+        * The password contains at least three of the following:
+
+        * A lowercase letter (a–z)
+
+        * An uppercase letter (A–Z)
+
+        * A number (0–9)
+
+        * A special character (@ $ ! % * # ? &)
+
+        Note that it is recommended to perform this encryption yourself locally; use of this endpoint is just an optional backup method.'
       security: []
 components:
   parameters:
