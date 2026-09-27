@@ -49,7 +49,7 @@ tags:
 - Confidential Computing
 - confidential-ai
 - AI Governance
-- Data Privacy
+- Privacy
 - Trusted Execution Environment
 - Attestation
 - Agentic Workflows
@@ -71,6 +71,7 @@ tags_raw:
 - secure-analytics
 - data-clean-room
 - model-context-protocol
+- Data Privacy
 apis:
 - aid: opaque:opaque-asset-configs-api
   name: OPAQUE Asset Configs API
