@@ -287,6 +287,13 @@ paths:
       description: Remove the specified asset config from the specified workspace.
 components:
   parameters:
+    AssetConfigTypeParam:
+      name: assetType
+      in: query
+      required: false
+      schema:
+        $ref: ../models/AssetConfigType.yaml
+      description: Filter asset configs by asset type
     version:
       in: path
       name: version
@@ -296,13 +303,6 @@ components:
         example: v1.2
       description: Version of the API to call
       required: true
-    AssetConfigTypeParam:
-      name: assetType
-      in: query
-      required: false
-      schema:
-        $ref: ../models/AssetConfigType.yaml
-      description: Filter asset configs by asset type
   securitySchemes:
     sessionToken:
       type: http
