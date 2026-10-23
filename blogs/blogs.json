@@ -3,10 +3,7 @@
   "feeds": [
     {
       "source": "https://www.opaque.co/resources",
-      "feed_url": "https://www.opaque.co/resources",
-      "title": "",
-      "saved": 0,
-      "method": "none"
+      "error": "HTTPError"
     },
     {
       "source": "https://docs.opaque.co/en/latest/support/",
@@ -17,5 +14,5 @@
     }
   ],
   "post_count": 0,
-  "fetched": "2026-10-10T13:15:00Z"
+  "fetched": "2026-10-17T14:53:57Z"
 }
