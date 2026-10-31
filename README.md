@@ -64,5 +64,134 @@
 > Full detail: **[Where this data comes from](https://apievangelist.com/about/where-our-data-comes-from)**
 <!-- API-EVANGELIST-PROVENANCE:END -->
 
-OPAQUE is a company surfaced via the API Evangelist harvest backlog (source: secondary-market) and added to the network as a stub for full-pipeline profiling.
-- https://forgeglobal.com/opaque_stock/
+OPAQUE Systems, Inc. is a confidential-AI platform company that lets enterprises run AI and analytics on their most sensitive data without exposing it. The OPAQUE Confidential AI Platform executes agentic workflows, retrieval-augmented generation, and analytics jobs inside hardware trusted execution environments (TEEs), with attested TLS between components, signed attestation reports, and tamper-evident audit logs so every run can be independently verified. It is deployed in a hybrid architecture: an OPAQUE-hosted control plane manages users, workspaces, job metadata, notifications, audit logging, and key management, while the data plane, client/API pod, and encrypted storage all run inside the customer's own cloud environment. The platform exposes a documented REST API (workspaces, datasets, jobs, workflows, asset configs, users, organizations) described by an OpenAPI 3.0.3 specification, plus a Python SDK for invoking deployed workflows. It is used in insurance, financial services, and high-tech for confidential RAG, secure multi-party analytics, and governed agent execution.
+
+**Areas:** Confidential Computing · Confidential AI · AI Governance · Privacy · Trusted Execution Environment · Attestation · Agentic Workflows · RAG · Enterprise AI · secure-analytics · Data Clean Room · MCP
+
+## OPAQUE on APIs.io
+
+Everything profiled for OPAQUE is published on APIs.io rather than in this repository. Start at the provider page — **[apis.io/providers/opaque/](https://apis.io/providers/opaque/)** — or go straight to one of the APIs or properties below.
+
+### APIs (11)
+
+- [OPAQUE Asset Configs API](https://apis.io/apis/opaque/opaque-asset-configs-api/) — Asset Configurations
+- [OPAQUE Auth API](https://apis.io/apis/opaque/opaque-auth-api/) — Authentication
+- [OPAQUE Datasets API](https://apis.io/apis/opaque/opaque-datasets-api/) — Data & Datum
+- [OPAQUE Jobs API](https://apis.io/apis/opaque/opaque-jobs-api/) — Jobs
+- [OPAQUE Organizations API](https://apis.io/apis/opaque/opaque-organizations-api/) — The organizations API from OPAQUE — 4 operation(s) for organizations.
+- [OPAQUE Pinned Queries API](https://apis.io/apis/opaque/opaque-pinned-queries-api/) — The pinned-queries API from OPAQUE — 3 operation(s) for pinned-queries.
+- [OPAQUE Predefined Query Templates API](https://apis.io/apis/opaque/opaque-predefined-query-templates-api/) — The predefined-query-templates API from OPAQUE — 3 operation(s) for predefined-query-templates.
+- [OPAQUE Users API](https://apis.io/apis/opaque/opaque-users-api/) — Users
+- [OPAQUE Versioning API](https://apis.io/apis/opaque/opaque-versioning-api/) — The versioning API from OPAQUE — 1 operation(s) for versioning.
+- [OPAQUE Workflows API](https://apis.io/apis/opaque/opaque-workflows-api/) — The workflows API from OPAQUE — 9 operation(s) for workflows.
+- [OPAQUE Workspaces API](https://apis.io/apis/opaque/opaque-workspaces-api/) — Workspaces
+
+### Published properties
+
+Each property below is a page on APIs.io carrying the machine-readable artifact and what it says.
+
+#### MCP servers (1)
+
+Model Context Protocol servers that expose the API to agents.
+
+- [opaque](https://apis.io/servers/opaque/opaque/)
+
+#### Collections (11)
+
+Postman and Open Collection request collections.
+
+- [Opaque UI Asset Configs API](https://apis.io/collections/opaque/open-opaque-asset-configs-api/)
+- [Opaque UI Auth API](https://apis.io/collections/opaque/open-opaque-auth-api/)
+- [Opaque UI Datasets API](https://apis.io/collections/opaque/open-opaque-datasets-api/)
+- [Opaque UI Jobs API](https://apis.io/collections/opaque/open-opaque-jobs-api/)
+- [Opaque UI Organizations API](https://apis.io/collections/opaque/open-opaque-organizations-api/)
+- [Opaque UI Pinned Queries API](https://apis.io/collections/opaque/open-opaque-pinned-queries-api/)
+- [Opaque UI Predefined Query Templates API](https://apis.io/collections/opaque/open-opaque-predefined-query-templates-api/)
+- [Opaque UI Users API](https://apis.io/collections/opaque/open-opaque-users-api/)
+- [Opaque UI Versioning API](https://apis.io/collections/opaque/open-opaque-versioning-api/)
+- [Opaque UI Workflows API](https://apis.io/collections/opaque/open-opaque-workflows-api/)
+- [Opaque UI Workspaces API](https://apis.io/collections/opaque/open-opaque-workspaces-api/)
+
+#### Overlays (1)
+
+OpenAPI overlays, including conversational phrasing for each operation.
+
+- [Opaque Platform Api Overlay](https://apis.io/overlays/opaque/opaque-platform-api-overlay/)
+
+#### Security (2)
+
+Authentication, trust centre, and vulnerability disclosure.
+
+- [Opaque Authentication](https://apis.io/security/opaque/opaque-authentication/)
+- [Opaque Domain Security](https://apis.io/security/opaque/opaque-domain-security/)
+
+## Where to find this API
+
+Links to the company's own pages. This repository publishes no copy of their specifications — the canonical document is theirs and lives at the URLs below.
+
+- [Website](https://www.opaque.co/)
+- [Documentation](https://docs.opaque.co/en/latest/public_guide/developers/)
+- [Getting started](https://docs.opaque.co/en/latest/public_guide/users/get_started/)
+- [API reference](https://docs.opaque.co/en/latest/api_reference/rest_api/)
+- [Support](https://docs.opaque.co/en/latest/support/)
+- [Changelog](https://docs.opaque.co/en/latest/release_notes/)
+- [Blog](https://www.opaque.co/resources)
+- [Compliance](https://www.opaque.co/resources/articles/the-opaque-platform-is-now-soc-2-certified)
+- [Terms of service](https://www.opaque.co/terms-of-service)
+- [Privacy policy](https://www.opaque.co/privacy-policy)
+- [GitHub](https://github.com/opaque-systems)
+
+## API Evangelist rating
+
+**Kin Score 42.4** — developing · rubric 0.25.0 · scored 2026-10-23
+
+| Facet | Score |
+|---|---|
+| Discoverability | 66.1 |
+| Contract quality | 43.0 |
+| Contract governance | 18.2 |
+| Operational transparency | 18.4 |
+| Developer ergonomics | 66.1 |
+| Access clarity | 28.9 |
+
+**Agent readiness 27.0** — agent-aware
+
+| Agent-readiness dimension | Result |
+|---|---|
+| Spec Presence | yes |
+| Agentic Access | — |
+| Reversibility Documented | documented (partial credit) |
+| MCP Server | — |
+| Auth Clarity | bearer (partial credit) |
+| Idempotency | — |
+| Error Semantics | verified |
+| OpenAPI Examples | partial |
+| Rate Limit Signal | — |
+| Event Surface Described | — |
+| Agent Skills | derived (partial credit) |
+| Well Known Catalog | — |
+| Consent Identity | — |
+| Agent Card | — |
+| Dry Run Mode | — |
+| Delegated Identity | — |
+| Protected Resource Metadata | — |
+| Dynamic Client Registration | — |
+| Agentic Commerce | — |
+| Pagination Ratio | — |
+| Operation Distinctiveness | distinct |
+
+**Regulatory alignment 29.4** — Horizontal (data, software, accessibility, platform)
+
+The rubric is published at [github.com/api-evangelist/kin-score](https://github.com/api-evangelist/kin-score). The per-check breakdown behind these numbers — which checks were earned, partial or missed — along with score history and how this provider compares to its peers, is available at [apis.io/providers/opaque/](https://apis.io/providers/opaque/).
+
+## How this profile is made
+
+API Evangelist profiles a company's public API surface the way a developer would find it: the website, developer portal and documentation, the specifications it publishes, its public repositories, and its pricing, status and changelog pages. From that it derives the properties above — contracts split per API, workflows, schemas, collections, governance rules, plans and rate limits — and scores them against the published [Kin Score rubric](https://github.com/api-evangelist/kin-score).
+
+The artifacts are published on [APIs.io](https://apis.io), not in this repository. This repository is the public record for OPAQUE: the place to say something is wrong, missing or out of date, and to ask for a re-score or a removal.
+
+## Open an issue
+
+- **Something about this listing** — a wrong description, a missing API, a stale artifact or a question about the rating: [open an issue on this repository](https://github.com/api-evangelist/opaque/issues/new).
+- **A new API, or one that is not in the catalog yet** — [submit it on APIs.io](https://apis.io/add/).
+- **Anything else** — [the APIs.io inbox](https://github.com/api-search/inbox/issues/new) or [info@apievangelist.com](mailto:info@apievangelist.com).
